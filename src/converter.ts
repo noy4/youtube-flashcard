@@ -5,8 +5,8 @@ interface Flashcard {
 
 export class SubtitleConverter {
   private subtitles: string[];
-  private readonly MIN_WORDS = 5;  // 最小単語数
-  private readonly MAX_WORDS = 15; // 最大単語数
+  private readonly MIN_CHARS = 50;   // 最小文字数
+  private readonly MAX_CHARS = 120;  // 最大文字数を少し短く
 
   constructor(subtitles: string[]) {
     this.subtitles = subtitles;
@@ -33,46 +33,70 @@ export class SubtitleConverter {
   }
 
   /**
-   * 字幕を適切な長さに結合
-   * 短すぎる字幕は結合し、長すぎる字幕は分割します
+   * 字幕を意味のあるチャンクに結合
    */
   private combineSubtitles(): string[] {
     const result: string[] = [];
-    let current = '';
+    let current: string[] = [];
+    let currentLength = 0;
 
-    for (const subtitle of this.subtitles) {
-      const words = subtitle.split(' ');
+    const isEndOfSentence = (text: string): boolean => {
+      return /[.!?](\s|$)/.test(text);
+    };
 
-      if (current) {
-        const currentWords = current.split(' ');
+    const isNewContext = (text: string): boolean => {
+      const markers = [
+        'But', 'However', 'Now', 'So', 'Then', 'Finally',
+        'First', 'Second', 'Next', 'Also', 'Instead',
+        'For example', 'In addition'
+      ];
+      return markers.some(marker => text.startsWith(marker));
+    };
 
-        // 現在の蓄積が最大単語数を超えている場合、新しいカードを作成
-        if (currentWords.length >= this.MAX_WORDS) {
-          result.push(current);
-          current = subtitle;
-          continue;
+    const addChunk = () => {
+      if (current.length > 0) {
+        const chunk = current.join(' ').trim();
+        // 最小文字数以上の場合のみ追加
+        if (chunk.length >= this.MIN_CHARS) {
+          // 文末のピリオドを保持
+          result.push(chunk + (chunk.endsWith('.') ? '' : '.'));
         }
+        current = [];
+        currentLength = 0;
+      }
+    };
 
-        // 単語を結合して適切な長さになるまで蓄積
-        current = `${current} ${subtitle}`;
-        if (currentWords.length >= this.MIN_WORDS) {
-          result.push(current);
-          current = '';
-        }
-      } else {
-        if (words.length >= this.MIN_WORDS) {
-          result.push(subtitle);
-        } else {
-          current = subtitle;
-        }
+    for (let i = 0; i < this.subtitles.length; i++) {
+      const subtitle = this.subtitles[i].trim();
+      const nextSubtitle = i < this.subtitles.length - 1 ? this.subtitles[i + 1].trim() : '';
+
+      // 現在の字幕を追加
+      current.push(subtitle);
+      currentLength += subtitle.length;
+
+      // チャンクを区切るべきかの判断
+      const shouldSplit =
+        // 最大文字数を超えた
+        currentLength >= this.MAX_CHARS ||
+        // 文末に達した上で、最小文字数を超えている
+        (isEndOfSentence(subtitle) && currentLength >= this.MIN_CHARS) ||
+        // 次の字幕が新しい文脈を示唆する上で、最小文字数を超えている
+        (nextSubtitle && isNewContext(nextSubtitle) && currentLength >= this.MIN_CHARS);
+
+      if (shouldSplit) {
+        addChunk();
       }
     }
 
     // 残りの字幕があれば追加
-    if (current) {
-      result.push(current);
-    }
+    addChunk();
 
-    return result.map(text => text.trim());
+    return result.map(text => {
+      // 文が完結していない場合、末尾に「...」を追加
+      if (!isEndOfSentence(text)) {
+        return text + '...';
+      }
+      return text;
+    });
   }
 }

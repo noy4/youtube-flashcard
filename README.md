@@ -13,3 +13,5 @@ YouTube の字幕をフラッシュカードに変換する。[Obsidian Spaced R
 ## ドキュメンテーション
 VitePress を使う
 https://vitepress.dev/guide/getting-started
+
+依存する各ライブラリについて、それぞれ使われている参考プロジェクトをまとめたい。

@@ -2,7 +2,9 @@
 import { Command } from 'commander';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
+import { fetchSubtitles } from '../youtube.js';
+import { SubtitleConverter } from '../converter.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,10 +27,16 @@ program
   .option('-l, --language <code>', '字幕の言語コード', 'ja')
   .action(async (url, options) => {
     try {
-      console.log('URL:', url);
-      console.log('出力パス:', options.output);
-      console.log('言語:', options.language);
-      // TODO: 字幕の取得と変換処理を実装
+      console.log('字幕を取得中...');
+      const subtitles = await fetchSubtitles(url, options.language);
+
+      console.log('フラッシュカードを生成中...');
+      const converter = new SubtitleConverter(subtitles);
+      const flashcards = converter.convert();
+      const markdown = converter.toMarkdown(flashcards);
+
+      writeFileSync(options.output, markdown, 'utf8');
+      console.log(`フラッシュカードを ${options.output} に保存しました`);
     } catch (error) {
       console.error('エラーが発生しました:', error);
       process.exit(1);

@@ -1,0 +1,35 @@
+{
+  "name": "youtube-flashcard",
+  "version": "1.0.0",
+  "description": "YouTubeの字幕からフラッシュカードを生成するツール",
+  "type": "module",
+  "main": "dist/cli/index.js",
+  "bin": {
+    "youtube-flashcard": "dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "youtube",
+    "flashcard",
+    "obsidian",
+    "cli"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.17.24",
+    "typescript": "^5.8.2",
+    "vitepress": "^1.6.3"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "youtube-caption-extractor": "^1.0.0"
+  }
+}

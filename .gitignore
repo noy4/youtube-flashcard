@@ -1,0 +1,12 @@
+# Dependencies
+node_modules
+
+# Production build
+dist
+
+# VitePress
+docs/.vitepress/dist
+docs/.vitepress/cache
+
+# OS files
+.DS_Store

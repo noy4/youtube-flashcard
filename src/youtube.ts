@@ -1,4 +1,4 @@
-import { getSubtitles } from 'youtube-caption-extractor';
+import { getSubtitles, getVideoDetails } from 'youtube-caption-extractor';
 
 interface Subtitle {
   start: string;
@@ -20,9 +20,38 @@ export function extractVideoId(url: string): string {
 
 /**
  * YouTubeの字幕を取得
+ * @throws {Error} 字幕が見つからない場合やその他のエラー
  */
 export async function fetchSubtitles(url: string, languageCode: string): Promise<string[]> {
   const videoId = extractVideoId(url);
-  const subtitles = await getSubtitles({ videoID: videoId, lang: languageCode });
-  return subtitles.map(subtitle => subtitle.text);
+
+  try {
+    // 字幕を取得（現在は英語のみ対応）
+    const subtitles = await getSubtitles({ videoID: videoId });
+    if (!subtitles || subtitles.length === 0) {
+      throw new Error('字幕が見つかりませんでした');
+    }
+
+    return subtitles.map(subtitle => subtitle.text);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('字幕の取得中に予期せぬエラーが発生しました');
+  }
+}
+
+/**
+ * 利用可能な字幕の言語コードを取得
+ * 現在は英語のみ対応
+ */
+export async function getAvailableLanguages(url: string): Promise<string[]> {
+  const videoId = extractVideoId(url);
+
+  try {
+    const subtitles = await getSubtitles({ videoID: videoId });
+    return subtitles && subtitles.length > 0 ? ['en'] : [];
+  } catch (error) {
+    return [];
+  }
 }

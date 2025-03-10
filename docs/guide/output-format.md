@@ -9,30 +9,43 @@
 ### 基本形式
 
 ```markdown
-Question? #flashcard
-Answer
+#flashcards
 
-Question2? #flashcard
-Answer2
+日本語での質問
+日本語での質問の続き
+?
+English answer
+More English answer
+
+次の日本語の質問
+?
+Next English answer
 ```
 
 ### 出力例
 
 ```markdown
-What is TypeScript? #flashcard
-TypeScript is a strongly typed programming language that builds on JavaScript.
+#flashcards
 
-How to declare a variable in TypeScript? #flashcard
-You can declare a variable using 'let' or 'const' with an optional type annotation:
-let name: string = "John";
-const age: number = 30;
+彼は毎朝6時に起きます
+?
+He wakes up at 6 o'clock every morning.
+
+私は週末に友達と映画を見に行きました
+?
+I went to see a movie with my friends on the weekend.
+
+この本は先週図書館で借りました
+?
+I borrowed this book from the library last week.
 ```
 
 ### 特徴
 
-- 質問と回答は空行で区切られます
-- 各質問の末尾に `#flashcard` タグが付与されます
-- 回答は複数行にわたることができます
+- ファイルの先頭に `#flashcards` タグを付与します
+- 質問（日本語）と回答（英語）は `?` で区切られます
+- 質問・回答ともに複数行にわたって記述できます
+- 各カード間は空行で区切ります
 - コードブロックや箇条書きなどのMarkdown記法が使用可能です
 
 ### 出力オプション

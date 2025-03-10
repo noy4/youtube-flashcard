@@ -36,11 +36,11 @@
   - [ ] converter.tsの分岐カバレッジ改善（現在83.33%）
   - [ ] youtube.tsの未カバー部分の改善
   - [ ] CLIモジュールのテスト実装
-- [ ] 依存ライブラリのドキュメント整備
-  - [ ] youtube-caption-extractorの使用例
-  - [ ] commanderの使用例
+- [x] 依存ライブラリのドキュメント整備
+  - [x] youtube-caption-extractorの使用例
+  - [x] commanderの使用例
   - [x] openaiの使用例と設定方法
-  - [ ] 参考プロジェクトのリスト作成
+  - [x] 参考プロジェクトのリスト作成
 
 ## 完了
 - [x] プロジェクト初期化

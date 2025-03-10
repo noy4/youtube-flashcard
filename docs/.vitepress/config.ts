@@ -4,6 +4,9 @@ export default defineConfig({
   title: "Flashcard Converter",
   description: "YouTube字幕からフラッシュカードを生成",
   themeConfig: {
+    outline: {
+      level: [2, 3]
+    },
     nav: [
       { text: 'ホーム', link: '/' },
       { text: 'ガイド', link: '/guide/' }

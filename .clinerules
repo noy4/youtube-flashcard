@@ -1,2 +1,3 @@
-@/README.md
-@/docs/dev/docs.md
+タスク開始時は、以下のことを行うこと。
+- `README.md` を読み、プロジェクトの概要を把握する
+- `docs/dev/docs.md` を読み、ドキュメンテーションのルールを理解する

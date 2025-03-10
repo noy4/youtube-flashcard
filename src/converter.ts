@@ -30,10 +30,11 @@ export class SubtitleConverter {
    * フラッシュカードをMarkdown形式の文字列に変換
    */
   public toMarkdown(cards: Flashcard[]): string {
-    return cards.map((card, index) => {
-      const cardContent = `#flashcard\n\nQ: ${card.front}\n\nA: ${card.back}`;
-      return index < cards.length - 1 ? cardContent + '\n\n---\n\n' : cardContent;
-    }).join('');
+    const header = '#flashcards\n\n';
+    const content = cards.map(card => {
+      return `${card.front}\n?\n${card.back}`;
+    }).join('\n\n');
+    return header + content;
   }
 
   /**

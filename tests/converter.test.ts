@@ -67,12 +67,20 @@ describe('SubtitleConverter', () => {
 
       const markdown = converter.toMarkdown(cards);
 
-      expect(markdown).toContain('#flashcard');
-      expect(markdown).toContain('Q: Question 1');
-      expect(markdown).toContain('A: Answer 1');
-      expect(markdown).toContain('---');
-      expect(markdown).toContain('Q: Question 2');
-      expect(markdown).toContain('A: Answer 2');
+      // タグの確認
+      expect(markdown).toContain('#flashcards');
+
+      // 1つ目のカードの確認
+      expect(markdown).toContain('Question 1\n?\nAnswer 1');
+
+      // 2つ目のカードの確認
+      expect(markdown).toContain('Question 2\n?\nAnswer 2');
+
+      // カード間が空行で区切られていることを確認
+      expect(markdown).toMatch(/Answer 1\n\nQuestion 2/);
+
+      // ハイフンによる区切りがないことを確認
+      expect(markdown).not.toContain('---');
     });
   });
 

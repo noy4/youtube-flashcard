@@ -1,6 +1,9 @@
 # TODO
 
 ## 進行中
+- [/] OpenRouter対応
+  - [x] OpenAI SDKのbaseURLをOpenRouterに変更
+  - [ ] OpenAPI APIキー設定方法のドキュメント更新
 - [/] CLIの実装
   - [x] YouTubeの字幕取得機能（英語のみ対応）
   - [x] フラッシュカード形式への変換機能

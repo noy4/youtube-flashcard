@@ -35,6 +35,11 @@ export class Translator {
         temperature: 0.3, // より正確な翻訳のために低めの値を設定
       });
 
+      // 空の応答のチェック
+      if (!response.choices || response.choices.length === 0) {
+        throw new Error('翻訳結果が空でした');
+      }
+
       const translation = response.choices[0]?.message?.content?.trim();
       if (!translation) {
         throw new Error('翻訳結果が空でした');
@@ -42,10 +47,11 @@ export class Translator {
 
       return translation;
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`翻訳中にエラーが発生しました: ${error.message}`);
+      if (error instanceof Error && error.message === '翻訳結果が空でした') {
+        throw error;
       }
-      throw error;
+      // その他のエラーは全て統一的なメッセージで処理
+      throw new Error('翻訳中にエラーが発生しました');
     }
   }
 }

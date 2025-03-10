@@ -8,5 +8,8 @@ dist
 docs/.vitepress/dist
 docs/.vitepress/cache
 
+# Test coverage
+coverage
+
 # OS files
 .DS_Store

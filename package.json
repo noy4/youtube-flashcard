@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "commander": "^12.0.0",
+    "openai": "^4.86.2",
     "youtube-caption-extractor": "^1.0.0"
   }
 }

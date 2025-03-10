@@ -24,25 +24,27 @@ program
   .description('YouTubeの動画URLからフラッシュカードを生成')
   .argument('<url>', 'YouTube動画のURL')
   .option('-o, --output <path>', '出力ファイルパス', 'flashcards.md')
-  .option('-l, --language <code>', '字幕の言語コード（現在は英語"en"のみ対応）', 'en')
+  .option('-s, --source-lang <code>', '元の言語コード', 'en')
+  .option('-t, --target-lang <code>', '翻訳後の言語コード', 'ja')
+  .option('--api-key <key>', 'OpenAI APIキー（環境変数 OPENAI_API_KEY でも指定可能）')
   .action(async (url, options) => {
     try {
-      // 言語コードのチェック
-      if (options.language !== 'en') {
-        console.warn('注意: 現在は英語(en)の字幕のみに対応しています。指定された言語コードは無視されます。');
+      const apiKey = options.apiKey || process.env.OPENAI_API_KEY;
+      if (!apiKey) {
+        console.error('エラー: OpenAI APIキーが必要です。--api-keyオプションまたは環境変数OPENAI_API_KEYで指定してください。');
+        process.exit(1);
       }
 
       console.log('字幕を取得中...');
-      const subtitles = await fetchSubtitles(url, 'en');
+      const subtitles = await fetchSubtitles(url, options.sourceLang);
 
       console.log('フラッシュカードを生成中...');
-      const converter = new SubtitleConverter(subtitles);
-      const flashcards = converter.convert();
+      const converter = new SubtitleConverter(subtitles, apiKey);
+      const flashcards = await converter.convert(options.sourceLang, options.targetLang);
       const markdown = converter.toMarkdown(flashcards);
 
       writeFileSync(options.output, markdown, 'utf8');
       console.log(`フラッシュカードを ${options.output} に保存しました`);
-      console.log('注意: 現在は英語の字幕のみに対応しています。翻訳機能は今後実装予定です。');
     } catch (error) {
       if (error instanceof Error) {
         console.error('エラーが発生しました:', error.message);

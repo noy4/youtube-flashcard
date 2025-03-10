@@ -1,3 +1,5 @@
+import { Translator } from './translator.js';
+
 interface Flashcard {
   front: string;
   back: string;
@@ -5,19 +7,23 @@ interface Flashcard {
 
 export class SubtitleConverter {
   private subtitles: string[];
+  private translator: Translator | null;
   private readonly MIN_CHARS = 100;  // より長い文脈を維持
   private readonly MAX_CHARS = 250;  // 最大文字数をさらに増やす
 
-  constructor(subtitles: string[]) {
+  constructor(subtitles: string[], apiKey?: string) {
     this.subtitles = subtitles;
+    this.translator = apiKey ? new Translator(apiKey) : null;
   }
 
   /**
    * 字幕をObsidian Spaced Repetition形式のフラッシュカードに変換
+   * @param sourceLang 元の言語コード（例: 'en'）
+   * @param targetLang 翻訳後の言語コード（例: 'ja'）
    */
-  public convert(): Flashcard[] {
+  public async convert(sourceLang: string = 'en', targetLang: string = 'ja'): Promise<Flashcard[]> {
     const combinedSubtitles = this.combineSubtitles();
-    return this.createReversedCards(combinedSubtitles);
+    return this.createTranslatedCards(combinedSubtitles, sourceLang, targetLang);
   }
 
   /**
@@ -31,13 +37,28 @@ export class SubtitleConverter {
   }
 
   /**
-   * 英語と日本語の両方向のカードを生成
+   * 字幕を翻訳してフラッシュカードを生成
    */
-  private createReversedCards(texts: string[]): Flashcard[] {
-    return texts.map(text => ({
-      front: text,
-      back: "Translation will be implemented"
-    }));
+  private async createTranslatedCards(texts: string[], sourceLang: string, targetLang: string): Promise<Flashcard[]> {
+    if (!this.translator) {
+      throw new Error('翻訳機能を使用するにはAPIキーが必要です');
+    }
+
+    const cards: Flashcard[] = [];
+    for (const text of texts) {
+      try {
+        const translation = await this.translator.translate(text, sourceLang, targetLang);
+        cards.push({
+          front: text,
+          back: translation
+        });
+      } catch (error) {
+        console.error(`翻訳エラー: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        // エラーが発生した場合でもスキップして続行
+        continue;
+      }
+    }
+    return cards;
   }
 
   /**

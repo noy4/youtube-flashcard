@@ -14,7 +14,8 @@ export default defineConfig({
         items: [
           { text: '使い方', link: '/guide/' },
           { text: 'CLI', link: '/guide/cli' },
-          { text: 'ブラウザ拡張', link: '/guide/browser-extension' }
+          { text: 'ブラウザ拡張', link: '/guide/browser-extension' },
+          { text: '出力形式', link: '/guide/output-format' }
         ]
       },
       {

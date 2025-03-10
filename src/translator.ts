@@ -5,9 +5,12 @@ export class Translator {
 
   constructor(apiKey: string) {
     if (!apiKey) {
-      throw new Error('OpenAI APIキーが必要です');
+      throw new Error('OpenRouter APIキーが必要です');
     }
-    this.client = new OpenAI({ apiKey });
+    this.client = new OpenAI({
+      apiKey,
+      baseURL: 'https://openrouter.ai/api/v1'
+    });
   }
 
   /**

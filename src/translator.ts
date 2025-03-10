@@ -24,7 +24,7 @@ export class Translator {
 
     try {
       const response = await this.client.chat.completions.create({
-        model: 'gpt-3.5-turbo',
+        model: 'google/gemini-2.0-flash-001',
         messages: [
           {
             role: 'system',

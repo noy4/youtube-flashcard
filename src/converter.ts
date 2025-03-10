@@ -50,8 +50,8 @@ export class SubtitleConverter {
       try {
         const translation = await this.translator.translate(text, sourceLang, targetLang);
         cards.push({
-          front: text,
-          back: translation
+          front: translation,
+          back: text
         });
       } catch (error) {
         console.error(`翻訳エラー: ${error instanceof Error ? error.message : 'Unknown error'}`);

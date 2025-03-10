@@ -16,6 +16,12 @@ export default defineConfig({
           { text: 'CLI', link: '/guide/cli' },
           { text: 'ブラウザ拡張', link: '/guide/browser-extension' }
         ]
+      },
+      {
+        text: '開発',
+        items: [
+          { text: 'TODO', link: '/todo' }
+        ]
       }
     ]
   }

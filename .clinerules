@@ -1,1 +1,2 @@
-タスク開始時は必ず `README.md` を読み、開発ガイドラインを確認すること。
+@/README.md
+@/docs/dev/docs.md

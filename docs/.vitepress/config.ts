@@ -16,18 +16,16 @@ export default defineConfig({
         text: 'ガイド',
         items: [
           { text: '使い方', link: '/guide/' },
-          { text: 'CLI', link: '/guide/cli' },
-          { text: 'ブラウザ拡張', link: '/guide/browser-extension' },
           { text: '出力形式', link: '/guide/output-format' }
         ]
       },
       {
         text: '開発',
         items: [
-          { text: 'TODO', link: '/todo' },
+          { text: 'TODO', link: '/dev/todo' },
           { text: 'ドキュメント', link: '/dev/docs' },
-          { text: '依存ライブラリ', link: '/guide/dependencies' },
-          { text: 'YouTube字幕ライブラリ比較', link: '/guide/youtube-libraries-comparison' }
+          { text: '依存ライブラリ', link: '/dev/dependencies' },
+          { text: 'YouTube字幕ライブラリ比較', link: '/dev/youtube-libraries-comparison' }
         ]
       }
     ]

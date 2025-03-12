@@ -1,163 +1,590 @@
 [
   {
-    "front": "Expoは、iOS、Android、そしてWeb向けのユニバーサルなネイティブアプリを、単一のReactコードベースで構築できるオープンソースのツールセットです。通常、開発者はモバイルアプリを構築するために、Apple向けにはSwift、Android向けにはKotlinのコードを書く必要がありますが、Web開発者にとってはそれは面倒です。",
-    "back": "Expo an open source tool set for building Universal native apps on iOS Android and the web with a single react code base normally developers need to write Swift code for apple or cotlin for Android to build a mobile app and that sucks if you're a web...",
+    "front": "Expoは、オープンソースのツールセットです。",
+    "back": "Expo an open source tool set for",
     "videoId": "vFW_TxKLyrE",
     "startTime": 0.28,
     "endTime": 4.720000000000001
   },
   {
-    "front": "開発者たる所以は…",
-    "back": "developer because...",
+    "front": "iOS でユニバーサルネイティブアプリを構築する",
+    "back": "building Universal native apps on iOS",
     "videoId": "vFW_TxKLyrE",
     "startTime": 2.28,
     "endTime": 6.839
   },
   {
-    "front": "さて、ここで新たに2つの言語を学ぶ必要が出てきます。幸いなことに、React NativeはJavaScriptブリッジを使用することでこの問題を解決しています。ReactコンポーネントがネイティブUIコンポーネントを表現できるようにすることで、コードはHTMLやCSSのように見えても、実際には真のネイティブウィジェットを構築しているのです。",
-    "back": "now you need to learn two new languages luckily react native fixes this by using a JavaScript bridge that allows react components to represent native UI components if the code looks like HTML and CSS but you're actually building truly native widgets...",
+    "front": "ReactひとつでAndroidとウェブを",
+    "back": "Android and the web with a single react",
     "videoId": "vFW_TxKLyrE",
     "startTime": 4.72,
     "endTime": 8.639
   },
   {
-    "front": "本物じゃない…",
-    "back": "the real deal not...",
+    "front": "通常、開発者はコードベースを必要とします。",
+    "back": "code base normally developers need to",
     "videoId": "vFW_TxKLyrE",
     "startTime": 6.839,
     "endTime": 10.8
   },
   {
-    "front": "ネイティブアプリに埋め込まれたウェブビューで、カメラ、キーボード、バイブレーターなどのネイティブAPIと連携できます。かなりクールですよね。ここでExpoの出番です。まず、このコマンドを実行してプロジェクトテンプレートを生成します。これで面倒な作業はすべてお任せです...",
-    "back": "just a web view that's embedded in a native app and can interact with Native apis like the camera keyboard and vibrator pretty cool but here's where expo comes in first run this command to generate a project template it takes care of all the annoying...",
+    "front": "Appleの場合はSwift、またはAndroidの場合はKotlinでコードを書いてください。",
+    "back": "write Swift code for apple or cotlin for",
     "videoId": "vFW_TxKLyrE",
     "startTime": 8.639,
     "endTime": 12.678999999999998
   },
   {
-    "front": "構成...",
-    "back": "configuration...",
+    "front": "モバイルアプリを構築するためのAndroid",
+    "back": "Android to build a mobile app and that",
     "videoId": "vFW_TxKLyrE",
     "startTime": 10.8,
     "endTime": 14.200000000000001
   },
   {
-    "front": "このプロジェクト内ですぐにコーディングを始められます。npmを使って、npmコマンドを実行するだけで、iOS、Android、Web上でこのアプリをすぐに実行できます。そして、コードに入ってUIに変更を加えると、アプリはホットリロードされます。",
-    "back": "so you can start writing code right away inside this project we can use npm to instantly run this app on iOS Android and the web by simply running an npm command and if we go into the code and make some changes to the UI the app will hot reload to",
+    "front": "ウェブ開発",
+    "back": "sucks if you're a web developer because",
     "videoId": "vFW_TxKLyrE",
     "startTime": 12.679,
     "endTime": 16.039
   },
   {
-    "front": "変更を反映させるか、さもなくば…。",
-    "back": "reflect the changes or you...",
+    "front": "さて、あなたはこれから二つの新しい言語を学ぶ必要があります。",
+    "back": "now you need to learn two new languages",
     "videoId": "vFW_TxKLyrE",
     "startTime": 14.2,
     "endTime": 18.119
   },
   {
-    "front": "Expo Goのようなツールを使ってサンドボックス環境でアプリをテストできます。しかし、このコードのユニークな点は、Next.jsやRemixのようなReactフレームワークと非常によく似たファイルシステムベースのルーティングを使用する、このappディレクトリです。これにより、画面を...",
-    "back": "can test the app in a sandbox with tools like Expo go what's unique about this code though is this app Direct directory which uses file system based routing very similar to react Frameworks like nextjs and remix this allows you to create screens that...",
+    "front": "幸いなことに、React Nativeはこれを使用することで修正しています。",
+    "back": "luckily react native fixes this by using",
     "videoId": "vFW_TxKLyrE",
     "startTime": 16.039,
     "endTime": 20.039
   },
   {
-    "front": "自動的に...",
-    "back": "are automatically...",
+    "front": "React を利用可能にする JavaScript ブリッジ",
+    "back": "a JavaScript bridge that allows react",
     "videoId": "vFW_TxKLyrE",
     "startTime": 18.119,
     "endTime": 22
   },
   {
-    "front": "モバイルでディープリンク可能で、UI内でリンクコンポーネントを使ってそれらをナビゲートできますが、モバイルプラットフォームでは画面をナビゲーションスタックにプッシュしたりポップしたりして移動します。Expoでは、属性などを使ってその挙動を簡単に制御できます。",
-    "back": "deep linkable on mobile and you can navigate between them in the UI with the link component but on mobile platforms we navigate by pushing and popping screens to the navigation stack in Expo we can easily control that behavior with attributes like...",
+    "front": "ネイティブUIを表現するコンポーネント",
+    "back": "components to represent native UI",
     "videoId": "vFW_TxKLyrE",
     "startTime": 20.039,
     "endTime": 24.080000000000002
   },
   {
-    "front": "〜にプッシュして置き換える",
-    "back": "push and replace on the",
+    "front": "コードがHTMLのように見える場合は、コンポーネント",
+    "back": "components if the code looks like HTML",
     "videoId": "vFW_TxKLyrE",
     "startTime": 22,
     "endTime": 25.96
   },
   {
-    "front": "リンクを使うか、ルーターモジュールを直接使って命令的にナビゲートできます。さらに、Expo Routerはレイアウトを使って複数のページでUIを共有したり、タブやモーダルといったより高度なルーティングパターンを表現したりすることも可能です。ルーティング以外にも、Expo...",
-    "back": "link or use the router module directly to navigate imperatively in addition the Expo router can also use layouts to share UI across multiple pages and also represent more advanced routing patterns like tabs and moduls Beyond routing though Expo...",
+    "front": "そしてCSSだけでなく、実際に構築しているのは",
+    "back": "and CSS but you're actually building",
     "videoId": "vFW_TxKLyrE",
     "startTime": 24.08,
     "endTime": 28.08
   },
   {
-    "front": "豊富なライブラリを提供します...",
-    "back": "provides tons of libraries...",
+    "front": "真のネイティブウィジェット、本物、偽物じゃない。",
+    "back": "truly native widgets the real deal not",
     "videoId": "vFW_TxKLyrE",
     "startTime": 25.96,
     "endTime": 29.560000000000002
   },
   {
-    "front": "ネイティブAPIを扱うためにカメラが必要な場合、Expoを使ってカメラパッケージをインストールし、UIでカメラビューコンポーネントを簡単に使用できます。地図、センサー、そして事実上他のすべてのユースケースについても同様で、Firebaseのようなツールとの連携も可能です。",
-    "back": "for working with Native apis need a camera use Expo to install the camera package and simply use the camera view component in your UI the same goes for maps sensors and virtually every other use case and has Integrations with tools like Firebase and",
+    "front": "埋め込まれたウェブビュー",
+    "back": "just a web view that's embedded in a",
     "videoId": "vFW_TxKLyrE",
     "startTime": 28.08,
     "endTime": 31.439
   },
   {
-    "front": "スーパーベースに接続中...",
-    "back": "superbase to connect...",
+    "front": "ネイティブアプリであり、ネイティブと連携できます",
+    "back": "native app and can interact with Native",
     "videoId": "vFW_TxKLyrE",
     "startTime": 29.56,
     "endTime": 33.519999999999996
   },
   {
-    "front": "バックエンドのクラウドインフラストラクチャについてですが、奇妙なことに、プロジェクトにAndroidとiOSのディレクトリがないことに気づくでしょう。Expoは、継続的ネイティブ生成と呼ばれる技術を開発しました。これは、一連の入力から予測可能にネイティブコードを生成するものです。",
-    "back": "to backend Cloud infrastructure what's weird though is you'll notice our project is missing Android and iOS directories Expo developed a technique called continuous native generation where Native code is generated predictably from a set of inputs and",
+    "front": "カメラやキーボードなどのAPI",
+    "back": "apis like the camera keyboard and",
     "videoId": "vFW_TxKLyrE",
     "startTime": 31.439,
     "endTime": 35.28
   },
   {
-    "front": "それは素晴らしいことですね。なぜなら、私を信じてください。",
-    "back": "that's awesome because trust me as a",
+    "front": "バイブレーターはなかなか良いけど、ここからが本番。",
+    "back": "vibrator pretty cool but here's where",
     "videoId": "vFW_TxKLyrE",
     "startTime": 33.52,
     "endTime": 37.399
   },
   {
-    "front": "JavaScript開発者の皆さん、これらのディレクトリでJavaやObjective-Cのコードを触り始めると、問題が発生するでしょう。Detoxとの統合により、ネイティブデバイスやエミュレーターでの自動テストが素晴らしいアプリの構築後に可能になりました。",
-    "back": "JavaScript developer when you start touching Java and Objective C code in these directories things are going to break now finally after you build an awesome app automate testing on Native devices and emulators thanks to its integration with detox now...",
+    "front": "expo を最初に実行するには、このコマンドを実行してください。",
+    "back": "expo comes in first run this command to",
     "videoId": "vFW_TxKLyrE",
     "startTime": 35.28,
     "endTime": 39.120000000000005
   },
   {
-    "front": "さあ、始めよう…",
-    "back": "let's get...",
+    "front": "プロジェクトテンプレートを作成します。",
+    "back": "generate a project template it takes",
     "videoId": "vFW_TxKLyrE",
     "startTime": 37.399,
     "endTime": 40.84
   },
   {
-    "front": "このアプリをウェブ上のエンドユーザーに提供する際、ページを静的にレンダリングして、任意のウェブホストにアップロードできます。Mobile Expoでは、クラウドでのビルドを自動化し、Google PlayやApple App Storeに提出できます。Macすら必要ありません。",
-    "back": "this app to our end users on the web we can statically render our pages and upload them to any web host on Mobile Expo can automate your builds in the cloud then submit them to Google play in the Apple App Store you don't even need a Mac...",
+    "front": "面倒な設定はすべてお任せください。",
+    "back": "care of all the annoying configuration",
     "videoId": "vFW_TxKLyrE",
     "startTime": 39.12,
     "endTime": 42.559
   },
   {
-    "front": "おめでとう、これであなたも十字架仲間入りだ。",
-    "back": "congratulations you're now a cross...",
+    "front": "すぐにコードを書き始めることができます。",
+    "back": "so you can start writing code right away",
     "videoId": "vFW_TxKLyrE",
     "startTime": 40.84,
     "endTime": 44.879000000000005
   },
   {
-    "front": "プラットフォームデベロッパーがお送りする、Expo in 100秒でした。次にどんなことを学びたいかコメントで教えてください。ご視聴ありがとうございました。それではまた次回。",
-    "back": "platform developer this has been Expo in 100 seconds let me know what you want to learn about next in the comments thanks for watching and I will see you in the next one...",
+    "front": "このプロジェクト内では、npm を使用できます。",
+    "back": "inside this project we can use npm to",
     "videoId": "vFW_TxKLyrE",
     "startTime": 42.559,
     "endTime": 47.48
+  },
+  {
+    "front": "iOS/Androidですぐにアプリを起動",
+    "back": "instantly run this app on iOS Android",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 44.879,
+    "endTime": 49.559
+  },
+  {
+    "front": "そして、npmを実行するだけでウェブで",
+    "back": "and the web by simply running an npm",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 47.48,
+    "endTime": 51.07899999999999
+  },
+  {
+    "front": "コマンド、そしてコードに入ると",
+    "back": "command and if we go into the code and",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 49.559,
+    "endTime": 52.959999999999994
+  },
+  {
+    "front": "アプリのUIにいくつか変更を加えます。",
+    "back": "make some changes to the UI the app will",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 51.079,
+    "endTime": 54.879
+  },
+  {
+    "front": "変更を反映するためにホットリロードしてください。",
+    "back": "hot reload to reflect the changes or you",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 52.96,
+    "endTime": 56.76
+  },
+  {
+    "front": "ツールを使ってサンドボックスでアプリをテストできます。",
+    "back": "can test the app in a sandbox with tools",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 54.879,
+    "endTime": 58.599999999999994
+  },
+  {
+    "front": "Expo Go のように、これは何がユニークなのですか？",
+    "back": "like Expo go what's unique about this",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 56.76,
+    "endTime": 60.48
+  },
+  {
+    "front": "コードは、このアプリのDirectディレクトリにあります。",
+    "back": "code though is this app Direct directory",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 58.6,
+    "endTime": 62.519
+  },
+  {
+    "front": "ファイルシステムベースのルーティングを使用する",
+    "back": "which uses file system based routing",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 60.48,
+    "endTime": 64.199
+  },
+  {
+    "front": "Reactのようなフレームワークと非常によく似ています。",
+    "back": "very similar to react Frameworks like",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 62.519,
+    "endTime": 66.2
+  },
+  {
+    "front": "Next.jsとRemixを使うことで、あなたは〜できます。",
+    "back": "nextjs and remix this allows you to",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 64.199,
+    "endTime": 67.92
+  },
+  {
+    "front": "自動的に画面を作成する",
+    "back": "create screens that are automatically",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 66.2,
+    "endTime": 69.64
+  },
+  {
+    "front": "モバイルでディープリンク可能で、さらに",
+    "back": "deep linkable on mobile and you can",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 67.92,
+    "endTime": 71.4
+  },
+  {
+    "front": "UI でそれらの間を移動する",
+    "back": "navigate between them in the UI with the",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 69.64,
+    "endTime": 73.36
+  },
+  {
+    "front": "リンクコンポーネントのモバイルプラットフォーム版",
+    "back": "link component but on mobile platforms",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 71.4,
+    "endTime": 75.04
+  },
+  {
+    "front": "プッシュとポップで操作します。",
+    "back": "we navigate by pushing and popping",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 73.36,
+    "endTime": 77.36
+  },
+  {
+    "front": "Expo のナビゲーションスタックに画面を追加する",
+    "back": "screens to the navigation stack in Expo",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 75.04,
+    "endTime": 79.2
+  },
+  {
+    "front": "それらの挙動は簡単に制御できます。",
+    "back": "we can easily control that behavior with",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 77.36,
+    "endTime": 81
+  },
+  {
+    "front": "の push や replace のような属性",
+    "back": "attributes like push and replace on the",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 79.2,
+    "endTime": 83
+  },
+  {
+    "front": "リンクするか、ルーターモジュールを直接使用してください。",
+    "back": "link or use the router module directly",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 81,
+    "endTime": 85.159
+  },
+  {
+    "front": "加えて、命令的にナビゲートするには",
+    "back": "to navigate imperatively in addition the",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 83,
+    "endTime": 87.28
+  },
+  {
+    "front": "Expo Router はレイアウトを利用することもできます。",
+    "back": "Expo router can also use layouts to",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 85.159,
+    "endTime": 89.96000000000001
+  },
+  {
+    "front": "複数のページでUIを共有し、さらに",
+    "back": "share UI across multiple pages and also",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 87.28,
+    "endTime": 91.88
+  },
+  {
+    "front": "より高度なルーティングパターンを表現する",
+    "back": "represent more advanced routing patterns",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 89.96,
+    "endTime": 93.96
+  },
+  {
+    "front": "タブやモジュールのように、ルーティングを超えて",
+    "back": "like tabs and moduls Beyond routing",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 91.88,
+    "endTime": 95.83999999999999
+  },
+  {
+    "front": "Expo はたくさんのライブラリを提供していますが",
+    "back": "though Expo provides tons of libraries",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 93.96,
+    "endTime": 97.96
+  },
+  {
+    "front": "ネイティブAPIを扱うには、〜が必要です。",
+    "back": "for working with Native apis need a",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 95.84,
+    "endTime": 99.92
+  },
+  {
+    "front": "カメラの利用にはExpoを使ってインストールしてください。",
+    "back": "camera use Expo to install the camera",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 97.96,
+    "endTime": 101.67999999999999
+  },
+  {
+    "front": "パッケージ化して、カメラビューをそのまま使用します。",
+    "back": "package and simply use the camera view",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 99.92,
+    "endTime": 103.72
+  },
+  {
+    "front": "UIのコンポーネントも同様です。",
+    "back": "component in your UI the same goes for",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 101.68,
+    "endTime": 105.68
+  },
+  {
+    "front": "地図センサー、そして事実上あらゆるもの",
+    "back": "maps sensors and virtually every other",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 103.72,
+    "endTime": 108
+  },
+  {
+    "front": "ユースケースがあり、ツールとの連携機能を備えています。",
+    "back": "use case and has Integrations with tools",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 105.68,
+    "endTime": 110
+  },
+  {
+    "front": "FirebaseやSupabaseのように接続する",
+    "back": "like Firebase and superbase to connect",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 108,
+    "endTime": 111.96
+  },
+  {
+    "front": "バックエンドのクラウドインフラとは",
+    "back": "to backend Cloud infrastructure what's",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 110,
+    "endTime": 113.28
+  },
+  {
+    "front": "奇妙なことに、私たちの〜に気づくでしょう。",
+    "back": "weird though is you'll notice our",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 111.96,
+    "endTime": 115.399
+  },
+  {
+    "front": "プロジェクトにAndroidとiOSが不足しています。",
+    "back": "project is missing Android and iOS",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 113.28,
+    "endTime": 117.479
+  },
+  {
+    "front": "Expoはディレクトリを開発するテクニックを開発しました。",
+    "back": "directories Expo developed a technique",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 115.399,
+    "endTime": 119.399
+  },
+  {
+    "front": "継続的なネイティブ生成",
+    "back": "called continuous native generation",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 117.479,
+    "endTime": 120.79899999999999
+  },
+  {
+    "front": "ネイティブコードが生成される場所",
+    "back": "where Native code is generated",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 119.399,
+    "endTime": 122.719
+  },
+  {
+    "front": "一連の入力から予測可能に",
+    "back": "predictably from a set of inputs and",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 120.799,
+    "endTime": 124.43900000000001
+  },
+  {
+    "front": "それは素晴らしいですね。なぜなら、私を信じてください。",
+    "back": "that's awesome because trust me as a",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 122.719,
+    "endTime": 125.88
+  },
+  {
+    "front": "JavaScript開発者、はじめの一歩",
+    "back": "JavaScript developer when you start",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 124.439,
+    "endTime": 127.67999999999999
+  },
+  {
+    "front": "Java と Objective-C のコードに触れる",
+    "back": "touching Java and Objective C code in",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 125.88,
+    "endTime": 129.16
+  },
+  {
+    "front": "これらのディレクトリのことは、これから",
+    "back": "these directories things are going to",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 127.68,
+    "endTime": 130.8
+  },
+  {
+    "front": "構築が終わったら、さあ、休憩だ。",
+    "back": "break now finally after you build an",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 129.16,
+    "endTime": 132.64
+  },
+  {
+    "front": "ネイティブアプリの自動テストに最適なアプリ",
+    "back": "awesome app automate testing on Native",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 130.8,
+    "endTime": 134.48000000000002
+  },
+  {
+    "front": "そのおかげで、デバイスやエミュレーターで",
+    "back": "devices and emulators thanks to its",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 132.64,
+    "endTime": 136.39999999999998
+  },
+  {
+    "front": "Detoxとの連携、始めましょう。",
+    "back": "integration with detox now let's get",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 134.48,
+    "endTime": 138.39999999999998
+  },
+  {
+    "front": "このアプリをウェブ上のエンドユーザーに提供します。",
+    "back": "this app to our end users on the web we",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 136.4,
+    "endTime": 140.12
+  },
+  {
+    "front": "静的にページをレンダリングできます。",
+    "back": "can statically render our pages and",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 138.4,
+    "endTime": 142.239
+  },
+  {
+    "front": "モバイルのウェブホストにアップロードする",
+    "back": "upload them to any web host on Mobile",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 140.12,
+    "endTime": 143.72
+  },
+  {
+    "front": "Expo はあなたのビルドを自動化できます。",
+    "back": "Expo can automate your builds in the",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 142.239,
+    "endTime": 145.72
+  },
+  {
+    "front": "クラウドに保存してから、Google Play に送信します。",
+    "back": "cloud then submit them to Google play in",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 143.72,
+    "endTime": 147.319
+  },
+  {
+    "front": "Apple App Storeなんて、もはや必要ない",
+    "back": "the Apple App Store you don't even need",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 145.72,
+    "endTime": 149.8
+  },
+  {
+    "front": "Mac、おめでとう。これで君は十字架だ。",
+    "back": "a Mac congratulations you're now a cross",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 147.319,
+    "endTime": 151.95899999999997
+  },
+  {
+    "front": "プラットフォーム開発者の皆さん、Expoからのお知らせでした。",
+    "back": "platform developer this has been Expo in",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 149.8,
+    "endTime": 153.519
+  },
+  {
+    "front": "100秒で、何が欲しいか教えて。",
+    "back": "100 seconds let me know what you want to",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 151.959,
+    "endTime": 155.20000000000002
+  },
+  {
+    "front": "コメント欄で「次」について学んでね。",
+    "back": "learn about next in the comments thanks",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 153.519,
+    "endTime": 156.8
+  },
+  {
+    "front": "ご覧いただきありがとうございます。それではまた。",
+    "back": "for watching and I will see you in the",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 155.2,
+    "endTime": 157.64
+  },
+  {
+    "front": "次へ",
+    "back": "next",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 156.8,
+    "endTime": 160.64000000000001
+  },
+  {
+    "front": "一つ",
+    "back": "one",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 157.64,
+    "endTime": 160.64
   }
 ]

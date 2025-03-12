@@ -24,7 +24,7 @@ export function extractVideoId(url: string): string {
  * YouTubeの字幕を取得
  * @throws {Error} 字幕が見つからない場合やその他のエラー
  */
-export async function fetchSubtitles(url: string, languageCode: string): Promise<Subtitle[]> {
+export async function fetchSubtitles(url: string, _languageCode: string): Promise<Subtitle[]> {
   const videoID = extractVideoId(url)
   const rawSubtitles = await getSubtitles({ videoID })
 

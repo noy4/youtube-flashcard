@@ -27,15 +27,46 @@ export class Translator {
     fromLang: string,
     toLang: string
   ): Promise<Subtitle[]> {
-    const systemPrompt = 'You are a professional subtitle translator. Ensure proper English punctuation before translation for maximum accuracy and clarity. Return results in the specified JSON format.'
+    const systemPrompt = `You are a professional subtitle translator. You will receive a list of subtitles in JSON format.
 
-    const userPrompt = `Add appropriate punctuation to the English text in these subtitles:
-- Use commas (,) for clauses and lists
-- Use periods (.) for complete sentences
+Input example:
+\`\`\`json
+[
+  {
+    "text": "hi there its nice to meet",
+    "start": 0,
+    "end": 1
+  },
+  {
+    "text": "you today how are you doing",
+    "start": 1,
+    "end": 2
+  }
+]
+\`\`\`
 
-Then translate from ${fromLang} to ${toLang} and add as 'translation' field.
+Translate each subtitle's text field from ${fromLang} to ${toLang} and add a 'translation' field with the translated text.
+As the input text might be auto-generated, please format it into proper sentences before translation.
 
-${JSON.stringify(subtitles, null, 2)}`;
+Output example:
+\`\`\`json
+[
+  {
+    "text": "Hi there! It's nice to meet",
+    "start": 0,
+    "end": 1,
+    "translation": "こんにちは！お会いできて"
+  },
+  {
+    "text": "you today. How are you doing?",
+    "start": 1,
+    "end": 2,
+    "translation": "うれしいです。お元気ですか？"
+  }
+]
+\`\`\`
+
+The output will be JSON parsed, so make sure to output valid JSON.`
 
     try {
       const response = await this.client.chat.completions.create({
@@ -47,7 +78,7 @@ ${JSON.stringify(subtitles, null, 2)}`;
           },
           {
             role: 'user',
-            content: userPrompt
+            content: JSON.stringify(subtitles, null, 2),
           }
         ],
         temperature: 0.3,
@@ -65,6 +96,7 @@ ${JSON.stringify(subtitles, null, 2)}`;
 
       let translatedSubtitles: Subtitle[];
       try {
+        console.log('content:', content)
         const parsed = JSON.parse(content);
         if (!Array.isArray(parsed)) {
           throw new Error('翻訳結果が配列ではありません');

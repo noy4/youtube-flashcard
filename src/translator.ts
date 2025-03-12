@@ -22,7 +22,7 @@ export class Translator {
    * @param toLang 翻訳後の言語（例: 'ja'）
    * @returns 翻訳済みの字幕配列
    */
-  async translateBatch(subtitles: Subtitle[], fromLang: string, toLang: string): Promise<Subtitle[]> {
+  async translate(subtitles: Subtitle[], fromLang: string, toLang: string): Promise<Subtitle[]> {
     const prompt = `Translate the text field from ${fromLang} to ${toLang} for each subtitle in the following JSON array.
 Add a 'translation' field to each subtitle object with the translated text.
 Return the entire JSON array with the added translations.
@@ -75,49 +75,6 @@ ${JSON.stringify(subtitles, null, 2)}`;
       return translatedSubtitles;
     } catch (error) {
       if (error instanceof Error) {
-        throw error;
-      }
-      throw new Error('翻訳中にエラーが発生しました');
-    }
-  }
-
-  /**
-   * 単一のテキストを翻訳
-   * @param text 翻訳するテキスト
-   * @param fromLang 元の言語（例: 'en'）
-   * @param toLang 翻訳後の言語（例: 'ja'）
-   */
-  async translate(text: string, fromLang: string, toLang: string): Promise<string> {
-    const prompt = `Translate the following text from ${fromLang} to ${toLang}. Only return the translation without any additional text:\n\n${text}`;
-
-    try {
-      const response = await this.client.chat.completions.create({
-        model: 'google/gemini-2.0-flash-001',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a professional translator. Translate text accurately while maintaining natural language flow.'
-          },
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        temperature: 0.3,
-      });
-
-      if (!response.choices || response.choices.length === 0) {
-        throw new Error('翻訳結果が空でした');
-      }
-
-      const translation = response.choices[0]?.message?.content?.trim();
-      if (!translation) {
-        throw new Error('翻訳結果が空でした');
-      }
-
-      return translation;
-    } catch (error) {
-      if (error instanceof Error && error.message === '翻訳結果が空でした') {
         throw error;
       }
       throw new Error('翻訳中にエラーが発生しました');

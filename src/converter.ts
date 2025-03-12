@@ -36,7 +36,7 @@ export class SubtitleConverter {
 
     try {
       // 字幕を翻訳
-      const translatedSubtitles = await this.translator.translateBatch(this.subtitles, sourceLang, targetLang);
+      const translatedSubtitles = await this.translator.translate(this.subtitles, sourceLang, targetLang);
 
       // 翻訳済み字幕からフラッシュカードを作成
       return translatedSubtitles.map(subtitle => ({

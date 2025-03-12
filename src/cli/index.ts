@@ -22,14 +22,20 @@ program
 program
   .command('convert')
   .description('YouTubeの動画URLからフラッシュカードを生成')
-  .argument('<url>', 'YouTube動画のURL')
-  .option('-o, --output <path>', '出力ファイルパス', 'flashcards.md')
-  .option('-f, --format <format>', '出力形式 (obsidian または anki)', 'obsidian')
+  .argument('[url]', 'YouTube動画のURL（環境変数 VIDEO_URL でも指定可能）')
+  .option('-o, --output <path>', '出力ファイルパス', 'output/json.json')
+  .option('-f, --format <format>', '出力形式 (json, obsidian または anki)', 'json')
   .option('-s, --source-lang <code>', '元の言語コード', 'en')
   .option('-t, --target-lang <code>', '翻訳後の言語コード', 'ja')
   .option('--api-key <key>', 'OpenAI APIキー（環境変数 OPENAI_API_KEY でも指定可能）')
   .action(async (url, options) => {
     try {
+      const videoUrl = url || process.env.VIDEO_URL;
+      if (!videoUrl) {
+        console.error('エラー: YouTube URLが必要です。引数または環境変数VIDEO_URLで指定してください。');
+        process.exit(1);
+      }
+
       const apiKey = options.apiKey || process.env.OPENAI_API_KEY;
       if (!apiKey) {
         console.error('エラー: OpenAI APIキーが必要です。--api-keyオプションまたは環境変数OPENAI_API_KEYで指定してください。');
@@ -37,8 +43,8 @@ program
       }
 
       console.log('字幕を取得中...');
-      const { texts, startTimes, endTimes } = await fetchSubtitles(url, options.sourceLang);
-      const videoId = extractVideoId(url);
+      const { texts, startTimes, endTimes } = await fetchSubtitles(videoUrl, options.sourceLang);
+      const videoId = extractVideoId(videoUrl);
 
       console.log('フラッシュカードを生成中...');
       const converter = new SubtitleConverter(texts, videoId, startTimes, endTimes, apiKey);

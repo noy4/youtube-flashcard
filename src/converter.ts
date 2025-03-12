@@ -19,9 +19,10 @@ export class SubtitleConverter {
     subtitles: Subtitle[],
     private videoId: string,
     apiKey: string,
-    model?: string
+    model?: string,
+    baseURL?: string
   ) {
-    this.translator = new Translator(apiKey, model)
+    this.translator = new Translator(apiKey, model, baseURL)
     this.subtitles = subtitles;
   }
 

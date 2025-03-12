@@ -6,10 +6,14 @@ export class Translator {
   private client: OpenAI;
   private model: string;
 
-  constructor(apiKey: string, model?: string) {
+  constructor(
+    apiKey: string,
+    model?: string,
+    baseURL?: string
+  ) {
     this.client = new OpenAI({
       apiKey,
-      baseURL: 'https://openrouter.ai/api/v1'
+      baseURL: baseURL || process.env.OPENAI_BASE_URL || 'https://openrouter.ai/api/v1'
     });
     this.model = model || process.env.AI_MODEL || 'google/gemini-2.0-flash-exp:free';
   }

@@ -29,6 +29,7 @@ program
   .option('-t, --target-lang <code>', '翻訳後の言語コード', 'ja')
   .option('--api-key <key>', 'OpenAI APIキー（環境変数 OPENAI_API_KEY でも指定可能）')
   .option('-m, --model <model>', 'AIモデル（環境変数 AI_MODEL でも指定可能）')
+  .option('-b, --base-url <url>', 'API baseURL（環境変数 OPENAI_BASE_URL でも指定可能）')
   .action(async (url, options) => {
     try {
       const videoUrl = url || process.env.VIDEO_URL;
@@ -48,7 +49,7 @@ program
       const videoId = extractVideoId(videoUrl);
 
       console.log('フラッシュカードを生成中...');
-      const converter = new SubtitleConverter(subtitles, videoId, apiKey, options.model);
+      const converter = new SubtitleConverter(subtitles, videoId, apiKey, options.model, options.baseUrl);
       const flashcards = await converter.convert(options.sourceLang, options.targetLang);
       const output = converter.toString(flashcards, options.format as 'obsidian' | 'anki');
 

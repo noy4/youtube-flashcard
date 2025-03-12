@@ -115,7 +115,7 @@ The output will be JSON parsed, so make sure to output valid JSON.`
         throw new Error('翻訳結果のJSONパースに失敗しました')
       }
 
-      writeFileSync('translations.json', JSON.stringify(translatedSubtitles, null, 2), 'utf8')
+      writeFileSync('output/translations.json', JSON.stringify(translatedSubtitles, null, 2), 'utf8')
 
       if (translatedSubtitles.length !== subtitles.length) {
         throw new Error('翻訳結果の数が入力字幕の数と一致しません')

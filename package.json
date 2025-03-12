@@ -1,8 +1,16 @@
 {
   "name": "youtube-flashcard",
+  "type": "module",
   "version": "1.0.0",
   "description": "YouTubeの字幕からフラッシュカードを生成するツール",
-  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "keywords": [
+    "youtube",
+    "flashcard",
+    "obsidian",
+    "cli"
+  ],
   "main": "dist/cli/index.js",
   "bin": {
     "youtube-flashcard": "dist/cli/index.js"
@@ -15,21 +23,9 @@
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "test": "vitest run",
-    "test:watch": "vitest watch"
-  },
-  "keywords": [
-    "youtube",
-    "flashcard",
-    "obsidian",
-    "cli"
-  ],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^20.17.24",
-    "typescript": "^5.8.2",
-    "vitepress": "^1.6.3",
-    "vitest": "^3.0.8"
+    "test:watch": "vitest watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@types/big.js": "^6.2.2",
@@ -37,5 +33,13 @@
     "commander": "^12.0.0",
     "openai": "^4.86.2",
     "youtube-caption-extractor": "^1.0.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.10.1",
+    "@types/node": "^20.17.24",
+    "eslint": "^9.22.0",
+    "typescript": "^5.8.2",
+    "vitepress": "^1.6.3",
+    "vitest": "^3.0.8"
   }
 }

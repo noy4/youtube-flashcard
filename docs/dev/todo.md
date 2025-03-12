@@ -54,6 +54,7 @@
 - [x] Obsidian Spaced Repetition形式での出力
 - [x] 翻訳機能の実装（OpenAI API）
 - [x] 言語指定オプションの追加
+- [x] ESLint設定（@antfu/eslint-config）の導入
 
 ## メモ
 - Obsidian Spaced Repetition Pluginの仕様は実装済み（#flashcard形式）

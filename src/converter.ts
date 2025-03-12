@@ -35,15 +35,12 @@ export class SubtitleConverter {
     }
 
     try {
-      // 全ての字幕テキストを抽出
-      const texts = this.subtitles.map(subtitle => subtitle.text);
+      // 字幕を翻訳
+      const translatedSubtitles = await this.translator.translateBatch(this.subtitles, sourceLang, targetLang);
 
-      // 一括翻訳を実行
-      const translations = await this.translator.translateBatch(texts, sourceLang, targetLang);
-
-      // 翻訳結果とオリジナルの字幕情報を組み合わせてフラッシュカードを作成
-      return this.subtitles.map((subtitle, index) => ({
-        front: translations[index],
+      // 翻訳済み字幕からフラッシュカードを作成
+      return translatedSubtitles.map(subtitle => ({
+        front: subtitle.translation!,
         back: subtitle.text,
         videoId: this.videoId,
         start: subtitle.start,

@@ -5,6 +5,7 @@ export interface Subtitle {
   text: string;
   start: number;
   end: number;
+  translation?: string;
 }
 
 /**

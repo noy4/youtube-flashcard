@@ -1,4 +1,6 @@
+import { writeFileSync } from 'fs';
 import OpenAI from 'openai';
+import type { Subtitle } from './youtube.js';
 
 export class Translator {
   private client: OpenAI;
@@ -14,18 +16,18 @@ export class Translator {
   }
 
   /**
-   * 複数のテキストを一括で翻訳
-   * @param texts 翻訳するテキストの配列
+   * 複数の字幕を一括で翻訳
+   * @param subtitles 翻訳する字幕の配列
    * @param fromLang 元の言語（例: 'en'）
    * @param toLang 翻訳後の言語（例: 'ja'）
-   * @returns 翻訳されたテキストの配列
+   * @returns 翻訳済みの字幕配列
    */
-  async translateBatch(texts: string[], fromLang: string, toLang: string): Promise<string[]> {
-    const prompt = `Translate the following texts from ${fromLang} to ${toLang}.
-For each text, only return the translation without any additional text.
-Return all translations as a JSON array of strings.
+  async translateBatch(subtitles: Subtitle[], fromLang: string, toLang: string): Promise<Subtitle[]> {
+    const prompt = `Translate the text field from ${fromLang} to ${toLang} for each subtitle in the following JSON array.
+Add a 'translation' field to each subtitle object with the translated text.
+Return the entire JSON array with the added translations.
 
-${JSON.stringify(texts, null, 2)}`;
+${JSON.stringify(subtitles, null, 2)}`;
 
     try {
       const response = await this.client.chat.completions.create({
@@ -33,7 +35,7 @@ ${JSON.stringify(texts, null, 2)}`;
         messages: [
           {
             role: 'system',
-            content: 'You are a professional translator. Translate texts accurately while maintaining natural language flow. Return the translations as a JSON array.'
+            content: 'You are a professional translator. Translate text accurately while maintaining natural language flow. Return the translations as a JSON array with translation field added to each subtitle object.'
           },
           {
             role: 'user',
@@ -53,22 +55,24 @@ ${JSON.stringify(texts, null, 2)}`;
         throw new Error('翻訳結果が空でした');
       }
 
-      let translations: string[];
+      let translatedSubtitles: Subtitle[];
       try {
         const parsed = JSON.parse(content);
         if (!Array.isArray(parsed)) {
           throw new Error('翻訳結果が配列ではありません');
         }
-        translations = parsed;
+        translatedSubtitles = parsed;
       } catch (error) {
         throw new Error('翻訳結果のJSONパースに失敗しました');
       }
 
-      if (translations.length !== texts.length) {
-        throw new Error('翻訳結果の数が入力テキストの数と一致しません');
+      writeFileSync('translations.json', JSON.stringify(translatedSubtitles, null, 2), 'utf8');
+
+      if (translatedSubtitles.length !== subtitles.length) {
+        throw new Error('翻訳結果の数が入力字幕の数と一致しません');
       }
 
-      return translations;
+      return translatedSubtitles;
     } catch (error) {
       if (error instanceof Error) {
         throw error;
@@ -99,10 +103,9 @@ ${JSON.stringify(texts, null, 2)}`;
             content: prompt
           }
         ],
-        temperature: 0.3, // より正確な翻訳のために低めの値を設定
+        temperature: 0.3,
       });
 
-      // 空の応答のチェック
       if (!response.choices || response.choices.length === 0) {
         throw new Error('翻訳結果が空でした');
       }
@@ -117,7 +120,6 @@ ${JSON.stringify(texts, null, 2)}`;
       if (error instanceof Error && error.message === '翻訳結果が空でした') {
         throw error;
       }
-      // その他のエラーは全て統一的なメッセージで処理
       throw new Error('翻訳中にエラーが発生しました');
     }
   }

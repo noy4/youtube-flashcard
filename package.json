@@ -15,8 +15,7 @@
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "test": "vitest run",
-    "test:watch": "vitest watch",
-    "test:coverage": "vitest run --coverage"
+    "test:watch": "vitest watch"
   },
   "keywords": [
     "youtube",
@@ -28,7 +27,6 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.17.24",
-    "@vitest/coverage-v8": "^3.0.8",
     "typescript": "^5.8.2",
     "vitepress": "^1.6.3",
     "vitest": "^3.0.8"

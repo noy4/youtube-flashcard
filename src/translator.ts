@@ -1,20 +1,23 @@
 import { writeFileSync } from 'fs';
-import OpenAI from 'openai';
+import OpenAI, { ClientOptions } from 'openai';
 import type { Subtitle } from './youtube.js';
+
+export type TranslatorOptions = ClientOptions & {
+  model?: string
+}
 
 export class Translator {
   private client: OpenAI;
   private model: string;
 
-  constructor(
-    apiKey: string,
-    model?: string,
-    baseURL?: string
-  ) {
+  constructor(options?: TranslatorOptions) {
+    const { model, ...clientOptions } = options || {};
+
     this.client = new OpenAI({
-      apiKey,
-      baseURL: baseURL || process.env.OPENAI_BASE_URL || 'https://openrouter.ai/api/v1'
+      ...clientOptions,
+      baseURL: clientOptions.baseURL || process.env.OPENAI_BASE_URL || 'https://openrouter.ai/api/v1'
     });
+
     this.model = model || process.env.AI_MODEL || 'google/gemini-2.0-flash-exp:free';
   }
 

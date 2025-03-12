@@ -1,4 +1,4 @@
-import { Translator } from './translator.js';
+import { Translator, TranslatorOptions } from './translator.js';
 import type { Subtitle } from './youtube.js';
 
 export type OutputFormat = 'obsidian' | 'anki' | 'json';
@@ -18,11 +18,9 @@ export class SubtitleConverter {
   constructor(
     subtitles: Subtitle[],
     private videoId: string,
-    apiKey: string,
-    model?: string,
-    baseURL?: string
+    translatorOptions?: TranslatorOptions
   ) {
-    this.translator = new Translator(apiKey, model, baseURL)
+    this.translator = new Translator(translatorOptions)
     this.subtitles = subtitles;
   }
 

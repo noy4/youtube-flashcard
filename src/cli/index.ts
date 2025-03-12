@@ -49,7 +49,11 @@ program
       const videoId = extractVideoId(videoUrl);
 
       console.log('フラッシュカードを生成中...');
-      const converter = new SubtitleConverter(subtitles, videoId, apiKey, options.model, options.baseUrl);
+      const converter = new SubtitleConverter(subtitles, videoId, {
+        apiKey,
+        baseURL: options.baseUrl,
+        model: options.model
+      });
       const flashcards = await converter.convert(options.sourceLang, options.targetLang);
       const output = converter.toString(flashcards, options.format as 'obsidian' | 'anki');
 

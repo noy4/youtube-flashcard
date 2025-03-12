@@ -9,55 +9,55 @@
     "text": "building Universal native apps on iOS",
     "start": 2.28,
     "end": 6.839,
-    "translation": "iOSでユニバーサルなネイティブアプリを構築するためのものです。"
+    "translation": "iOSでユニバーサルなネイティブアプリを構築します。"
   },
   {
     "text": "Android and the web with a single react",
     "start": 4.72,
     "end": 8.639,
-    "translation": "AndroidとWebを単一のReactで構築できます。"
+    "translation": "AndroidとWebを単一のReactで。"
   },
   {
     "text": "code base normally developers need to",
     "start": 6.839,
     "end": 10.8,
-    "translation": "通常、開発者は、"
+    "translation": "コードベースで、通常、開発者は"
   },
   {
     "text": "write Swift code for apple or cotlin for",
     "start": 8.639,
     "end": 12.679,
-    "translation": "Appleの場合はSwift、Androidの場合はKotlinのコードを書く必要があります。"
+    "translation": "モバイルアプリを構築するために、Appleの場合はSwiftコード、Androidの場合はKotlinを記述する必要があります。"
   },
   {
     "text": "Android to build a mobile app and that",
     "start": 10.8,
     "end": 14.2,
-    "translation": "モバイルアプリを構築するために。"
+    "translation": "Androidでモバイルアプリを構築する必要があります。"
   },
   {
     "text": "sucks if you're a web developer because",
     "start": 12.679,
     "end": 16.039,
-    "translation": "もしあなたがウェブ開発者なら、それは最悪です。なぜなら、"
+    "translation": "もしあなたがWeb開発者なら、それは最悪です。"
   },
   {
     "text": "now you need to learn two new languages",
     "start": 14.2,
     "end": 18.119,
-    "translation": "今、あなたは2つの新しい言語を学ぶ必要があるからです。"
+    "translation": "なぜなら、あなたは2つの新しい言語を学ぶ必要があるからです。"
   },
   {
-    "text": "luckily react native fixes this by using",
+    "text": "Luckily, react native fixes this by using",
     "start": 16.039,
     "end": 20.039,
-    "translation": "幸いなことに、React Nativeは、"
+    "translation": "幸いなことに、React NativeはJavaScriptブリッジを使用することでこれを修正します。"
   },
   {
     "text": "a JavaScript bridge that allows react",
     "start": 18.119,
     "end": 22,
-    "translation": "ReactコンポーネントがネイティブUIを表現できるようにするJavaScriptブリッジを使用することで、これを解決します。"
+    "translation": "ReactコンポーネントがネイティブUIを表現できるようにするJavaScriptブリッジ。"
   },
   {
     "text": "components to represent native UI",
@@ -69,7 +69,7 @@
     "text": "components if the code looks like HTML",
     "start": 22,
     "end": 25.96,
-    "translation": "コードがHTMLのように見える場合、"
+    "translation": "コードがHTMLのように見える場合。"
   },
   {
     "text": "and CSS but you're actually building",
@@ -87,13 +87,13 @@
     "text": "just a web view that's embedded in a",
     "start": 28.08,
     "end": 31.439,
-    "translation": "ネイティブアプリに埋め込まれたウェブビューではなく、"
+    "translation": "ネイティブアプリに埋め込まれたWebビューではありません。"
   },
   {
     "text": "native app and can interact with Native",
     "start": 29.56,
     "end": 33.52,
-    "translation": "ネイティブアプリであり、ネイティブと対話できます。"
+    "translation": "ネイティブアプリであり、ネイティブAPIと対話できます。"
   },
   {
     "text": "apis like the camera keyboard and",
@@ -111,7 +111,7 @@
     "text": "expo comes in first run this command to",
     "start": 35.28,
     "end": 39.12,
-    "translation": "まず、このコマンドを実行して、"
+    "translation": "まず、このコマンドを実行して"
   },
   {
     "text": "generate a project template it takes",
@@ -123,7 +123,7 @@
     "text": "care of all the annoying configuration",
     "start": 39.12,
     "end": 42.559,
-    "translation": "面倒な設定はすべてお任せください。"
+    "translation": "それはすべての面倒な設定を処理します。"
   },
   {
     "text": "so you can start writing code right away",
@@ -135,7 +135,7 @@
     "text": "inside this project we can use npm to",
     "start": 42.559,
     "end": 47.48,
-    "translation": "このプロジェクト内でnpmを使用して、"
+    "translation": "このプロジェクト内でnpmを使用して"
   },
   {
     "text": "instantly run this app on iOS Android",
@@ -147,13 +147,13 @@
     "text": "and the web by simply running an npm",
     "start": 47.48,
     "end": 51.079,
-    "translation": "そして、npmコマンドを実行するだけでWebで実行できます。"
+    "translation": "npmコマンドを実行するだけでWebでも実行できます。"
   },
   {
     "text": "command and if we go into the code and",
     "start": 49.559,
     "end": 52.96,
-    "translation": "コマンドを実行し、コードに入ると、"
+    "translation": "コマンドを実行します。そして、コードに入って"
   },
   {
     "text": "make some changes to the UI the app will",
@@ -171,7 +171,7 @@
     "text": "can test the app in a sandbox with tools",
     "start": 54.879,
     "end": 58.6,
-    "translation": "または、Expo Goなどのツールを使用してサンドボックスでアプリをテストできます。"
+    "translation": "Expo Goのようなツールを使用して、サンドボックスでアプリをテストできます。"
   },
   {
     "text": "like Expo go what's unique about this",
@@ -189,7 +189,7 @@
     "text": "which uses file system based routing",
     "start": 60.48,
     "end": 64.199,
-    "translation": "これは、ファイルシステムベースのルーティングを使用します。"
+    "translation": "これはファイルシステムベースのルーティングを使用します。"
   },
   {
     "text": "very similar to react Frameworks like",
@@ -207,13 +207,13 @@
     "text": "create screens that are automatically",
     "start": 66.2,
     "end": 69.64,
-    "translation": "自動的にディープリンク可能な画面を作成できます。"
+    "translation": "自動的に"
   },
   {
     "text": "deep linkable on mobile and you can",
     "start": 67.92,
     "end": 71.4,
-    "translation": "モバイルで。"
+    "translation": "モバイルでディープリンク可能な画面を作成できます。"
   },
   {
     "text": "navigate between them in the UI with the",
@@ -225,19 +225,19 @@
     "text": "link component but on mobile platforms",
     "start": 71.4,
     "end": 75.04,
-    "translation": "リンクコンポーネントを使用しますが、モバイルプラットフォームでは、"
+    "translation": "リンクコンポーネントを使用しますが、モバイルプラットフォームでは"
   },
   {
     "text": "we navigate by pushing and popping",
     "start": 73.36,
     "end": 77.36,
-    "translation": "画面をナビゲーションスタックにプッシュおよびポップすることでナビゲートします。"
+    "translation": "プッシュとポップでナビゲートします。"
   },
   {
     "text": "screens to the navigation stack in Expo",
     "start": 75.04,
     "end": 79.2,
-    "translation": "Expoのナビゲーションスタックに。"
+    "translation": "Expoのナビゲーションスタックに画面を追加します。"
   },
   {
     "text": "we can easily control that behavior with",
@@ -255,7 +255,7 @@
     "text": "link or use the router module directly",
     "start": 81,
     "end": 85.159,
-    "translation": "または、ルーターモジュールを直接使用して、"
+    "translation": "または、ルーターモジュールを直接使用します。"
   },
   {
     "text": "to navigate imperatively in addition the",
@@ -267,37 +267,37 @@
     "text": "Expo router can also use layouts to",
     "start": 85.159,
     "end": 89.96,
-    "translation": "Expoルーターは、レイアウトを使用して、"
+    "translation": "Expoルーターは、レイアウトを使用して"
   },
   {
     "text": "share UI across multiple pages and also",
     "start": 87.28,
     "end": 91.88,
-    "translation": "複数のページでUIを共有したり、"
+    "translation": "複数のページでUIを共有することもできます。"
   },
   {
     "text": "represent more advanced routing patterns",
     "start": 89.96,
     "end": 93.96,
-    "translation": "より高度なルーティングパターンを表現したりすることもできます。"
+    "translation": "より高度なルーティングパターンを表します。"
   },
   {
     "text": "like tabs and moduls Beyond routing",
     "start": 91.88,
     "end": 95.84,
-    "translation": "タブやモジュールなど。ルーティング以外にも、"
+    "translation": "タブやモジュールなど、ルーティングを超えて、"
   },
   {
     "text": "though Expo provides tons of libraries",
     "start": 93.96,
     "end": 97.96,
-    "translation": "ExpoはネイティブAPIを操作するための多くのライブラリを提供しています。"
+    "translation": "Expoは多数のライブラリを提供しています。"
   },
   {
     "text": "for working with Native apis need a",
     "start": 95.84,
     "end": 99.92,
-    "translation": "ネイティブAPIを操作するために。"
+    "translation": "ネイティブAPIを操作するためには、"
   },
   {
     "text": "camera use Expo to install the camera",
@@ -309,31 +309,31 @@
     "text": "package and simply use the camera view",
     "start": 99.92,
     "end": 103.72,
-    "translation": "パッケージをインストールし、カメラビューをUIで使用するだけです。"
+    "translation": "パッケージをインストールし、カメラビューを簡単に使用します。"
   },
   {
     "text": "component in your UI the same goes for",
     "start": 101.68,
     "end": 105.68,
-    "translation": "UIのコンポーネント。"
+    "translation": "UIのコンポーネント。マップ、センサー、および事実上他のすべてのものについても同様です。"
   },
   {
     "text": "maps sensors and virtually every other",
     "start": 103.72,
     "end": 108,
-    "translation": "地図、センサー、その他ほとんどすべてのユースケースに当てはまります。"
+    "translation": "ユースケース。"
   },
   {
     "text": "use case and has Integrations with tools",
     "start": 105.68,
     "end": 110,
-    "translation": "また、FirebaseやSupabaseなどのツールとの統合により、"
+    "translation": "ユースケースがあり、FirebaseやSuperbaseなどのツールと統合されています。"
   },
   {
     "text": "like Firebase and superbase to connect",
     "start": 108,
     "end": 111.96,
-    "translation": "バックエンドのクラウドインフラストラクチャに接続できます。"
+    "translation": "バックエンドのクラウドインフラストラクチャに接続します。"
   },
   {
     "text": "to backend Cloud infrastructure what's",
@@ -345,25 +345,25 @@
     "text": "weird though is you'll notice our",
     "start": 111.96,
     "end": 115.399,
-    "translation": "奇妙なのは、私たちのプロジェクトにAndroidとiOSのディレクトリがないことです。"
+    "translation": "奇妙なのは、私たちの"
   },
   {
     "text": "project is missing Android and iOS",
     "start": 113.28,
     "end": 117.479,
-    "translation": ""
+    "translation": "プロジェクトにAndroidとiOSがないことに気づくでしょう。"
   },
   {
     "text": "directories Expo developed a technique",
     "start": 115.399,
     "end": 119.399,
-    "translation": "Expoは、継続的なネイティブ生成と呼ばれる技術を開発しました。"
+    "translation": "ディレクトリ。Expoは、"
   },
   {
     "text": "called continuous native generation",
     "start": 117.479,
     "end": 120.799,
-    "translation": ""
+    "translation": "継続的なネイティブ生成と呼ばれる技術を開発しました。"
   },
   {
     "text": "where Native code is generated",
@@ -381,7 +381,7 @@
     "text": "that's awesome because trust me as a",
     "start": 122.719,
     "end": 125.88,
-    "translation": "それは素晴らしいことです。なぜなら、私を信じてください。"
+    "translation": "それは素晴らしいです。なぜなら、私を信じてください。"
   },
   {
     "text": "JavaScript developer when you start",
@@ -393,13 +393,13 @@
     "text": "touching Java and Objective C code in",
     "start": 125.88,
     "end": 129.16,
-    "translation": "これらのディレクトリでJavaとObjective-Cのコードに触れ始めると、"
+    "translation": "これらのディレクトリでJavaおよびObjective-Cコードに触れ始めると、"
   },
   {
     "text": "these directories things are going to",
     "start": 127.68,
     "end": 130.8,
-    "translation": "物事は壊れてしまいます。"
+    "translation": "物事は壊れます。"
   },
   {
     "text": "break now finally after you build an",
@@ -417,31 +417,31 @@
     "text": "devices and emulators thanks to its",
     "start": 132.64,
     "end": 136.4,
-    "translation": ""
+    "translation": "そのおかげで、"
   },
   {
     "text": "integration with detox now let's get",
     "start": 134.48,
     "end": 138.4,
-    "translation": "Detoxとの統合のおかげで。さあ、このアプリをエンドユーザーに届けましょう。"
+    "translation": "Detoxとの統合により、エンドユーザーにこのアプリを届けましょう。"
   },
   {
     "text": "this app to our end users on the web we",
     "start": 136.4,
     "end": 140.12,
-    "translation": "Web上では、"
+    "translation": "Web上では、ページを静的にレンダリングできます。"
   },
   {
     "text": "can statically render our pages and",
     "start": 138.4,
     "end": 142.239,
-    "translation": "ページを静的にレンダリングし、"
+    "translation": "任意のWebホストにアップロードします。"
   },
   {
     "text": "upload them to any web host on Mobile",
     "start": 140.12,
     "end": 143.72,
-    "translation": "モバイル上の任意のWebホストにアップロードできます。"
+    "translation": "モバイルでは、"
   },
   {
     "text": "Expo can automate your builds in the",
@@ -465,13 +465,13 @@
     "text": "a Mac congratulations you're now a cross",
     "start": 147.319,
     "end": 151.959,
-    "translation": "おめでとうございます。これであなたはクロスプラットフォームの開発者です。"
+    "translation": "おめでとうございます。これであなたはクロスプラットフォーム開発者です。"
   },
   {
     "text": "platform developer this has been Expo in",
     "start": 149.8,
     "end": 153.519,
-    "translation": "これがExpo in 100 secondsでした。"
+    "translation": "これは100秒のExpoでした。"
   },
   {
     "text": "100 seconds let me know what you want to",
@@ -489,18 +489,18 @@
     "text": "for watching and I will see you in the",
     "start": 155.2,
     "end": 157.64,
-    "translation": "また次の動画でお会いしましょう。"
+    "translation": "そして、次の"
   },
   {
     "text": "next",
     "start": 156.8,
     "end": 160.64,
-    "translation": ""
+    "translation": "次で会いましょう。"
   },
   {
     "text": "one",
     "start": 157.64,
     "end": 160.64,
-    "translation": ""
+    "translation": "次で会いましょう。"
   }
 ]

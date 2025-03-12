@@ -32,6 +32,8 @@
     "vitest": "^3.0.8"
   },
   "dependencies": {
+    "@types/big.js": "^6.2.2",
+    "big.js": "^6.2.2",
     "commander": "^12.0.0",
     "openai": "^4.86.2",
     "youtube-caption-extractor": "^1.0.0"

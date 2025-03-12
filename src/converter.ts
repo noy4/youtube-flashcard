@@ -7,17 +7,13 @@ interface Flashcard {
   front: string;
   back: string;
   videoId?: string;
-  startTime?: number;
-  endTime?: number;
+  start: number;
+  end: number;
 }
 
 export class SubtitleConverter {
   private translator: Translator | null;
-  private subtitles: {
-    text: string;
-    start: number;
-    end: number;
-  }[];
+  private subtitles: Subtitle[];
 
   constructor(
     subtitles: Subtitle[],
@@ -25,11 +21,7 @@ export class SubtitleConverter {
     apiKey?: string
   ) {
     this.translator = apiKey ? new Translator(apiKey) : null;
-    this.subtitles = subtitles.map(s => ({
-      text: s.text,
-      start: parseFloat(s.start),
-      end: parseFloat(s.start) + parseFloat(s.dur)
-    }));
+    this.subtitles = subtitles;
   }
 
   /**
@@ -48,15 +40,11 @@ export class SubtitleConverter {
         const translation = await this.translator.translate(subtitle.text, sourceLang, targetLang);
         const card: Flashcard = {
           front: translation,
-          back: subtitle.text
+          back: subtitle.text,
+          videoId: this.videoId,
+          start: subtitle.start,
+          end: subtitle.end
         };
-
-        // YouTubeの動画情報が利用可能な場合、カードに追加
-        if (this.videoId) {
-          card.videoId = this.videoId;
-          card.startTime = subtitle.start;
-          card.endTime = subtitle.end;
-        }
 
         cards.push(card);
       } catch (error) {
@@ -101,11 +89,13 @@ export class SubtitleConverter {
   private toAnki(cards: Flashcard[]): string {
     return cards.map(card => {
       let content = card.front;
-      if (card.videoId && typeof card.startTime === 'number' && typeof card.endTime === 'number') {
+      if (card.videoId && card.start && card.end) {
+        const start = card.start;
+        const end = card.end;
         content += `<br><br><iframe
   width="560"
   height="315"
-  src="https://www.youtube.com/embed/${card.videoId}?start=${Math.floor(card.startTime)}&end=${Math.floor(card.endTime)}&autoplay=1"
+  src="https://www.youtube.com/embed/${card.videoId}?start=${start}&end=${end}&autoplay=1"
   frameborder="0"
   autoplay="1"
 />`;

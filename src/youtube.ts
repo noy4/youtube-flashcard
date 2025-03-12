@@ -1,9 +1,10 @@
 import { getSubtitles } from 'youtube-caption-extractor';
+import { Big } from 'big.js';
 
 export interface Subtitle {
-  start: string;
-  dur: string;
   text: string;
+  start: number;
+  end: number;
 }
 
 /**
@@ -24,12 +25,19 @@ export function extractVideoId(url: string): string {
  */
 export async function fetchSubtitles(url: string, languageCode: string): Promise<Subtitle[]> {
   const videoID = extractVideoId(url);
-  const subtitles = await getSubtitles({ videoID });
+  const rawSubtitles = await getSubtitles({ videoID });
 
-  if (!subtitles.length)
+  if (!rawSubtitles.length)
     throw new Error('字幕が見つかりませんでした');
 
-  return subtitles;
+  return rawSubtitles.map(subtitle => {
+    const start = new Big(subtitle.start);
+    return {
+      text: subtitle.text,
+      start: +start,
+      end: +start.plus(subtitle.dur)
+    };
+  });
 }
 
 /**

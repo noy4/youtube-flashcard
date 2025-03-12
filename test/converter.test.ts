@@ -7,7 +7,7 @@ const createSubtitles = (texts: string[]): Subtitle[] => {
   return texts.map((text, i) => ({
     text,
     start: String(i * 10),
-    dur: '10'
+    end: String((i * 10) + 10)
   }));
 };
 

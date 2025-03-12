@@ -35,3 +35,23 @@ I went to see a movie with my friends on the weekend.
 ?
 I borrowed this book from the library last week.
 ```
+
+## JSON 形式
+
+```json
+[
+  {
+    "front": "彼は毎朝6時に起きます",
+    "back": "He wakes up at 6 o'clock every morning.",
+    "videoId": "abc123",
+    "startTime": 0,
+    "endTime": 10
+  },
+  {
+    "front": "私は週末に友達と映画を見に行きました",
+    "back": "I went to see a movie with my friends on the weekend."
+  }
+]
+```
+
+ビデオIDと時間情報は、YouTube動画から作成されたフラッシュカードの場合のみ含まれます。

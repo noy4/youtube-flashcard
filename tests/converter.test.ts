@@ -65,7 +65,7 @@ describe('SubtitleConverter', () => {
         { front: "Question 2", back: "Answer 2" }
       ];
 
-      const markdown = converter.toMarkdown(cards);
+      const markdown = converter.toString(cards, 'obsidian');
 
       // タグの確認
       expect(markdown).toContain('#flashcards');
@@ -106,6 +106,50 @@ describe('SubtitleConverter', () => {
       await expect(converter.convert('en', 'ja'))
         .rejects
         .toThrow('翻訳機能を使用するにはAPIキーが必要です');
+    });
+  });
+
+  describe('出力フォーマット', () => {
+    let converter: SubtitleConverter;
+    const cards = [
+      {
+        front: "Question 1",
+        back: "Answer 1",
+        videoId: "test123",
+        startTime: 0,
+        endTime: 10
+      },
+      {
+        front: "Question 2",
+        back: "Answer 2"
+      }
+    ];
+
+    beforeEach(() => {
+      converter = new SubtitleConverter([]);
+    });
+
+    it('JSON形式で正しく出力する', () => {
+      const result = converter.toString(cards, 'json');
+      const parsed = JSON.parse(result);
+
+      // 配列の長さを確認
+      expect(parsed).toHaveLength(2);
+
+      // ビデオ情報を含むカードの検証
+      expect(parsed[0]).toEqual({
+        front: "Question 1",
+        back: "Answer 1",
+        videoId: "test123",
+        startTime: 0,
+        endTime: 10
+      });
+
+      // ビデオ情報を含まないカードの検証
+      expect(parsed[1]).toEqual({
+        front: "Question 2",
+        back: "Answer 2"
+      });
     });
   });
 

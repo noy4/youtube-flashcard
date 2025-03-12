@@ -1,6 +1,6 @@
 import { Translator } from './translator.js';
 
-export type OutputFormat = 'obsidian' | 'anki';
+export type OutputFormat = 'obsidian' | 'anki' | 'json';
 
 interface Flashcard {
   front: string;
@@ -46,6 +46,8 @@ export class SubtitleConverter {
         return this.toObsidian(cards);
       case 'anki':
         return this.toAnki(cards);
+      case 'json':
+        return JSON.stringify(cards, null, 2);
       default:
         throw new Error(`Unsupported format: ${format}`);
     }

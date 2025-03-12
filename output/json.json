@@ -1,0 +1,163 @@
+[
+  {
+    "front": "Expoは、iOS、Android、そしてWeb向けのユニバーサルなネイティブアプリを、単一のReactコードベースで構築できるオープンソースのツールセットです。通常、開発者はモバイルアプリを構築するために、Apple向けにはSwift、Android向けにはKotlinのコードを書く必要がありますが、Web開発者にとってはそれは面倒です。",
+    "back": "Expo an open source tool set for building Universal native apps on iOS Android and the web with a single react code base normally developers need to write Swift code for apple or cotlin for Android to build a mobile app and that sucks if you're a web...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 0.28,
+    "endTime": 4.720000000000001
+  },
+  {
+    "front": "開発者たる所以は…",
+    "back": "developer because...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 2.28,
+    "endTime": 6.839
+  },
+  {
+    "front": "さて、ここで新たに2つの言語を学ぶ必要が出てきます。幸いなことに、React NativeはJavaScriptブリッジを使用することでこの問題を解決しています。ReactコンポーネントがネイティブUIコンポーネントを表現できるようにすることで、コードはHTMLやCSSのように見えても、実際には真のネイティブウィジェットを構築しているのです。",
+    "back": "now you need to learn two new languages luckily react native fixes this by using a JavaScript bridge that allows react components to represent native UI components if the code looks like HTML and CSS but you're actually building truly native widgets...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 4.72,
+    "endTime": 8.639
+  },
+  {
+    "front": "本物じゃない…",
+    "back": "the real deal not...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 6.839,
+    "endTime": 10.8
+  },
+  {
+    "front": "ネイティブアプリに埋め込まれたウェブビューで、カメラ、キーボード、バイブレーターなどのネイティブAPIと連携できます。かなりクールですよね。ここでExpoの出番です。まず、このコマンドを実行してプロジェクトテンプレートを生成します。これで面倒な作業はすべてお任せです...",
+    "back": "just a web view that's embedded in a native app and can interact with Native apis like the camera keyboard and vibrator pretty cool but here's where expo comes in first run this command to generate a project template it takes care of all the annoying...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 8.639,
+    "endTime": 12.678999999999998
+  },
+  {
+    "front": "構成...",
+    "back": "configuration...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 10.8,
+    "endTime": 14.200000000000001
+  },
+  {
+    "front": "このプロジェクト内ですぐにコーディングを始められます。npmを使って、npmコマンドを実行するだけで、iOS、Android、Web上でこのアプリをすぐに実行できます。そして、コードに入ってUIに変更を加えると、アプリはホットリロードされます。",
+    "back": "so you can start writing code right away inside this project we can use npm to instantly run this app on iOS Android and the web by simply running an npm command and if we go into the code and make some changes to the UI the app will hot reload to",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 12.679,
+    "endTime": 16.039
+  },
+  {
+    "front": "変更を反映させるか、さもなくば…。",
+    "back": "reflect the changes or you...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 14.2,
+    "endTime": 18.119
+  },
+  {
+    "front": "Expo Goのようなツールを使ってサンドボックス環境でアプリをテストできます。しかし、このコードのユニークな点は、Next.jsやRemixのようなReactフレームワークと非常によく似たファイルシステムベースのルーティングを使用する、このappディレクトリです。これにより、画面を...",
+    "back": "can test the app in a sandbox with tools like Expo go what's unique about this code though is this app Direct directory which uses file system based routing very similar to react Frameworks like nextjs and remix this allows you to create screens that...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 16.039,
+    "endTime": 20.039
+  },
+  {
+    "front": "自動的に...",
+    "back": "are automatically...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 18.119,
+    "endTime": 22
+  },
+  {
+    "front": "モバイルでディープリンク可能で、UI内でリンクコンポーネントを使ってそれらをナビゲートできますが、モバイルプラットフォームでは画面をナビゲーションスタックにプッシュしたりポップしたりして移動します。Expoでは、属性などを使ってその挙動を簡単に制御できます。",
+    "back": "deep linkable on mobile and you can navigate between them in the UI with the link component but on mobile platforms we navigate by pushing and popping screens to the navigation stack in Expo we can easily control that behavior with attributes like...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 20.039,
+    "endTime": 24.080000000000002
+  },
+  {
+    "front": "〜にプッシュして置き換える",
+    "back": "push and replace on the",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 22,
+    "endTime": 25.96
+  },
+  {
+    "front": "リンクを使うか、ルーターモジュールを直接使って命令的にナビゲートできます。さらに、Expo Routerはレイアウトを使って複数のページでUIを共有したり、タブやモーダルといったより高度なルーティングパターンを表現したりすることも可能です。ルーティング以外にも、Expo...",
+    "back": "link or use the router module directly to navigate imperatively in addition the Expo router can also use layouts to share UI across multiple pages and also represent more advanced routing patterns like tabs and moduls Beyond routing though Expo...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 24.08,
+    "endTime": 28.08
+  },
+  {
+    "front": "豊富なライブラリを提供します...",
+    "back": "provides tons of libraries...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 25.96,
+    "endTime": 29.560000000000002
+  },
+  {
+    "front": "ネイティブAPIを扱うためにカメラが必要な場合、Expoを使ってカメラパッケージをインストールし、UIでカメラビューコンポーネントを簡単に使用できます。地図、センサー、そして事実上他のすべてのユースケースについても同様で、Firebaseのようなツールとの連携も可能です。",
+    "back": "for working with Native apis need a camera use Expo to install the camera package and simply use the camera view component in your UI the same goes for maps sensors and virtually every other use case and has Integrations with tools like Firebase and",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 28.08,
+    "endTime": 31.439
+  },
+  {
+    "front": "スーパーベースに接続中...",
+    "back": "superbase to connect...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 29.56,
+    "endTime": 33.519999999999996
+  },
+  {
+    "front": "バックエンドのクラウドインフラストラクチャについてですが、奇妙なことに、プロジェクトにAndroidとiOSのディレクトリがないことに気づくでしょう。Expoは、継続的ネイティブ生成と呼ばれる技術を開発しました。これは、一連の入力から予測可能にネイティブコードを生成するものです。",
+    "back": "to backend Cloud infrastructure what's weird though is you'll notice our project is missing Android and iOS directories Expo developed a technique called continuous native generation where Native code is generated predictably from a set of inputs and",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 31.439,
+    "endTime": 35.28
+  },
+  {
+    "front": "それは素晴らしいことですね。なぜなら、私を信じてください。",
+    "back": "that's awesome because trust me as a",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 33.52,
+    "endTime": 37.399
+  },
+  {
+    "front": "JavaScript開発者の皆さん、これらのディレクトリでJavaやObjective-Cのコードを触り始めると、問題が発生するでしょう。Detoxとの統合により、ネイティブデバイスやエミュレーターでの自動テストが素晴らしいアプリの構築後に可能になりました。",
+    "back": "JavaScript developer when you start touching Java and Objective C code in these directories things are going to break now finally after you build an awesome app automate testing on Native devices and emulators thanks to its integration with detox now...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 35.28,
+    "endTime": 39.120000000000005
+  },
+  {
+    "front": "さあ、始めよう…",
+    "back": "let's get...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 37.399,
+    "endTime": 40.84
+  },
+  {
+    "front": "このアプリをウェブ上のエンドユーザーに提供する際、ページを静的にレンダリングして、任意のウェブホストにアップロードできます。Mobile Expoでは、クラウドでのビルドを自動化し、Google PlayやApple App Storeに提出できます。Macすら必要ありません。",
+    "back": "this app to our end users on the web we can statically render our pages and upload them to any web host on Mobile Expo can automate your builds in the cloud then submit them to Google play in the Apple App Store you don't even need a Mac...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 39.12,
+    "endTime": 42.559
+  },
+  {
+    "front": "おめでとう、これであなたも十字架仲間入りだ。",
+    "back": "congratulations you're now a cross...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 40.84,
+    "endTime": 44.879000000000005
+  },
+  {
+    "front": "プラットフォームデベロッパーがお送りする、Expo in 100秒でした。次にどんなことを学びたいかコメントで教えてください。ご視聴ありがとうございました。それではまた次回。",
+    "back": "platform developer this has been Expo in 100 seconds let me know what you want to learn about next in the comments thanks for watching and I will see you in the next one...",
+    "videoId": "vFW_TxKLyrE",
+    "startTime": 42.559,
+    "endTime": 47.48
+  }
+]

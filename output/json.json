@@ -7,126 +7,126 @@
     "end": 4.72
   },
   {
-    "front": "iOSでユニバーサルなネイティブアプリを構築します",
+    "front": "iOSでユニバーサルなネイティブアプリを構築するためのものです。",
     "back": "building Universal native apps on iOS",
     "videoId": "vFW_TxKLyrE",
     "start": 2.28,
     "end": 6.839
   },
   {
-    "front": "AndroidとWebを単一のReactで",
+    "front": "AndroidとWebを単一のReactで構築できます。",
     "back": "Android and the web with a single react",
     "videoId": "vFW_TxKLyrE",
     "start": 4.72,
     "end": 8.639
   },
   {
-    "front": "コードベースで構築できます。通常、開発者は",
-    "back": "code base. Normally developers need to",
+    "front": "通常、開発者は、",
+    "back": "code base normally developers need to",
     "videoId": "vFW_TxKLyrE",
     "start": 6.839,
     "end": 10.8
   },
   {
-    "front": "Appleの場合はSwiftコード、Androidの場合はKotlinを記述する必要があります。",
+    "front": "Appleの場合はSwift、Androidの場合はKotlinのコードを書く必要があります。",
     "back": "write Swift code for apple or cotlin for",
     "videoId": "vFW_TxKLyrE",
     "start": 8.639,
     "end": 12.679
   },
   {
-    "front": "モバイルアプリを構築するためにAndroidを使用しますが、",
+    "front": "モバイルアプリを構築するために。",
     "back": "Android to build a mobile app and that",
     "videoId": "vFW_TxKLyrE",
     "start": 10.8,
     "end": 14.2
   },
   {
-    "front": "Web開発者にとっては、それが面倒です。",
+    "front": "もしあなたがウェブ開発者なら、それは最悪です。なぜなら、",
     "back": "sucks if you're a web developer because",
     "videoId": "vFW_TxKLyrE",
     "start": 12.679,
     "end": 16.039
   },
   {
-    "front": "なぜなら、2つの新しい言語を学ぶ必要があるからです。",
-    "back": "now you need to learn two new languages.",
+    "front": "今、あなたは2つの新しい言語を学ぶ必要があるからです。",
+    "back": "now you need to learn two new languages",
     "videoId": "vFW_TxKLyrE",
     "start": 14.2,
     "end": 18.119
   },
   {
     "front": "幸いなことに、React Nativeは、",
-    "back": "Luckily react native fixes this by using",
+    "back": "luckily react native fixes this by using",
     "videoId": "vFW_TxKLyrE",
     "start": 16.039,
     "end": 20.039
   },
   {
-    "front": "ReactコンポーネントがネイティブUIを表現できるJavaScriptブリッジを使用することで、これを修正します。",
+    "front": "ReactコンポーネントがネイティブUIを表現できるようにするJavaScriptブリッジを使用することで、これを解決します。",
     "back": "a JavaScript bridge that allows react",
     "videoId": "vFW_TxKLyrE",
     "start": 18.119,
     "end": 22
   },
   {
-    "front": "コンポーネントがネイティブUIを表現できる",
+    "front": "コンポーネント。",
     "back": "components to represent native UI",
     "videoId": "vFW_TxKLyrE",
     "start": 20.039,
     "end": 24.08
   },
   {
-    "front": "コードがHTMLのように見える場合",
+    "front": "コードがHTMLのように見える場合、",
     "back": "components if the code looks like HTML",
     "videoId": "vFW_TxKLyrE",
     "start": 22,
     "end": 25.96
   },
   {
-    "front": "CSSですが、実際には構築しているのは",
+    "front": "CSSですが、実際には構築しています。",
     "back": "and CSS but you're actually building",
     "videoId": "vFW_TxKLyrE",
     "start": 24.08,
     "end": 28.08
   },
   {
-    "front": "真のネイティブウィジェットです。本物であり、",
+    "front": "真のネイティブウィジェット、本物です。",
     "back": "truly native widgets the real deal not",
     "videoId": "vFW_TxKLyrE",
     "start": 25.96,
     "end": 29.56
   },
   {
-    "front": "ネイティブアプリに埋め込まれたWebビューではなく、",
+    "front": "ネイティブアプリに埋め込まれたウェブビューではなく、",
     "back": "just a web view that's embedded in a",
     "videoId": "vFW_TxKLyrE",
     "start": 28.08,
     "end": 31.439
   },
   {
-    "front": "ネイティブアプリであり、ネイティブとやり取りできます",
+    "front": "ネイティブアプリであり、ネイティブと対話できます。",
     "back": "native app and can interact with Native",
     "videoId": "vFW_TxKLyrE",
     "start": 29.56,
     "end": 33.52
   },
   {
-    "front": "カメラ、キーボードなどのAPIや",
+    "front": "カメラ、キーボードなどのAPI。",
     "back": "apis like the camera keyboard and",
     "videoId": "vFW_TxKLyrE",
     "start": 31.439,
     "end": 35.28
   },
   {
-    "front": "バイブレーターはかなりクールですが、ここからが",
+    "front": "バイブレーターはかなりクールですが、ここからがExpoの出番です。",
     "back": "vibrator pretty cool but here's where",
     "videoId": "vFW_TxKLyrE",
     "start": 33.52,
     "end": 37.399
   },
   {
-    "front": "Expoの出番です。まず、このコマンドを実行して",
+    "front": "まず、このコマンドを実行して、",
     "back": "expo comes in first run this command to",
     "videoId": "vFW_TxKLyrE",
     "start": 35.28,
@@ -148,14 +148,14 @@
   },
   {
     "front": "すぐにコードを書き始めることができます。",
-    "back": "so you can start writing code right away.",
+    "back": "so you can start writing code right away",
     "videoId": "vFW_TxKLyrE",
     "start": 40.84,
     "end": 44.879
   },
   {
-    "front": "このプロジェクト内でnpmを使用して",
-    "back": "Inside this project we can use npm to",
+    "front": "このプロジェクト内でnpmを使用して、",
+    "back": "inside this project we can use npm to",
     "videoId": "vFW_TxKLyrE",
     "start": 42.559,
     "end": 47.48
@@ -168,14 +168,14 @@
     "end": 49.559
   },
   {
-    "front": "npmコマンドを実行するだけでWebでも実行できます。",
+    "front": "そして、npmコマンドを実行するだけでWebで実行できます。",
     "back": "and the web by simply running an npm",
     "videoId": "vFW_TxKLyrE",
     "start": 47.48,
     "end": 51.079
   },
   {
-    "front": "コマンドを実行し、コードに入って",
+    "front": "コマンドを実行し、コードに入ると、",
     "back": "command and if we go into the code and",
     "videoId": "vFW_TxKLyrE",
     "start": 49.559,
@@ -196,14 +196,14 @@
     "end": 56.76
   },
   {
-    "front": "Expo Goなどのツールを使用して、サンドボックスでアプリをテストできます。",
+    "front": "または、Expo Goなどのツールを使用してサンドボックスでアプリをテストできます。",
     "back": "can test the app in a sandbox with tools",
     "videoId": "vFW_TxKLyrE",
     "start": 54.879,
     "end": 58.6
   },
   {
-    "front": "このコードの何がユニークかというと、",
+    "front": "このコードの何がユニークなのかというと、",
     "back": "like Expo go what's unique about this",
     "videoId": "vFW_TxKLyrE",
     "start": 56.76,
@@ -238,14 +238,14 @@
     "end": 67.92
   },
   {
-    "front": "自動的に",
+    "front": "自動的にディープリンク可能な画面を作成できます。",
     "back": "create screens that are automatically",
     "videoId": "vFW_TxKLyrE",
     "start": 66.2,
     "end": 69.64
   },
   {
-    "front": "モバイルでディープリンク可能になり、",
+    "front": "モバイルで。",
     "back": "deep linkable on mobile and you can",
     "videoId": "vFW_TxKLyrE",
     "start": 67.92,
@@ -259,56 +259,56 @@
     "end": 73.36
   },
   {
-    "front": "リンクコンポーネントを使用しますが、モバイルプラットフォームでは",
+    "front": "リンクコンポーネントを使用しますが、モバイルプラットフォームでは、",
     "back": "link component but on mobile platforms",
     "videoId": "vFW_TxKLyrE",
     "start": 71.4,
     "end": 75.04
   },
   {
-    "front": "プッシュとポップでナビゲートします",
+    "front": "画面をナビゲーションスタックにプッシュおよびポップすることでナビゲートします。",
     "back": "we navigate by pushing and popping",
     "videoId": "vFW_TxKLyrE",
     "start": 73.36,
     "end": 77.36
   },
   {
-    "front": "Expoのナビゲーションスタックに画面をプッシュします。",
+    "front": "Expoのナビゲーションスタックに。",
     "back": "screens to the navigation stack in Expo",
     "videoId": "vFW_TxKLyrE",
     "start": 75.04,
     "end": 79.2
   },
   {
-    "front": "プッシュとポップの動作は簡単に制御できます。",
+    "front": "その動作を簡単に制御できます。",
     "back": "we can easily control that behavior with",
     "videoId": "vFW_TxKLyrE",
     "start": 77.36,
     "end": 81
   },
   {
-    "front": "リンクのプッシュや置換などの属性を使用するか、",
+    "front": "リンクのプッシュや置換などの属性を使用します。",
     "back": "attributes like push and replace on the",
     "videoId": "vFW_TxKLyrE",
     "start": 79.2,
     "end": 83
   },
   {
-    "front": "ルーターモジュールを直接使用して",
+    "front": "または、ルーターモジュールを直接使用して、",
     "back": "link or use the router module directly",
     "videoId": "vFW_TxKLyrE",
     "start": 81,
     "end": 85.159
   },
   {
-    "front": "命令的にナビゲートできます。さらに、",
+    "front": "命令的にナビゲートします。さらに、",
     "back": "to navigate imperatively in addition the",
     "videoId": "vFW_TxKLyrE",
     "start": 83,
     "end": 87.28
   },
   {
-    "front": "Expoルーターはレイアウトを使用して",
+    "front": "Expoルーターは、レイアウトを使用して、",
     "back": "Expo router can also use layouts to",
     "videoId": "vFW_TxKLyrE",
     "start": 85.159,
@@ -322,126 +322,126 @@
     "end": 91.88
   },
   {
-    "front": "より高度なルーティングパターンを表現したりできます。",
+    "front": "より高度なルーティングパターンを表現したりすることもできます。",
     "back": "represent more advanced routing patterns",
     "videoId": "vFW_TxKLyrE",
     "start": 89.96,
     "end": 93.96
   },
   {
-    "front": "タブやモジュールなど、ルーティング以外にも",
+    "front": "タブやモジュールなど。ルーティング以外にも、",
     "back": "like tabs and moduls Beyond routing",
     "videoId": "vFW_TxKLyrE",
     "start": 91.88,
     "end": 95.84
   },
   {
-    "front": "Expoは多数のライブラリを提供しています。",
+    "front": "ExpoはネイティブAPIを操作するための多くのライブラリを提供しています。",
     "back": "though Expo provides tons of libraries",
     "videoId": "vFW_TxKLyrE",
     "start": 93.96,
     "end": 97.96
   },
   {
-    "front": "ネイティブAPIを操作するには、",
+    "front": "ネイティブAPIを操作するために。",
     "back": "for working with Native apis need a",
     "videoId": "vFW_TxKLyrE",
     "start": 95.84,
     "end": 99.92
   },
   {
-    "front": "カメラを使用します。Expoを使用してカメラをインストールします。",
+    "front": "カメラを使用するには、Expoを使用してカメラをインストールします。",
     "back": "camera use Expo to install the camera",
     "videoId": "vFW_TxKLyrE",
     "start": 97.96,
     "end": 101.68
   },
   {
-    "front": "パッケージをインストールし、カメラビューを簡単に使用します。",
+    "front": "パッケージをインストールし、カメラビューをUIで使用するだけです。",
     "back": "package and simply use the camera view",
     "videoId": "vFW_TxKLyrE",
     "start": 99.92,
     "end": 103.72
   },
   {
-    "front": "UIのコンポーネントは、",
+    "front": "UIのコンポーネント。",
     "back": "component in your UI the same goes for",
     "videoId": "vFW_TxKLyrE",
     "start": 101.68,
     "end": 105.68
   },
   {
-    "front": "地図、センサー、その他ほとんどすべての",
+    "front": "地図、センサー、その他ほとんどすべてのユースケースに当てはまります。",
     "back": "maps sensors and virtually every other",
     "videoId": "vFW_TxKLyrE",
     "start": 103.72,
     "end": 108
   },
   {
-    "front": "ユースケースに対応し、ツールとの統合も可能です。",
+    "front": "また、FirebaseやSupabaseなどのツールとの統合により、",
     "back": "use case and has Integrations with tools",
     "videoId": "vFW_TxKLyrE",
     "start": 105.68,
     "end": 110
   },
   {
-    "front": "FirebaseやSuperbaseなどのツールと統合して接続できます。",
+    "front": "バックエンドのクラウドインフラストラクチャに接続できます。",
     "back": "like Firebase and superbase to connect",
     "videoId": "vFW_TxKLyrE",
     "start": 108,
     "end": 111.96
   },
   {
-    "front": "バックエンドのクラウドインフラストラクチャに接続します。",
+    "front": "何が",
     "back": "to backend Cloud infrastructure what's",
     "videoId": "vFW_TxKLyrE",
     "start": 110,
     "end": 113.28
   },
   {
-    "front": "奇妙なことに、私たちの",
+    "front": "奇妙なのは、私たちのプロジェクトにAndroidとiOSのディレクトリがないことです。",
     "back": "weird though is you'll notice our",
     "videoId": "vFW_TxKLyrE",
     "start": 111.96,
     "end": 115.399
   },
   {
-    "front": "プロジェクトにAndroidとiOSがないことに気づくでしょう。",
+    "front": "",
     "back": "project is missing Android and iOS",
     "videoId": "vFW_TxKLyrE",
     "start": 113.28,
     "end": 117.479
   },
   {
-    "front": "ディレクトリExpoは、",
+    "front": "Expoは、継続的なネイティブ生成と呼ばれる技術を開発しました。",
     "back": "directories Expo developed a technique",
     "videoId": "vFW_TxKLyrE",
     "start": 115.399,
     "end": 119.399
   },
   {
-    "front": "継続的なネイティブ生成と呼ばれる技術を開発しました。",
+    "front": "",
     "back": "called continuous native generation",
     "videoId": "vFW_TxKLyrE",
     "start": 117.479,
     "end": 120.799
   },
   {
-    "front": "ネイティブコードが生成される場所",
+    "front": "ネイティブコードが生成される場所。",
     "back": "where Native code is generated",
     "videoId": "vFW_TxKLyrE",
     "start": 119.399,
     "end": 122.719
   },
   {
-    "front": "一連の入力から予測可能に生成されます。",
+    "front": "一連の入力から予測可能に。",
     "back": "predictably from a set of inputs and",
     "videoId": "vFW_TxKLyrE",
     "start": 120.799,
     "end": 124.439
   },
   {
-    "front": "それは素晴らしいことです。私を信じてください。",
+    "front": "それは素晴らしいことです。なぜなら、私を信じてください。",
     "back": "that's awesome because trust me as a",
     "videoId": "vFW_TxKLyrE",
     "start": 122.719,
@@ -455,7 +455,7 @@
     "end": 127.68
   },
   {
-    "front": "これらのディレクトリでJavaおよびObjective-Cコードに触れ始めると、",
+    "front": "これらのディレクトリでJavaとObjective-Cのコードに触れ始めると、",
     "back": "touching Java and Objective C code in",
     "videoId": "vFW_TxKLyrE",
     "start": 125.88,
@@ -483,28 +483,28 @@
     "end": 134.48
   },
   {
-    "front": "そのおかげで、",
+    "front": "",
     "back": "devices and emulators thanks to its",
     "videoId": "vFW_TxKLyrE",
     "start": 132.64,
     "end": 136.4
   },
   {
-    "front": "Detoxとの統合により、",
+    "front": "Detoxとの統合のおかげで。さあ、このアプリをエンドユーザーに届けましょう。",
     "back": "integration with detox now let's get",
     "videoId": "vFW_TxKLyrE",
     "start": 134.48,
     "end": 138.4
   },
   {
-    "front": "Web上のエンドユーザーにこのアプリを届けましょう。",
+    "front": "Web上では、",
     "back": "this app to our end users on the web we",
     "videoId": "vFW_TxKLyrE",
     "start": 136.4,
     "end": 140.12
   },
   {
-    "front": "ページを静的にレンダリングして、",
+    "front": "ページを静的にレンダリングし、",
     "back": "can statically render our pages and",
     "videoId": "vFW_TxKLyrE",
     "start": 138.4,
@@ -525,28 +525,28 @@
     "end": 145.72
   },
   {
-    "front": "次に、Google Playに送信します。",
+    "front": "次に、Google PlayおよびApple App Storeに送信します。",
     "back": "cloud then submit them to Google play in",
     "videoId": "vFW_TxKLyrE",
     "start": 143.72,
     "end": 147.319
   },
   {
-    "front": "Apple App Storeでは、Macも必要ありません。",
+    "front": "Macさえ必要ありません。",
     "back": "the Apple App Store you don't even need",
     "videoId": "vFW_TxKLyrE",
     "start": 145.72,
     "end": 149.8
   },
   {
-    "front": "おめでとうございます。これであなたはクロスプラットフォーム開発者です。",
+    "front": "おめでとうございます。これであなたはクロスプラットフォームの開発者です。",
     "back": "a Mac congratulations you're now a cross",
     "videoId": "vFW_TxKLyrE",
     "start": 147.319,
     "end": 151.959
   },
   {
-    "front": "これが100秒のExpoです。",
+    "front": "これがExpo in 100 secondsでした。",
     "back": "platform developer this has been Expo in",
     "videoId": "vFW_TxKLyrE",
     "start": 149.8,
@@ -560,28 +560,28 @@
     "end": 155.2
   },
   {
-    "front": "コメント欄で教えてください。ありがとうございます。",
+    "front": "コメントで教えてください。見てくれてありがとう。",
     "back": "learn about next in the comments thanks",
     "videoId": "vFW_TxKLyrE",
     "start": 153.519,
     "end": 156.8
   },
   {
-    "front": "ご覧いただきありがとうございます。またお会いしましょう。",
+    "front": "また次の動画でお会いしましょう。",
     "back": "for watching and I will see you in the",
     "videoId": "vFW_TxKLyrE",
     "start": 155.2,
     "end": 157.64
   },
   {
-    "front": "次回",
+    "front": "",
     "back": "next",
     "videoId": "vFW_TxKLyrE",
     "start": 156.8,
     "end": 160.64
   },
   {
-    "front": "お会いしましょう",
+    "front": "",
     "back": "one",
     "videoId": "vFW_TxKLyrE",
     "start": 157.64,

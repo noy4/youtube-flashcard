@@ -12,15 +12,16 @@ interface Flashcard {
 }
 
 export class SubtitleConverter {
-  private translator: Translator | null;
+  private translator: Translator
   private subtitles: Subtitle[];
 
   constructor(
     subtitles: Subtitle[],
-    private videoId?: string,
-    apiKey?: string
+    private videoId: string,
+    apiKey: string,
+    model?: string
   ) {
-    this.translator = apiKey ? new Translator(apiKey) : null;
+    this.translator = new Translator(apiKey, model)
     this.subtitles = subtitles;
   }
 
@@ -29,11 +30,10 @@ export class SubtitleConverter {
    * @param sourceLang 元の言語コード（例: 'en'）
    * @param targetLang 翻訳後の言語コード（例: 'ja'）
    */
-  public async convert(sourceLang: string = 'en', targetLang: string = 'ja'): Promise<Flashcard[]> {
-    if (!this.translator) {
-      throw new Error('翻訳機能を使用するにはAPIキーが必要です');
-    }
-
+  public async convert(
+    sourceLang: string = 'en',
+    targetLang: string = 'ja'
+  ): Promise<Flashcard[]> {
     try {
       // 字幕を翻訳
       const translatedSubtitles = await this.translator.translate(this.subtitles, sourceLang, targetLang);

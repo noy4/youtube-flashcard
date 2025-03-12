@@ -4,8 +4,9 @@ import type { Subtitle } from './youtube.js';
 
 export class Translator {
   private client: OpenAI;
+  private model: string;
 
-  constructor(apiKey: string) {
+  constructor(apiKey: string, model?: string) {
     if (!apiKey) {
       throw new Error('OpenRouter APIキーが必要です');
     }
@@ -13,6 +14,7 @@ export class Translator {
       apiKey,
       baseURL: 'https://openrouter.ai/api/v1'
     });
+    this.model = model || process.env.AI_MODEL || 'google/gemini-2.0-flash-exp:free';
   }
 
   /**
@@ -69,8 +71,9 @@ Output example:
 The output will be JSON parsed, so make sure to output valid JSON.`
 
     try {
+      console.log('model:', this.model)
       const response = await this.client.chat.completions.create({
-        model: 'google/gemini-2.0-flash-001',
+        model: this.model,
         messages: [
           {
             role: 'system',

@@ -22,10 +22,18 @@ export class Translator {
    * @param toLang 翻訳後の言語（例: 'ja'）
    * @returns 翻訳済みの字幕配列
    */
-  async translate(subtitles: Subtitle[], fromLang: string, toLang: string): Promise<Subtitle[]> {
-    const prompt = `Translate the text field from ${fromLang} to ${toLang} for each subtitle in the following JSON array.
-Add a 'translation' field to each subtitle object with the translated text.
-Return the entire JSON array with the added translations.
+  async translate(
+    subtitles: Subtitle[],
+    fromLang: string,
+    toLang: string
+  ): Promise<Subtitle[]> {
+    const systemPrompt = 'You are a professional subtitle translator. Ensure proper English punctuation before translation for maximum accuracy and clarity. Return results in the specified JSON format.'
+
+    const userPrompt = `Add appropriate punctuation to the English text in these subtitles:
+- Use commas (,) for clauses and lists
+- Use periods (.) for complete sentences
+
+Then translate from ${fromLang} to ${toLang} and add as 'translation' field.
 
 ${JSON.stringify(subtitles, null, 2)}`;
 
@@ -35,11 +43,11 @@ ${JSON.stringify(subtitles, null, 2)}`;
         messages: [
           {
             role: 'system',
-            content: 'You are a professional translator. Translate text accurately while maintaining natural language flow. Return the translations as a JSON array with translation field added to each subtitle object.'
+            content: systemPrompt,
           },
           {
             role: 'user',
-            content: prompt
+            content: userPrompt
           }
         ],
         temperature: 0.3,

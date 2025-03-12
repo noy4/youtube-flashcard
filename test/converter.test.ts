@@ -6,8 +6,8 @@ import type { Subtitle } from '../src/youtube.js';
 const createSubtitles = (texts: string[]): Subtitle[] => {
   return texts.map((text, i) => ({
     text,
-    start: String(i * 10),
-    end: String((i * 10) + 10)
+    start: i * 10,
+    end: (i * 10) + 10
   }));
 };
 
@@ -18,7 +18,10 @@ vi.mock('../src/translator.js', () => ({
       throw new Error('OpenRouter APIキーが必要です');
     }
     return {
-      translate: vi.fn().mockImplementation((text) => Promise.resolve(`Translated: ${text}`))
+      translate: vi.fn().mockImplementation((text) => Promise.resolve(`Translated: ${text}`)),
+      translateBatch: vi.fn().mockImplementation((texts) =>
+        Promise.resolve(texts.map(text => `Translated: ${text}`))
+      )
     };
   })
 }));
@@ -28,8 +31,8 @@ describe('SubtitleConverter', () => {
     it('フラッシュカードを正しいMarkdown形式に変換する', () => {
       const converter = new SubtitleConverter(createSubtitles([]));
       const cards = [
-        { front: "Question 1", back: "Answer 1" },
-        { front: "Question 2", back: "Answer 2" }
+        { front: "Question 1", back: "Answer 1", start: 0, end: 10 },
+        { front: "Question 2", back: "Answer 2", start: 10, end: 20 }
       ];
 
       const markdown = converter.toString(cards, 'obsidian');
@@ -83,12 +86,14 @@ describe('SubtitleConverter', () => {
         front: "Question 1",
         back: "Answer 1",
         videoId: "test123",
-        startTime: 0,
-        endTime: 10
+        start: 0,
+        end: 10
       },
       {
         front: "Question 2",
-        back: "Answer 2"
+        back: "Answer 2",
+        start: 10,
+        end: 20
       }
     ];
 
@@ -108,14 +113,16 @@ describe('SubtitleConverter', () => {
         front: "Question 1",
         back: "Answer 1",
         videoId: "test123",
-        startTime: 0,
-        endTime: 10
+        start: 0,
+        end: 10
       });
 
-      // ビデオ情報を含まないカードの検証
+      // ビデオ情報を含むが異なる時間のカードの検証
       expect(parsed[1]).toEqual({
         front: "Question 2",
-        back: "Answer 2"
+        back: "Answer 2",
+        start: 10,
+        end: 20
       });
     });
   });

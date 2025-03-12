@@ -34,26 +34,25 @@ export class SubtitleConverter {
       throw new Error('翻訳機能を使用するにはAPIキーが必要です');
     }
 
-    const cards: Flashcard[] = [];
-    for (const subtitle of this.subtitles) {
-      try {
-        const translation = await this.translator.translate(subtitle.text, sourceLang, targetLang);
-        const card: Flashcard = {
-          front: translation,
-          back: subtitle.text,
-          videoId: this.videoId,
-          start: subtitle.start,
-          end: subtitle.end
-        };
+    try {
+      // 全ての字幕テキストを抽出
+      const texts = this.subtitles.map(subtitle => subtitle.text);
 
-        cards.push(card);
-      } catch (error) {
-        console.error(`翻訳エラー: ${error instanceof Error ? error.message : 'Unknown error'}`);
-        // エラーが発生した場合でもスキップして続行
-        continue;
-      }
+      // 一括翻訳を実行
+      const translations = await this.translator.translateBatch(texts, sourceLang, targetLang);
+
+      // 翻訳結果とオリジナルの字幕情報を組み合わせてフラッシュカードを作成
+      return this.subtitles.map((subtitle, index) => ({
+        front: translations[index],
+        back: subtitle.text,
+        videoId: this.videoId,
+        start: subtitle.start,
+        end: subtitle.end
+      }));
+    } catch (error) {
+      console.error(`翻訳エラー: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw error; // 一括翻訳でエラーが発生した場合は、呼び出し元で処理してもらう
     }
-    return cards;
   }
 
   /**

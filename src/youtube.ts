@@ -22,7 +22,13 @@ export function extractVideoId(url: string): string {
  * YouTubeの字幕を取得
  * @throws {Error} 字幕が見つからない場合やその他のエラー
  */
-export async function fetchSubtitles(url: string, languageCode: string): Promise<string[]> {
+export interface SubtitleData {
+  texts: string[];
+  startTimes: number[];
+  endTimes: number[];
+}
+
+export async function fetchSubtitles(url: string, languageCode: string): Promise<SubtitleData> {
   const videoId = extractVideoId(url);
 
   try {
@@ -32,7 +38,13 @@ export async function fetchSubtitles(url: string, languageCode: string): Promise
       throw new Error('字幕が見つかりませんでした');
     }
 
-    return subtitles.map(subtitle => subtitle.text);
+    const texts = subtitles.map(subtitle => subtitle.text);
+    const startTimes = subtitles.map(subtitle => parseFloat(subtitle.start));
+    const endTimes = subtitles.map(subtitle =>
+      parseFloat(subtitle.start) + parseFloat(subtitle.dur)
+    );
+
+    return { texts, startTimes, endTimes };
   } catch (error) {
     if (error instanceof Error) {
       throw error;

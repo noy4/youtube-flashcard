@@ -3,7 +3,7 @@ import { Command } from 'commander';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { readFileSync, writeFileSync } from 'fs';
-import { fetchSubtitles, getAvailableLanguages } from '../youtube.js';
+import { fetchSubtitles, getAvailableLanguages, extractVideoId } from '../youtube.js';
 import { SubtitleConverter } from '../converter.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -24,6 +24,7 @@ program
   .description('YouTubeの動画URLからフラッシュカードを生成')
   .argument('<url>', 'YouTube動画のURL')
   .option('-o, --output <path>', '出力ファイルパス', 'flashcards.md')
+  .option('-f, --format <format>', '出力形式 (obsidian または anki)', 'obsidian')
   .option('-s, --source-lang <code>', '元の言語コード', 'en')
   .option('-t, --target-lang <code>', '翻訳後の言語コード', 'ja')
   .option('--api-key <key>', 'OpenAI APIキー（環境変数 OPENAI_API_KEY でも指定可能）')
@@ -36,15 +37,16 @@ program
       }
 
       console.log('字幕を取得中...');
-      const subtitles = await fetchSubtitles(url, options.sourceLang);
+      const { texts, startTimes, endTimes } = await fetchSubtitles(url, options.sourceLang);
+      const videoId = extractVideoId(url);
 
       console.log('フラッシュカードを生成中...');
-      const converter = new SubtitleConverter(subtitles, apiKey);
+      const converter = new SubtitleConverter(texts, videoId, startTimes, endTimes, apiKey);
       const flashcards = await converter.convert(options.sourceLang, options.targetLang);
-      const markdown = converter.toMarkdown(flashcards);
+      const output = converter.toString(flashcards, options.format as 'obsidian' | 'anki');
 
-      writeFileSync(options.output, markdown, 'utf8');
-      console.log(`フラッシュカードを ${options.output} に保存しました`);
+      writeFileSync(options.output, output, 'utf8');
+      console.log(`フラッシュカードを ${options.output} に保存しました（形式: ${options.format}）`);
     } catch (error) {
       if (error instanceof Error) {
         console.error('エラーが発生しました:', error.message);

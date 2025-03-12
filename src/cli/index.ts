@@ -44,13 +44,10 @@ program
 
       console.log('字幕を取得中...');
       const subtitles = await fetchSubtitles(videoUrl, options.sourceLang);
-      const texts = subtitles.map(s => s.text);
-      const startTimes = subtitles.map(s => parseFloat(s.start));
-      const endTimes = subtitles.map(s => parseFloat(s.start) + parseFloat(s.dur));
       const videoId = extractVideoId(videoUrl);
 
       console.log('フラッシュカードを生成中...');
-      const converter = new SubtitleConverter(texts, videoId, startTimes, endTimes, apiKey);
+      const converter = new SubtitleConverter(subtitles, videoId, apiKey);
       const flashcards = await converter.convert(options.sourceLang, options.targetLang);
       const output = converter.toString(flashcards, options.format as 'obsidian' | 'anki');
 

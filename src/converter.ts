@@ -1,4 +1,5 @@
 import { Translator } from './translator.js';
+import type { Subtitle } from './youtube.js';
 
 export type OutputFormat = 'obsidian' | 'anki' | 'json';
 
@@ -11,18 +12,24 @@ interface Flashcard {
 }
 
 export class SubtitleConverter {
-  private subtitles: string[];
   private translator: Translator | null;
+  private subtitles: {
+    text: string;
+    start: number;
+    end: number;
+  }[];
 
   constructor(
-    subtitles: string[],
+    subtitles: Subtitle[],
     private videoId?: string,
-    private startTimes?: number[],
-    private endTimes?: number[],
     apiKey?: string
   ) {
-    this.subtitles = subtitles;
     this.translator = apiKey ? new Translator(apiKey) : null;
+    this.subtitles = subtitles.map(s => ({
+      text: s.text,
+      start: parseFloat(s.start),
+      end: parseFloat(s.start) + parseFloat(s.dur)
+    }));
   }
 
   /**
@@ -31,7 +38,34 @@ export class SubtitleConverter {
    * @param targetLang 翻訳後の言語コード（例: 'ja'）
    */
   public async convert(sourceLang: string = 'en', targetLang: string = 'ja'): Promise<Flashcard[]> {
-    return this.createTranslatedCards(this.subtitles, sourceLang, targetLang);
+    if (!this.translator) {
+      throw new Error('翻訳機能を使用するにはAPIキーが必要です');
+    }
+
+    const cards: Flashcard[] = [];
+    for (const subtitle of this.subtitles) {
+      try {
+        const translation = await this.translator.translate(subtitle.text, sourceLang, targetLang);
+        const card: Flashcard = {
+          front: translation,
+          back: subtitle.text
+        };
+
+        // YouTubeの動画情報が利用可能な場合、カードに追加
+        if (this.videoId) {
+          card.videoId = this.videoId;
+          card.startTime = subtitle.start;
+          card.endTime = subtitle.end;
+        }
+
+        cards.push(card);
+      } catch (error) {
+        console.error(`翻訳エラー: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        // エラーが発生した場合でもスキップして続行
+        continue;
+      }
+    }
+    return cards;
   }
 
   /**
@@ -71,46 +105,12 @@ export class SubtitleConverter {
         content += `<br><br><iframe
   width="560"
   height="315"
-  src="https://www.youtube.com/embed/${card.videoId}?start=${card.startTime}&end=${card.endTime}&autoplay=1"
+  src="https://www.youtube.com/embed/${card.videoId}?start=${Math.floor(card.startTime)}&end=${Math.floor(card.endTime)}&autoplay=1"
   frameborder="0"
   autoplay="1"
 />`;
       }
       return `${content}\t${card.back}`;
     }).join('\n');
-  }
-
-  /**
-   * 字幕を翻訳してフラッシュカードを生成
-   */
-  private async createTranslatedCards(texts: string[], sourceLang: string, targetLang: string): Promise<Flashcard[]> {
-    if (!this.translator) {
-      throw new Error('翻訳機能を使用するにはAPIキーが必要です');
-    }
-
-    const cards: Flashcard[] = [];
-    for (let i = 0; i < texts.length; i++) {
-      try {
-        const translation = await this.translator.translate(texts[i], sourceLang, targetLang);
-        const card: Flashcard = {
-          front: translation,
-          back: texts[i]
-        };
-
-        // YouTubeの動画情報が利用可能な場合、カードに追加
-        if (this.videoId && this.startTimes && this.endTimes && i < this.startTimes.length) {
-          card.videoId = this.videoId;
-          card.startTime = this.startTimes[i];
-          card.endTime = this.endTimes[i];
-        }
-
-        cards.push(card);
-      } catch (error) {
-        console.error(`翻訳エラー: ${error instanceof Error ? error.message : 'Unknown error'}`);
-        // エラーが発生した場合でもスキップして続行
-        continue;
-      }
-    }
-    return cards;
   }
 }

@@ -1,6 +1,6 @@
 import { getSubtitles } from 'youtube-caption-extractor';
 
-interface Subtitle {
+export interface Subtitle {
   start: string;
   dur: string;
   text: string;

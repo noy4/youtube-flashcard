@@ -2,6 +2,7 @@
 
 - [Anki](https://apps.ankiweb.net/) 形式
 - [Obsidian Spaced Repetition](https://github.com/st3v3nmw/obsidian-spaced-repetition) 形式
+- JSON 形式
 
 ## Anki 形式
 
@@ -49,9 +50,10 @@ I borrowed this book from the library last week.
   },
   {
     "front": "私は週末に友達と映画を見に行きました",
-    "back": "I went to see a movie with my friends on the weekend."
+    "back": "I went to see a movie with my friends on the weekend.",
+    "videoId": "abc123",
+    "startTime": 10,
+    "endTime": 20
   }
 ]
 ```
-
-ビデオIDと時間情報は、YouTube動画から作成されたフラッシュカードの場合のみ含まれます。

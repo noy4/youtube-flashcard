@@ -8,6 +8,7 @@
     "youtube-flashcard": "dist/cli/index.js"
   },
   "scripts": {
+    "exec": "vite-node src/cli/index.ts",
     "build": "tsc",
     "dev": "tsc -w",
     "docs:dev": "vitepress dev docs",

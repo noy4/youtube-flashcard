@@ -1,23 +1,23 @@
 #!/usr/bin/env node
-import { Command } from 'commander';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { readFileSync, writeFileSync } from 'fs';
-import { fetchSubtitles, getAvailableLanguages, extractVideoId } from '../youtube.js';
-import { SubtitleConverter } from '../converter.js';
+import { readFileSync, writeFileSync } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { Command } from 'commander'
+import { SubtitleConverter } from '../converter.js'
+import { extractVideoId, fetchSubtitles, getAvailableLanguages } from '../youtube.js'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 const packageJson = JSON.parse(
-  readFileSync(path.join(__dirname, '../../package.json'), 'utf8')
-);
+  readFileSync(path.join(__dirname, '../../package.json'), 'utf8'),
+)
 
-const program = new Command();
+const program = new Command()
 
 program
   .name('youtube-flashcard')
   .description('YouTubeの字幕からフラッシュカードを生成')
-  .version(packageJson.version);
+  .version(packageJson.version)
 
 program
   .command('convert')
@@ -32,42 +32,44 @@ program
   .option('-b, --base-url <url>', 'API baseURL（環境変数 OPENAI_BASE_URL でも指定可能）')
   .action(async (url, options) => {
     try {
-      const videoUrl = url || process.env.VIDEO_URL;
+      const videoUrl = url || process.env.VIDEO_URL
       if (!videoUrl) {
-        console.error('エラー: YouTube URLが必要です。引数または環境変数VIDEO_URLで指定してください。');
-        process.exit(1);
+        console.error('エラー: YouTube URLが必要です。引数または環境変数VIDEO_URLで指定してください。')
+        process.exit(1)
       }
 
-      const apiKey = options.apiKey || process.env.OPENAI_API_KEY;
+      const apiKey = options.apiKey || process.env.OPENAI_API_KEY
       if (!apiKey) {
-        console.error('エラー: OpenAI APIキーが必要です。--api-keyオプションまたは環境変数OPENAI_API_KEYで指定してください。');
-        process.exit(1);
+        console.error('エラー: OpenAI APIキーが必要です。--api-keyオプションまたは環境変数OPENAI_API_KEYで指定してください。')
+        process.exit(1)
       }
 
-      console.log('字幕を取得中...');
-      const subtitles = await fetchSubtitles(videoUrl, options.sourceLang);
-      const videoId = extractVideoId(videoUrl);
+      console.log('字幕を取得中...')
+      const subtitles = await fetchSubtitles(videoUrl, options.sourceLang)
+      const videoId = extractVideoId(videoUrl)
 
-      console.log('フラッシュカードを生成中...');
+      console.log('フラッシュカードを生成中...')
       const converter = new SubtitleConverter(subtitles, videoId, {
         apiKey,
         baseURL: options.baseUrl,
-        model: options.model
-      });
-      const flashcards = await converter.convert(options.sourceLang, options.targetLang);
-      const output = converter.toString(flashcards, options.format as 'obsidian' | 'anki');
+        model: options.model,
+      })
+      const flashcards = await converter.convert(options.sourceLang, options.targetLang)
+      const output = converter.toString(flashcards, options.format as 'obsidian' | 'anki')
 
-      writeFileSync(options.output, output, 'utf8');
-      console.log(`フラッシュカードを ${options.output} に保存しました（形式: ${options.format}）`);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('エラーが発生しました:', error.message);
-      } else {
-        console.error('予期せぬエラーが発生しました');
-      }
-      process.exit(1);
+      writeFileSync(options.output, output, 'utf8')
+      console.log(`フラッシュカードを ${options.output} に保存しました（形式: ${options.format}）`)
     }
-  });
+    catch (error) {
+      if (error instanceof Error) {
+        console.error('エラーが発生しました:', error.message)
+      }
+      else {
+        console.error('予期せぬエラーが発生しました')
+      }
+      process.exit(1)
+    }
+  })
 
 program
   .command('languages')
@@ -75,22 +77,25 @@ program
   .argument('<url>', 'YouTube動画のURL')
   .action(async (url) => {
     try {
-      const languages = await getAvailableLanguages(url);
+      const languages = await getAvailableLanguages(url)
       if (languages.length > 0) {
-        console.log('利用可能な言語コード:');
-        languages.forEach(lang => console.log(`- ${lang}`));
-        console.log('\n注意: 現在は英語(en)の字幕のみに対応しています。');
-      } else {
-        console.log('この動画で利用可能な字幕が見つかりませんでした。');
+        console.log('利用可能な言語コード:')
+        languages.forEach(lang => console.log(`- ${lang}`))
+        console.log('\n注意: 現在は英語(en)の字幕のみに対応しています。')
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('エラーが発生しました:', error.message);
-      } else {
-        console.error('予期せぬエラーが発生しました');
+      else {
+        console.log('この動画で利用可能な字幕が見つかりませんでした。')
       }
-      process.exit(1);
     }
-  });
+    catch (error) {
+      if (error instanceof Error) {
+        console.error('エラーが発生しました:', error.message)
+      }
+      else {
+        console.error('予期せぬエラーが発生しました')
+      }
+      process.exit(1)
+    }
+  })
 
-program.parse();
+program.parse()

@@ -1,23 +1,23 @@
-import { getSubtitles } from 'youtube-caption-extractor';
-import { Big } from 'big.js';
+import { Big } from 'big.js'
+import { getSubtitles } from 'youtube-caption-extractor'
 
 export interface Subtitle {
-  text: string;
-  start: number;
-  end: number;
-  translation?: string;
+  text: string
+  start: number
+  end: number
+  translation?: string
 }
 
 /**
  * YouTubeのURLから動画IDを抽出
  */
 export function extractVideoId(url: string): string {
-  const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/;
-  const match = url.match(regex);
+  const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/
+  const match = url.match(regex)
   if (!match) {
-    throw new Error('Invalid YouTube URL');
+    throw new Error('Invalid YouTube URL')
   }
-  return match[1];
+  return match[1]
 }
 
 /**
@@ -25,20 +25,20 @@ export function extractVideoId(url: string): string {
  * @throws {Error} 字幕が見つからない場合やその他のエラー
  */
 export async function fetchSubtitles(url: string, languageCode: string): Promise<Subtitle[]> {
-  const videoID = extractVideoId(url);
-  const rawSubtitles = await getSubtitles({ videoID });
+  const videoID = extractVideoId(url)
+  const rawSubtitles = await getSubtitles({ videoID })
 
   if (!rawSubtitles.length)
-    throw new Error('字幕が見つかりませんでした');
+    throw new Error('字幕が見つかりませんでした')
 
-  return rawSubtitles.map(subtitle => {
-    const start = new Big(subtitle.start);
+  return rawSubtitles.map((subtitle) => {
+    const start = new Big(subtitle.start)
     return {
       text: subtitle.text,
       start: +start,
-      end: +start.plus(subtitle.dur)
-    };
-  });
+      end: +start.plus(subtitle.dur),
+    }
+  })
 }
 
 /**
@@ -46,12 +46,13 @@ export async function fetchSubtitles(url: string, languageCode: string): Promise
  * 現在は英語のみ対応
  */
 export async function getAvailableLanguages(url: string): Promise<string[]> {
-  const videoId = extractVideoId(url);
+  const videoId = extractVideoId(url)
 
   try {
-    const subtitles = await getSubtitles({ videoID: videoId });
-    return subtitles && subtitles.length > 0 ? ['en'] : [];
-  } catch (error) {
-    return [];
+    const subtitles = await getSubtitles({ videoID: videoId })
+    return subtitles && subtitles.length > 0 ? ['en'] : []
+  }
+  catch (error) {
+    return []
   }
 }

@@ -9,9 +9,9 @@
 CLIアプリケーションを作成するためのライブラリです。コマンドライン引数のパース、オプションの定義、ヘルプメッセージの生成などの機能を提供します。
 
 ```typescript
-import { Command } from 'commander';
+import { Command } from 'commander'
 
-const program = new Command();
+const program = new Command()
 
 program
   .name('youtube-flashcard')
@@ -21,9 +21,9 @@ program
   .argument('<url>', 'YouTubeのURL')
   .action(async (url, options) => {
     // コマンド実行時の処理
-  });
+  })
 
-program.parse();
+program.parse()
 ```
 
 参考プロジェクト：
@@ -35,28 +35,28 @@ program.parse();
 OpenAI APIを使用して、字幕の翻訳を行うためのライブラリです。
 
 ```typescript
-import OpenAI from 'openai';
+import OpenAI from 'openai'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
-});
+})
 
 async function translateText(text: string): Promise<string> {
   const completion = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
+    model: 'gpt-3.5-turbo',
     messages: [
       {
-        role: "system",
-        content: "You are a helpful translator."
+        role: 'system',
+        content: 'You are a helpful translator.'
       },
       {
-        role: "user",
+        role: 'user',
         content: `Translate the following text to Japanese: ${text}`
       }
     ]
-  });
+  })
 
-  return completion.choices[0].message.content || '';
+  return completion.choices[0].message.content || ''
 }
 ```
 
@@ -69,14 +69,14 @@ async function translateText(text: string): Promise<string> {
 YouTubeの字幕を抽出するためのライブラリです。
 
 ```typescript
-import { extractCaptions } from 'youtube-caption-extractor';
+import { extractCaptions } from 'youtube-caption-extractor'
 
 async function getCaptions(url: string, lang: string = 'en'): Promise<string[]> {
   const captions = await extractCaptions(url, {
     language: lang
-  });
+  })
 
-  return captions.map(caption => caption.text);
+  return captions.map(caption => caption.text)
 }
 ```
 

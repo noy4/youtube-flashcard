@@ -1,24 +1,25 @@
-import { writeFileSync } from 'fs';
-import OpenAI, { ClientOptions } from 'openai';
-import type { Subtitle } from './youtube.js';
+import type { ClientOptions } from 'openai'
+import type { Subtitle } from './youtube.js'
+import { writeFileSync } from 'node:fs'
+import OpenAI from 'openai'
 
 export type TranslatorOptions = ClientOptions & {
   model?: string
 }
 
 export class Translator {
-  private client: OpenAI;
-  private model: string;
+  private client: OpenAI
+  private model: string
 
   constructor(options?: TranslatorOptions) {
-    const { model, ...clientOptions } = options || {};
+    const { model, ...clientOptions } = options || {}
 
     this.client = new OpenAI({
       ...clientOptions,
-      baseURL: clientOptions.baseURL || process.env.OPENAI_BASE_URL || 'https://openrouter.ai/api/v1'
-    });
+      baseURL: clientOptions.baseURL || process.env.OPENAI_BASE_URL || 'https://openrouter.ai/api/v1',
+    })
 
-    this.model = model || process.env.AI_MODEL || 'google/gemini-2.0-flash-exp:free';
+    this.model = model || process.env.AI_MODEL || 'google/gemini-2.0-flash-exp:free'
   }
 
   /**
@@ -31,7 +32,7 @@ export class Translator {
   async translate(
     subtitles: Subtitle[],
     fromLang: string,
-    toLang: string
+    toLang: string,
   ): Promise<Subtitle[]> {
     const systemPrompt = `You are a professional subtitle translator. You will receive a list of subtitles in JSON format.
 
@@ -86,45 +87,47 @@ The output will be JSON parsed, so make sure to output valid JSON.`
           {
             role: 'user',
             content: JSON.stringify(subtitles, null, 2),
-          }
+          },
         ],
         temperature: 0.3,
-        response_format: { type: 'json_object' }
-      });
+        response_format: { type: 'json_object' },
+      })
 
       if (!response.choices || response.choices.length === 0) {
-        throw new Error('翻訳結果が空でした');
+        throw new Error('翻訳結果が空でした')
       }
 
-      const content = response.choices[0]?.message?.content?.trim();
+      const content = response.choices[0]?.message?.content?.trim()
       if (!content) {
-        throw new Error('翻訳結果が空でした');
+        throw new Error('翻訳結果が空でした')
       }
 
-      let translatedSubtitles: Subtitle[];
+      let translatedSubtitles: Subtitle[]
       try {
         console.log('content:', content)
-        const parsed = JSON.parse(content);
+        const parsed = JSON.parse(content)
         if (!Array.isArray(parsed)) {
-          throw new Error('翻訳結果が配列ではありません');
+          throw new TypeError('翻訳結果が配列ではありません')
         }
-        translatedSubtitles = parsed;
-      } catch (error) {
-        throw new Error('翻訳結果のJSONパースに失敗しました');
+        translatedSubtitles = parsed
+      }
+      catch (error) {
+        throw new Error('翻訳結果のJSONパースに失敗しました')
       }
 
-      writeFileSync('translations.json', JSON.stringify(translatedSubtitles, null, 2), 'utf8');
+      writeFileSync('translations.json', JSON.stringify(translatedSubtitles, null, 2), 'utf8')
 
       if (translatedSubtitles.length !== subtitles.length) {
-        throw new Error('翻訳結果の数が入力字幕の数と一致しません');
+        throw new Error('翻訳結果の数が入力字幕の数と一致しません')
       }
 
-      return translatedSubtitles;
-    } catch (error) {
+      return translatedSubtitles
+    }
+    catch (error) {
       if (error instanceof Error) {
-        throw error;
+        throw error
       }
-      throw new Error('翻訳中にエラーが発生しました');
+      throw new Error('翻訳中にエラーが発生しました')
     }
   }
 }

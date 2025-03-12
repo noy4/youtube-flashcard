@@ -27,7 +27,7 @@ describe('Translator', () => {
   });
 
   it('APIキーなしでインスタンス化するとエラーを投げる', () => {
-    expect(() => new Translator('')).toThrow('OpenAI APIキーが必要です');
+    expect(() => new Translator('')).toThrow('OpenRouter APIキーが必要です');
   });
 
   describe('translate', () => {
@@ -44,7 +44,7 @@ describe('Translator', () => {
 
       expect(result).toBe('翻訳されたテキスト');
       expect(mockCreate).toHaveBeenCalledWith({
-        model: 'gpt-3.5-turbo',
+        model: 'google/gemini-2.0-flash-001',
         messages: [
           {
             role: 'system',

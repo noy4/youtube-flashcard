@@ -38,15 +38,19 @@ describe('YouTube機能のテスト', () => {
 
     it('字幕を正常に取得できる', async () => {
       const mockSubtitles = [
-        { text: 'First subtitle' },
-        { text: 'Second subtitle' }
+        { text: 'First subtitle', start: '0', dur: '1' },
+        { text: 'Second subtitle', start: '1', dur: '1' }
       ];
       (getSubtitles as any).mockResolvedValue(mockSubtitles);
 
       const url = 'https://www.youtube.com/watch?v=abcd1234';
       const result = await fetchSubtitles(url, 'en');
 
-      expect(result).toEqual(['First subtitle', 'Second subtitle']);
+      expect(result).toEqual({
+        texts: ['First subtitle', 'Second subtitle'],
+        startTimes: [0, 1],
+        endTimes: [1, 2]
+      });
       expect(getSubtitles).toHaveBeenCalledWith({ videoID: 'abcd1234' });
     });
 

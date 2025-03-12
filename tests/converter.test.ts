@@ -4,9 +4,14 @@ import { Translator } from '../src/translator.js';
 
 // Translatorのモック
 vi.mock('../src/translator.js', () => ({
-  Translator: vi.fn().mockImplementation(() => ({
-    translate: vi.fn().mockImplementation((text) => Promise.resolve(`Translated: ${text}`))
-  }))
+  Translator: vi.fn().mockImplementation((apiKey) => {
+    if (!apiKey) {
+      throw new Error('OpenRouter APIキーが必要です');
+    }
+    return {
+      translate: vi.fn().mockImplementation((text) => Promise.resolve(`Translated: ${text}`))
+    };
+  })
 }));
 
 describe('SubtitleConverter', () => {
@@ -89,15 +94,15 @@ describe('SubtitleConverter', () => {
     const subtitles = ["This is a test sentence."];
 
     beforeEach(() => {
-      converter = new SubtitleConverter(subtitles, 'test-api-key');
+      converter = new SubtitleConverter(subtitles, undefined, undefined, undefined, 'test-api-key');
     });
 
     it('APIキーがある場合は翻訳を実行する', async () => {
       const cards = await converter.convert('en', 'ja');
 
       expect(cards).toHaveLength(1);
-      expect(cards[0].front).toBe("This is a test sentence.");
-      expect(cards[0].back).toBe("Translated: This is a test sentence.");
+      expect(cards[0].front).toBe("Translated: This is a test sentence.");
+      expect(cards[0].back).toBe("This is a test sentence.");
     });
 
     it('APIキーがない場合はエラーを投げる', async () => {

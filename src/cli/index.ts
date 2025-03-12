@@ -43,7 +43,10 @@ program
       }
 
       console.log('字幕を取得中...');
-      const { texts, startTimes, endTimes } = await fetchSubtitles(videoUrl, options.sourceLang);
+      const subtitles = await fetchSubtitles(videoUrl, options.sourceLang);
+      const texts = subtitles.map(s => s.text);
+      const startTimes = subtitles.map(s => parseFloat(s.start));
+      const endTimes = subtitles.map(s => parseFloat(s.start) + parseFloat(s.dur));
       const videoId = extractVideoId(videoUrl);
 
       console.log('フラッシュカードを生成中...');

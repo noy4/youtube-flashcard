@@ -35,11 +35,11 @@ function parsePrompt(content: string): PromptSections {
 
 /**
  * プロンプトファイルを読み込んで解析
- * @param category プロンプトのカテゴリ（例: 'translator'）
+ * @param name プロンプト名（例: 'translator'）
  * @returns セクション名とその内容のマップ
  */
-export function loadPrompt(category: string): PromptSections {
-  const path = join(import.meta.dirname, 'prompts', `${category}.md`)
+export function loadPrompt(name: string): PromptSections {
+  const path = join(import.meta.dirname, 'prompts', `${name}.md`)
   const content = readFileSync(path, 'utf-8')
   return parsePrompt(content)
 }

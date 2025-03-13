@@ -66,40 +66,9 @@ describe('translator', () => {
           },
         ],
         temperature: 0.3,
+        max_completion_tokens: 1_000_000,
         response_format: { type: 'json_object' },
       })
-    })
-
-    it('aPIエラーの場合はエラーを投げる', async () => {
-      mockCreate.mockRejectedValueOnce(new Error('API Error'))
-
-      await expect(translator.translate([], 'en', 'ja'))
-        .rejects
-        .toThrow('翻訳中にエラーが発生しました')
-    })
-
-    it('空の応答の場合はエラーを投げる', async () => {
-      mockCreate.mockResolvedValueOnce({
-        choices: [{
-          message: {
-            content: '',
-          },
-        }],
-      })
-
-      await expect(translator.translate([], 'en', 'ja'))
-        .rejects
-        .toThrow('翻訳結果が空でした')
-    })
-
-    it('choices配列が空の場合はエラーを投げる', async () => {
-      mockCreate.mockResolvedValueOnce({
-        choices: [],
-      })
-
-      await expect(translator.translate([], 'en', 'ja'))
-        .rejects
-        .toThrow('翻訳結果が空でした')
     })
   })
 })

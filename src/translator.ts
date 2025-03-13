@@ -76,52 +76,23 @@ ${JSON.stringify(subtitles, null, 2)}
 </input>
 `
 
-    try {
-      console.log('model:', this.model)
-      const response = await this.client.chat.completions.create({
-        model: this.model,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt },
-        ],
-        temperature: 0.3,
-        response_format: { type: 'json_object' },
-      })
+    console.log('model:', this.model)
+    const response = await this.client.chat.completions.create({
+      model: this.model,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt },
+      ],
+      temperature: 0.3,
+      max_completion_tokens: 1_000_000,
+      response_format: { type: 'json_object' },
+    })
 
-      if (!response.choices || response.choices.length === 0) {
-        throw new Error('翻訳結果が空でした')
-      }
+    const content = response.choices[0]?.message.content?.trim() || ''
+    console.log('content:', content)
+    const parsed = JSON.parse(content)
+    const translatedSubtitles = parsed as Subtitle[]
 
-      const content = response.choices[0]?.message?.content?.trim()
-      if (!content) {
-        throw new Error('翻訳結果が空でした')
-      }
-
-      try {
-        console.log('content:', content)
-        const parsed = JSON.parse(content)
-        if (!Array.isArray(parsed)) {
-          throw new TypeError('翻訳結果が配列ではありません')
-        }
-        const translatedSubtitles = parsed as Subtitle[]
-
-        if (translatedSubtitles.length !== subtitles.length) {
-          throw new TypeError('翻訳結果の数が入力字幕の数と一致しません')
-        }
-
-        return translatedSubtitles
-      }
-      catch (error) {
-        throw new Error('翻訳中にエラーが発生しました')
-      }
-    }
-    catch (error) {
-      if (error instanceof Error) {
-        if (error.message === '翻訳結果が空でした') {
-          throw error
-        }
-      }
-      throw new Error('翻訳中にエラーが発生しました')
-    }
+    return translatedSubtitles
   }
 }

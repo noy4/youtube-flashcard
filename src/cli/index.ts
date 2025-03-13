@@ -10,16 +10,16 @@ import { extractVideoId, fetchSubtitles } from '../youtube.js'
 
 interface CliOptions {
   input?: string
-  format: OutputFormat
   output: string
+  format: OutputFormat
   sourceLang: string
   targetLang: string
   addToAnki?: boolean
   deckName: string
   modelName: string
   apiKey?: string
-  model?: string
   baseUrl?: string
+  model?: string
 }
 
 class FlashcardGenerator {
@@ -91,8 +91,8 @@ const program = new Command()
   .option('--model-name <name>', 'Ankiのモデル名', '基本')
   // api
   .option('--api-key <key>', 'OpenAI APIキー', process.env.OPENAI_API_KEY)
-  .option('-m, --model <model>', 'AIモデル')
   .option('-b, --base-url <url>', 'API baseURL')
+  .option('-m, --model <model>', 'AIモデル')
   .action(async (url: string | undefined, options: CliOptions) => {
     const generator = new FlashcardGenerator()
     const flashcards = await generator.generate({

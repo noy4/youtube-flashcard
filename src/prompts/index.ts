@@ -2,12 +2,44 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 /**
- * プロンプトファイルを読み込む
- * @param category プロンプトのカテゴリ（例: 'translator'）
- * @param filename ファイル名（例: 'system.md'）
- * @returns プロンプトの内容
+ * プロンプトセクションのマッピング
  */
-export function readPrompt(category: string, filename: string): string {
-  const path = join(import.meta.dirname, category, filename)
-  return readFileSync(path, 'utf-8')
+interface PromptSections {
+  'System Prompt': string
+  'User Prompt': string
+}
+
+/**
+ * プロンプトセクションを解析
+ * @param content Markdownの内容
+ * @returns セクション名とその内容のマップ
+ */
+function parsePrompt(content: string): PromptSections {
+  const sections = {
+    'System Prompt': '',
+    'User Prompt': '',
+  } as PromptSections
+
+  const matches = content.matchAll(/^# (.+)\n([\s\S]+?)(?=\n# |$)/g)
+
+  for (const match of matches) {
+    const [, title, content] = match
+    const sectionTitle = title.trim()
+    if (sectionTitle === 'System Prompt' || sectionTitle === 'User Prompt') {
+      sections[sectionTitle] = content.trim()
+    }
+  }
+
+  return sections
+}
+
+/**
+ * プロンプトファイルを読み込んで解析
+ * @param category プロンプトのカテゴリ（例: 'translator'）
+ * @returns セクション名とその内容のマップ
+ */
+export function loadPrompt(category: string): PromptSections {
+  const path = join(import.meta.dirname, category, 'prompt.md')
+  const content = readFileSync(path, 'utf-8')
+  return parsePrompt(content)
 }

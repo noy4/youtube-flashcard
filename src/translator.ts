@@ -2,7 +2,7 @@ import type { ClientOptions } from 'openai'
 import type { Subtitle } from './youtube.js'
 import Mustache from 'mustache'
 import OpenAI from 'openai'
-import { readPrompt } from './prompts/index.js'
+import { loadPrompt } from './prompts/index.js'
 
 export type TranslatorOptions = ClientOptions & { model: string }
 
@@ -28,9 +28,9 @@ export class Translator {
     fromLang: string,
     toLang: string,
   ): Promise<Subtitle[]> {
-    const systemPrompt = readPrompt('translator', 'system.md')
-    const userPromptTemplate = readPrompt('translator', 'user.md')
-    const userPrompt = Mustache.render(userPromptTemplate, {
+    const prompts = loadPrompt('translator')
+    const systemPrompt = prompts['System Prompt']
+    const userPrompt = Mustache.render(prompts['User Prompt'], {
       fromLang,
       toLang,
       subtitles: JSON.stringify(subtitles, null, 2),

@@ -6,13 +6,13 @@ import { Prompt } from './prompt/index.js'
 export type TranslatorOptions = ClientOptions & { model: string }
 
 export class Translator {
-  private client: OpenAI
+  private openai: OpenAI
   private model: string
   private prompt: Prompt
 
   constructor(options: TranslatorOptions) {
     const { model, ...clientOptions } = options
-    this.client = new OpenAI(clientOptions)
+    this.openai = new OpenAI(clientOptions)
     this.model = model
     this.prompt = Prompt.load('translator')
   }
@@ -37,7 +37,7 @@ export class Translator {
       subtitles: JSON.stringify(subtitles, null, 2),
     })
 
-    const response = await this.client.chat.completions.create({
+    const response = await this.openai.chat.completions.create({
       model: this.model,
       messages,
       temperature: 0.3,

@@ -24,14 +24,21 @@ export class Prompt {
    */
   private parse(content: string) {
     const messages: ChatCompletionMessageParam[] = []
-    const matches = content.matchAll(/^# (.+)\n([\s\S]+?)(?=\n# |$)/g)
+    const chunks = content.split(/^# (\w+)\n/gm)
+    const first = chunks.shift()
 
-    for (const match of matches) {
-      const [, role, content] = match
+    if (first) {
       messages.push({
-        role: role.toLowerCase(),
-        content: content.trim(),
-      } as ChatCompletionMessageParam)
+        role: 'user',
+        content: first.trim(),
+      })
+    }
+
+    for (let i = 0; i < chunks.length; i += 2) {
+      messages.push({
+        role: chunks[i].toLowerCase() as any,
+        content: chunks[i + 1].trim(),
+      })
     }
 
     return messages

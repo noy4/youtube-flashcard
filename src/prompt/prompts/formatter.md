@@ -43,8 +43,9 @@ Output example:
 ```
 
 Notes:
-- Your response will be directly parsed as JSON array.
-- DO NOT include any additional text like "Here is the formatted subtitles:", "```json", .etc.
+Your response will be directly parsed as JSON array, so:
+- DO NOT include any additional text like "Here is the processed subtitles:".
+- DO NOT include "```json" code block.
 - DO NOT return truncated or incomplete JSON array.
 
 Now, please process the following subtitles:

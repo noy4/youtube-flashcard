@@ -19,14 +19,19 @@ export class SubtitleProcessor {
   private async processWithAI(promptName: string, data: Record<string, any>) {
     const prompt = Prompt.load(promptName)
     const messages = prompt.toMessages(data)
+
+    console.time(promptName)
     const response = await this.openai.chat.completions.create({
       model: this.model,
       messages,
       temperature: 0.3,
+      // response_format: { type: 'json_object' },
     })
 
     const content = response.choices[0]?.message.content?.trim() || '[]'
+    console.log('content:', content)
     console.log('usage:', response.usage)
+    console.timeEnd(promptName)
     return JSON.parse(content) as Subtitle[]
   }
 

@@ -1,6 +1,7 @@
 import type { TranslatorOptions } from './translator.js'
 import type { Flashcard } from './types.js'
 import type { Subtitle } from './youtube.js'
+import { SubtitleFormatter } from './subtitle-formatter.js'
 import { Translator } from './translator.js'
 
 export class SubtitleConverter {
@@ -26,8 +27,11 @@ export class SubtitleConverter {
     targetLang: string = 'ja',
   ): Promise<Flashcard[]> {
     try {
-      // 字幕を翻訳
-      const translatedSubtitles = await this.translator.translate(this.subtitles, sourceLang, targetLang)
+      // 字幕テキストを整形
+      const formattedSubtitles = SubtitleFormatter.formatAll(this.subtitles)
+
+      // 整形済み字幕を翻訳
+      const translatedSubtitles = await this.translator.translate(formattedSubtitles, sourceLang, targetLang)
 
       // 翻訳済み字幕からフラッシュカードを作成
       return translatedSubtitles.map(subtitle => ({

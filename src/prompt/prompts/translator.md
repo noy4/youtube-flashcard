@@ -43,7 +43,6 @@ Output example:
 ```
 
 Notes:
-- Since the input text might be auto-generated, please format it into proper sentences before translation.
 - The output will be JSON parsed, so ensure it is completely valid JSON.
 Do not return truncated or incomplete JSON.
 

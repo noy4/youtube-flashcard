@@ -2,6 +2,10 @@
 
 ## 進行中
 
+- [x] Anki対応
+  - [x] AnkiConnectを使用したカード追加機能
+  - [x] Anki形式での出力サポート
+
 ## 完了
 - [x] プロジェクト初期化
 - [x] TypeScript環境構築

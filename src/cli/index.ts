@@ -27,6 +27,9 @@ program
   .option('-f, --format <format>', '出力形式 (json, obsidian または anki)', 'json')
   .option('-s, --source-lang <code>', '元の言語コード', 'en')
   .option('-t, --target-lang <code>', '翻訳後の言語コード', 'ja')
+  .option('--add-to-anki', 'フラッシュカードを直接Ankiに追加')
+  .option('--deck-name <name>', 'Ankiのデッキ名', 'Default')
+  .option('--model-name <name>', 'Ankiのモデル名', '基本')
   .option('--api-key <key>', 'OpenAI APIキー（環境変数 OPENAI_API_KEY でも指定可能）')
   .option('-m, --model <model>', 'AIモデル（環境変数 AI_MODEL でも指定可能）')
   .option('-b, --base-url <url>', 'API baseURL（環境変数 OPENAI_BASE_URL でも指定可能）')
@@ -55,8 +58,19 @@ program
         model: options.model,
       })
       const flashcards = await converter.convert(options.sourceLang, options.targetLang)
-      const output = converter.toString(flashcards, options.format as 'obsidian' | 'anki')
 
+      if (options.addToAnki) {
+        console.log('Ankiにフラッシュカードを追加中...')
+        const noteIds = await converter.addToAnki(
+          flashcards,
+          options.deckName,
+          options.modelName,
+        )
+        console.log(`${noteIds.length}枚のフラッシュカードをAnkiに追加しました`)
+        console.log(`デッキ名: ${options.deckName}`)
+      }
+
+      const output = converter.toString(flashcards, options.format as 'obsidian' | 'anki')
       writeFileSync(options.output, output, 'utf8')
       console.log(`フラッシュカードを ${options.output} に保存しました（形式: ${options.format}）`)
     }

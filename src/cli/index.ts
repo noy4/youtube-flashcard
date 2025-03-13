@@ -94,29 +94,35 @@ const program = new Command()
   .option('-b, --base-url <url>', 'API baseURL', process.env.OPENAI_BASE_URL || 'https://openrouter.ai/api/v1')
   .option('-m, --model <model>', 'AIモデル', process.env.AI_MODEL || 'google/gemini-2.0-flash-exp:free')
   .action(async (url: string | undefined, options: CliOptions) => {
-    const generator = new FlashcardGenerator()
-    const flashcards = await generator.generate({
-      url,
-      input: options.input,
-      apiKey: options.apiKey,
-      baseUrl: options.baseUrl,
-      model: options.model,
-      sourceLang: options.sourceLang,
-      targetLang: options.targetLang,
-    })
+    try {
+      const generator = new FlashcardGenerator()
+      const flashcards = await generator.generate({
+        url,
+        input: options.input,
+        apiKey: options.apiKey,
+        baseUrl: options.baseUrl,
+        model: options.model,
+        sourceLang: options.sourceLang,
+        targetLang: options.targetLang,
+      })
 
-    const outputManager = new OutputManager(flashcards)
-    await outputManager.output({
-      format: options.format,
-      filePath: options.output,
-      anki: options.addToAnki
-        ? {
-            enabled: true,
-            deckName: options.deckName,
-            modelName: options.modelName,
-          }
-        : undefined,
-    })
+      const outputManager = new OutputManager(flashcards)
+      await outputManager.output({
+        format: options.format,
+        filePath: options.output,
+        anki: options.addToAnki
+          ? {
+              enabled: true,
+              deckName: options.deckName,
+              modelName: options.modelName,
+            }
+          : undefined,
+      })
+    }
+    catch (error: any) {
+      console.error('Error:', error.message)
+      process.exit(1)
+    }
   })
 
 program.parse()

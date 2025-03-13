@@ -9,7 +9,20 @@ import { SubtitleConverter } from '../converter.js'
 import { FlashcardFormatter } from '../formatter.js'
 import { extractVideoId, fetchSubtitles } from '../youtube.js'
 
-// メインロジックを担当するクラス
+interface CliOptions {
+  input?: string
+  format: OutputFormat
+  output: string
+  sourceLang: string
+  targetLang: string
+  addToAnki?: boolean
+  deckName: string
+  modelName: string
+  apiKey?: string
+  model?: string
+  baseUrl?: string
+}
+
 class FlashcardGenerator {
   private async generateFromUrl(url: string, options: {
     apiKey: string
@@ -61,7 +74,6 @@ class FlashcardGenerator {
   }
 }
 
-// エラーハンドリング
 function handleError(error: unknown) {
   if (error instanceof Error)
     console.error('エラーが発生しました:', error.message)
@@ -72,48 +84,26 @@ function handleError(error: unknown) {
 }
 
 const program = new Command()
-
-program
   .name('youtube-flashcard')
   .description('YouTubeの字幕からフラッシュカードを生成')
   .version(packageJson.version)
-
-program
-  // input
+  // input/output
   .argument('[url]', 'YouTube動画のURL', process.env.VIDEO_URL)
   .option('-i, --input <path>', '既存のJSONファイルパス（指定時は字幕取得とフラッシュカード生成をスキップ）')
-
-  // output
-  .option('-f, --format <format>', '出力形式 (json, obsidian または anki)', 'json')
   .option('-o, --output <path>', '出力ファイルパス', 'output/json.json')
-
+  .option('-f, --format <format>', '出力形式 (json, obsidian または anki)', 'json')
   // languages
   .option('-s, --source-lang <code>', '元の言語コード', 'en')
   .option('-t, --target-lang <code>', '翻訳後の言語コード', 'ja')
-
   // anki
   .option('--add-to-anki', 'フラッシュカードを直接Ankiに追加')
   .option('--deck-name <name>', 'Ankiのデッキ名', 'Default')
   .option('--model-name <name>', 'Ankiのモデル名', '基本')
-
   // api
   .option('--api-key <key>', 'OpenAI APIキー', process.env.OPENAI_API_KEY)
   .option('-m, --model <model>', 'AIモデル')
   .option('-b, --base-url <url>', 'API baseURL')
-
-  .action(async (url: string | undefined, options: {
-    input?: string
-    format: OutputFormat
-    output: string
-    sourceLang: string
-    targetLang: string
-    addToAnki?: boolean
-    deckName: string
-    modelName: string
-    apiKey?: string
-    model?: string
-    baseUrl?: string
-  }) => {
+  .action(async (url: string | undefined, options: CliOptions) => {
     try {
       const generator = new FlashcardGenerator()
       const flashcards = await generator.generate({

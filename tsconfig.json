@@ -6,6 +6,7 @@
     "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "strict": true,
+    "useUnknownInCatchVariables": false,
     "outDir": "dist",
     "esModuleInterop": true,
     "skipLibCheck": true

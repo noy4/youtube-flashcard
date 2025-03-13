@@ -45,21 +45,14 @@ export class SubtitleProcessor {
     sourceLang: string = 'en',
     targetLang: string = 'ja',
   ): Promise<Flashcard[]> {
-    try {
-      // パイプライン: 字幕 -> 整形 -> 翻訳 -> フラッシュカード
-      const formatted = await this.processWithAI<Subtitle[]>('formatter', { subtitles })
-      const translated = await this.processWithAI<Subtitle[]>('translator', {
-        subtitles: formatted,
-        fromLang: sourceLang,
-        toLang: targetLang,
-      })
+    // パイプライン: 字幕 -> 整形 -> 翻訳 -> フラッシュカード
+    const formatted = await this.processWithAI<Subtitle[]>('formatter', { subtitles })
+    const translated = await this.processWithAI<Subtitle[]>('translator', {
+      subtitles: formatted,
+      fromLang: sourceLang,
+      toLang: targetLang,
+    })
 
-      return translated.map(subtitle => this.toFlashcard(subtitle))
-    }
-    catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown error'
-      console.error(`字幕処理エラー: ${message}`)
-      throw error
-    }
+    return translated.map(subtitle => this.toFlashcard(subtitle))
   }
 }

@@ -13,12 +13,12 @@ export class FlashcardGenerator {
   }) {
     const subtitles = await fetchSubtitles(url, options.sourceLang)
     const videoId = extractVideoId(url)
-    const processor = new SubtitleProcessor(subtitles, {
+    const processor = new SubtitleProcessor({
       apiKey: options.apiKey,
       baseURL: options.baseUrl,
       model: options.model,
     }, videoId)
-    return await processor.convert(options.sourceLang, options.targetLang)
+    return await processor.convert(subtitles, options.sourceLang, options.targetLang)
   }
 
   private loadFromJson(path: string): Flashcard[] {

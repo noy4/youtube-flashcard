@@ -9,17 +9,14 @@ export type ProcessorOptions = ClientOptions & { model: string }
 export class SubtitleProcessor {
   private openai: OpenAI
   private model: string
-  private subtitles: Subtitle[]
 
   constructor(
-    subtitles: Subtitle[],
     options: ProcessorOptions,
     private videoId: string,
   ) {
     const { model, ...clientOptions } = options
     this.openai = new OpenAI(clientOptions)
     this.model = model
-    this.subtitles = subtitles
   }
 
   /**
@@ -27,6 +24,7 @@ export class SubtitleProcessor {
    */
   private async process(
     promptName: string,
+    subtitles: Subtitle[],
     params: Record<string, any> = {},
   ) {
     console.log('model:', this.model)
@@ -34,7 +32,7 @@ export class SubtitleProcessor {
     const prompt = Prompt.load(promptName)
     const messages = prompt.toMessages({
       ...params,
-      subtitles: JSON.stringify(this.subtitles, null, 2),
+      subtitles: JSON.stringify(subtitles, null, 2),
     })
 
     const response = await this.openai.chat.completions.create({
@@ -52,15 +50,15 @@ export class SubtitleProcessor {
   /**
    * 字幕テキストを整形
    */
-  private async format() {
-    return this.process('formatter')
+  private async format(subtitles: Subtitle[]) {
+    return this.process('formatter', subtitles)
   }
 
   /**
    * 字幕を翻訳
    */
-  private async translate(fromLang: string, toLang: string) {
-    return this.process('translator', { fromLang, toLang })
+  private async translate(subtitles: Subtitle[], fromLang: string, toLang: string) {
+    return this.process('translator', subtitles, { fromLang, toLang })
   }
 
   /**
@@ -69,16 +67,16 @@ export class SubtitleProcessor {
    * @param targetLang 翻訳後の言語コード（例: 'ja'）
    */
   public async convert(
+    subtitles: Subtitle[],
     sourceLang: string = 'en',
     targetLang: string = 'ja',
   ): Promise<Flashcard[]> {
     try {
       // 字幕テキストを整形
-      const formattedSubtitles = await this.format()
-      this.subtitles = formattedSubtitles
+      const formattedSubtitles = await this.format(subtitles)
 
       // 整形済み字幕を翻訳
-      const translatedSubtitles = await this.translate(sourceLang, targetLang)
+      const translatedSubtitles = await this.translate(formattedSubtitles, sourceLang, targetLang)
 
       // 翻訳済み字幕からフラッシュカードを作成
       return translatedSubtitles.map(subtitle => ({

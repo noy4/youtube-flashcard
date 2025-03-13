@@ -16,7 +16,7 @@ export class SubtitleProcessor {
     this.model = model
   }
 
-  private async processWithAI<T>(promptName: string, data: Record<string, any>) {
+  private async processWithAI(promptName: string, data: Record<string, any>) {
     const prompt = Prompt.load(promptName)
     const messages = prompt.toMessages(data)
     const response = await this.openai.chat.completions.create({
@@ -26,8 +26,8 @@ export class SubtitleProcessor {
       response_format: { type: 'json_object' },
     })
 
-    const content = response.choices[0]?.message.content?.trim() || '{}'
-    return JSON.parse(content) as T
+    const content = response.choices[0]?.message.content?.trim() || '[]'
+    return JSON.parse(content) as Subtitle[]
   }
 
   private toFlashcard(subtitle: Subtitle): Flashcard {
@@ -42,15 +42,15 @@ export class SubtitleProcessor {
 
   async convert(
     subtitles: Subtitle[],
-    sourceLang: string = 'en',
-    targetLang: string = 'ja',
+    fromLang: string = 'en',
+    toLang: string = 'ja',
   ): Promise<Flashcard[]> {
     // パイプライン: 字幕 -> 整形 -> 翻訳 -> フラッシュカード
-    const formatted = await this.processWithAI<Subtitle[]>('formatter', { subtitles })
-    const translated = await this.processWithAI<Subtitle[]>('translator', {
+    const formatted = await this.processWithAI('formatter', { subtitles })
+    const translated = await this.processWithAI('translator', {
       subtitles: formatted,
-      fromLang: sourceLang,
-      toLang: targetLang,
+      fromLang,
+      toLang,
     })
 
     return translated.map(subtitle => this.toFlashcard(subtitle))

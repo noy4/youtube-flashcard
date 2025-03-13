@@ -8,17 +8,17 @@ export class FlashcardGenerator {
     apiKey: string
     baseUrl?: string
     model: string
-    sourceLang: string
-    targetLang: string
+    fromLang: string
+    toLang: string
   }) {
-    const subtitles = await fetchSubtitles(url, options.sourceLang)
+    const subtitles = await fetchSubtitles(url, options.fromLang)
     const videoId = extractVideoId(url)
     const processor = new SubtitleProcessor({
       apiKey: options.apiKey,
       baseURL: options.baseUrl,
       model: options.model,
     }, videoId)
-    return await processor.convert(subtitles, options.sourceLang, options.targetLang)
+    return await processor.convert(subtitles, options.fromLang, options.toLang)
   }
 
   private loadFromJson(path: string): Flashcard[] {
@@ -32,8 +32,8 @@ export class FlashcardGenerator {
     apiKey?: string
     baseUrl?: string
     model: string
-    sourceLang: string
-    targetLang: string
+    fromLang: string
+    toLang: string
   }): Promise<Flashcard[]> {
     if (options.input)
       return this.loadFromJson(options.input)
@@ -48,8 +48,8 @@ export class FlashcardGenerator {
       apiKey: options.apiKey,
       baseUrl: options.baseUrl,
       model: options.model,
-      sourceLang: options.sourceLang,
-      targetLang: options.targetLang,
+      fromLang: options.fromLang,
+      toLang: options.toLang,
     })
   }
 }

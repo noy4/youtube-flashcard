@@ -16,8 +16,8 @@ const program = new Command()
   .option('-o, --output <path>', '出力ファイルパス', 'output/json.json')
   .option('-f, --format <format>', '出力形式 (json, obsidian または anki)', 'json')
   // languages
-  .option('-s, --source-lang <code>', '元の言語コード', 'en')
-  .option('-t, --target-lang <code>', '翻訳後の言語コード', 'ja')
+  .option('-f, --from-lang <code>', '元の言語コード', 'en')
+  .option('-t, --to-lang <code>', '翻訳後の言語コード', 'ja')
   // anki
   .option('--add-to-anki', 'フラッシュカードを直接Ankiに追加')
   .option('--deck-name <name>', 'Ankiのデッキ名', 'Default')
@@ -35,8 +35,8 @@ const program = new Command()
         apiKey: options.apiKey,
         baseUrl: options.baseUrl,
         model: options.model,
-        sourceLang: options.sourceLang,
-        targetLang: options.targetLang,
+        fromLang: options.fromLang,
+        toLang: options.toLang,
       })
 
       const outputManager = new OutputManager(flashcards)
@@ -52,7 +52,7 @@ const program = new Command()
           : undefined,
       })
     }
-    catch (error: any) {
+    catch (error) {
       console.error('Error:', error.message)
       process.exit(1)
     }

@@ -16,7 +16,7 @@ export class SubtitleProcessor {
     this.model = model
   }
 
-  private async processWithAI(promptName: string, data: Record<string, any>) {
+  private async process(promptName: string, data: Record<string, any>) {
     const prompt = Prompt.load(promptName)
     const messages = prompt.toMessages(data)
 
@@ -39,32 +39,30 @@ export class SubtitleProcessor {
     return JSON.parse(content) as Subtitle[]
   }
 
-  private toFlashcard(subtitle: Subtitle): Flashcard {
-    return {
-      front: subtitle.translation!,
-      back: subtitle.text,
-      videoId: this.videoId,
-      start: subtitle.start,
-      end: subtitle.end,
-    }
-  }
-
   async convert(
     subtitles: Subtitle[],
     fromLang: string = 'en',
     toLang: string = 'ja',
   ): Promise<Flashcard[]> {
-    // パイプライン: 字幕 -> 整形 -> 翻訳 -> フラッシュカード
     console.log('model:', this.model)
+    // パイプライン: 字幕 -> 整形 -> 翻訳 -> フラッシュカード
+
     console.log('Processing subtitles...')
-    const formatted = await this.processWithAI('formatter', { subtitles })
+    const formatted = await this.process('formatter', { subtitles })
+
     console.log('Translating subtitles...')
-    const translated = await this.processWithAI('translator', {
+    const translated = await this.process('translator', {
       subtitles: formatted,
       fromLang,
       toLang,
     })
 
-    return translated.map(subtitle => this.toFlashcard(subtitle))
+    return translated.map(({ translation, text, start, end }) => ({
+      front: translation!,
+      back: text,
+      videoId: this.videoId,
+      start,
+      end,
+    }))
   }
 }

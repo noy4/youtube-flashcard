@@ -1,24 +1,10 @@
 #!/usr/bin/env node
 
 import type { OutputFormat } from '../types.js'
-import { Command } from 'commander'
+import { Command } from '@commander-js/extra-typings'
 import packageJson from '../../package.json' with { type: 'json' }
 import { FlashcardGenerator } from '../generator.js'
 import { OutputManager } from '../output.js'
-
-interface CliOptions {
-  input?: string
-  output: string
-  format: OutputFormat
-  sourceLang: string
-  targetLang: string
-  addToAnki?: boolean
-  deckName: string
-  modelName: string
-  apiKey?: string
-  baseUrl?: string
-  model: string
-}
 
 const program = new Command()
   .name('youtube-flashcard')
@@ -40,7 +26,7 @@ const program = new Command()
   .option('--api-key <key>', 'OpenAI APIキー', process.env.OPENAI_API_KEY)
   .option('-b, --base-url <url>', 'API baseURL', process.env.OPENAI_BASE_URL || 'https://openrouter.ai/api/v1')
   .option('-m, --model <model>', 'AIモデル', process.env.AI_MODEL || 'google/gemini-2.0-flash-exp:free')
-  .action(async (url: string | undefined, options: CliOptions) => {
+  .action(async (url, options) => {
     try {
       const generator = new FlashcardGenerator()
       const flashcards = await generator.generate({
@@ -55,7 +41,7 @@ const program = new Command()
 
       const outputManager = new OutputManager(flashcards)
       await outputManager.output({
-        format: options.format,
+        format: options.format as OutputFormat,
         filePath: options.output,
         anki: options.addToAnki
           ? {

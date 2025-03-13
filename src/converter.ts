@@ -6,14 +6,16 @@ import { Translator } from './translator.js'
 
 export class SubtitleConverter {
   private translator: Translator
+  private formatter: SubtitleFormatter
   private subtitles: Subtitle[]
 
   constructor(
     subtitles: Subtitle[],
     private videoId: string,
-    translatorOptions: TranslatorOptions,
+    options: TranslatorOptions,
   ) {
-    this.translator = new Translator(translatorOptions)
+    this.translator = new Translator(options)
+    this.formatter = new SubtitleFormatter(options)
     this.subtitles = subtitles
   }
 
@@ -28,7 +30,7 @@ export class SubtitleConverter {
   ): Promise<Flashcard[]> {
     try {
       // 字幕テキストを整形
-      const formattedSubtitles = SubtitleFormatter.formatAll(this.subtitles)
+      const formattedSubtitles = await this.formatter.format(this.subtitles)
 
       // 整形済み字幕を翻訳
       const translatedSubtitles = await this.translator.translate(formattedSubtitles, sourceLang, targetLang)

@@ -1,35 +1,43 @@
+import type { ClientOptions } from 'openai'
 import type { Subtitle } from './youtube.js'
+import OpenAI from 'openai'
+import { Prompt } from './prompt/index.js'
+
+export type FormatterOptions = ClientOptions & { model: string }
 
 export class SubtitleFormatter {
-  /**
-   * 字幕テキストを整形
-   * 自動生成された字幕テキストを適切な文章形式に整形します
-   * @param subtitle 整形する字幕
-   * @returns 整形された字幕
-   */
-  public static format(subtitle: Subtitle): Subtitle {
-    const text = subtitle.text.trim()
-    let formattedText = text
+  private openai: OpenAI
+  private model: string
+  private prompt: Prompt
 
-    // 文末が句読点で終わっていない場合は追加
-    if (!/[.。!！?？]$/.test(formattedText)) {
-      // 英語の場合はピリオド、日本語の場合は句点を追加
-      const hasJapanese = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]/.test(formattedText)
-      formattedText += hasJapanese ? '。' : '.'
-    }
-
-    return {
-      ...subtitle,
-      text: formattedText,
-    }
+  constructor(options: FormatterOptions) {
+    const { model, ...clientOptions } = options
+    this.openai = new OpenAI(clientOptions)
+    this.model = model
+    this.prompt = Prompt.load('formatter')
   }
 
   /**
-   * 字幕配列を一括で整形
+   * 複数の字幕テキストを一括で整形
    * @param subtitles 整形する字幕の配列
-   * @returns 整形された字幕の配列
+   * @returns 整形済みの字幕配列
    */
-  public static formatAll(subtitles: Subtitle[]): Subtitle[] {
-    return subtitles.map(subtitle => this.format(subtitle))
+  async format(subtitles: Subtitle[]): Promise<Subtitle[]> {
+    console.log('model:', this.model)
+
+    const messages = this.prompt.toMessages({
+      subtitles: JSON.stringify(subtitles, null, 2),
+    })
+
+    const response = await this.openai.chat.completions.create({
+      model: this.model,
+      messages,
+      temperature: 0.3,
+      response_format: { type: 'json_object' },
+    })
+
+    const content = response.choices[0]?.message.content?.trim() || ''
+    console.log('content:', content)
+    return JSON.parse(content) as Subtitle[]
   }
 }

@@ -1,6 +1,6 @@
 import type { Flashcard } from './types.js'
 import { readFileSync } from 'node:fs'
-import { SubtitleConverter } from './converter.js'
+import { SubtitleProcessor } from './subtitle-processor.js'
 import { extractVideoId, fetchSubtitles } from './youtube.js'
 
 export class FlashcardGenerator {
@@ -13,12 +13,12 @@ export class FlashcardGenerator {
   }) {
     const subtitles = await fetchSubtitles(url, options.sourceLang)
     const videoId = extractVideoId(url)
-    const converter = new SubtitleConverter(subtitles, videoId, {
+    const processor = new SubtitleProcessor(subtitles, {
       apiKey: options.apiKey,
       baseURL: options.baseUrl,
       model: options.model,
-    })
-    return await converter.convert(options.sourceLang, options.targetLang)
+    }, videoId)
+    return await processor.convert(options.sourceLang, options.targetLang)
   }
 
   private loadFromJson(path: string): Flashcard[] {

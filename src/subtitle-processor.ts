@@ -1,0 +1,97 @@
+import type { ClientOptions } from 'openai'
+import type { Flashcard } from './types.js'
+import type { Subtitle } from './youtube.js'
+import OpenAI from 'openai'
+import { Prompt } from './prompt/index.js'
+
+export type ProcessorOptions = ClientOptions & { model: string }
+
+export class SubtitleProcessor {
+  private openai: OpenAI
+  private model: string
+  private subtitles: Subtitle[]
+
+  constructor(
+    subtitles: Subtitle[],
+    options: ProcessorOptions,
+    private videoId: string,
+  ) {
+    const { model, ...clientOptions } = options
+    this.openai = new OpenAI(clientOptions)
+    this.model = model
+    this.subtitles = subtitles
+  }
+
+  /**
+   * OpenAI APIを使用して字幕を処理
+   */
+  private async process(
+    promptName: string,
+    params: Record<string, any> = {},
+  ) {
+    console.log('model:', this.model)
+
+    const prompt = Prompt.load(promptName)
+    const messages = prompt.toMessages({
+      ...params,
+      subtitles: JSON.stringify(this.subtitles, null, 2),
+    })
+
+    const response = await this.openai.chat.completions.create({
+      model: this.model,
+      messages,
+      temperature: 0.3,
+      response_format: { type: 'json_object' },
+    })
+
+    const content = response.choices[0]?.message.content?.trim() || ''
+    console.log('content:', content)
+    return JSON.parse(content) as Subtitle[]
+  }
+
+  /**
+   * 字幕テキストを整形
+   */
+  private async format() {
+    return this.process('formatter')
+  }
+
+  /**
+   * 字幕を翻訳
+   */
+  private async translate(fromLang: string, toLang: string) {
+    return this.process('translator', { fromLang, toLang })
+  }
+
+  /**
+   * 字幕をフラッシュカードに変換
+   * @param sourceLang 元の言語コード（例: 'en'）
+   * @param targetLang 翻訳後の言語コード（例: 'ja'）
+   */
+  public async convert(
+    sourceLang: string = 'en',
+    targetLang: string = 'ja',
+  ): Promise<Flashcard[]> {
+    try {
+      // 字幕テキストを整形
+      const formattedSubtitles = await this.format()
+      this.subtitles = formattedSubtitles
+
+      // 整形済み字幕を翻訳
+      const translatedSubtitles = await this.translate(sourceLang, targetLang)
+
+      // 翻訳済み字幕からフラッシュカードを作成
+      return translatedSubtitles.map(subtitle => ({
+        front: subtitle.translation!,
+        back: subtitle.text,
+        videoId: this.videoId,
+        start: subtitle.start,
+        end: subtitle.end,
+      }))
+    }
+    catch (error) {
+      console.error(`処理エラー: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw error
+    }
+  }
+}

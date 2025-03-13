@@ -2,7 +2,7 @@ import type { ClientOptions } from 'openai'
 import type { Subtitle } from './youtube.js'
 import Mustache from 'mustache'
 import OpenAI from 'openai'
-import { loadPrompt } from './prompts/index.js'
+import { loadPrompt } from './prompt/index.js'
 
 export type TranslatorOptions = ClientOptions & { model: string }
 

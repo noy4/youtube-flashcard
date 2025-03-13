@@ -39,7 +39,7 @@ function parsePrompt(content: string): PromptSections {
  * @returns セクション名とその内容のマップ
  */
 export function loadPrompt(category: string): PromptSections {
-  const path = join(import.meta.dirname, category, 'prompt.md')
+  const path = join(import.meta.dirname, 'prompts', `${category}.md`)
   const content = readFileSync(path, 'utf-8')
   return parsePrompt(content)
 }

@@ -74,15 +74,6 @@ class FlashcardGenerator {
   }
 }
 
-function handleError(error: unknown) {
-  if (error instanceof Error)
-    console.error('エラーが発生しました:', error.message)
-  else
-    console.error('予期せぬエラーが発生しました')
-
-  process.exit(1)
-}
-
 const program = new Command()
   .name('youtube-flashcard')
   .description('YouTubeの字幕からフラッシュカードを生成')
@@ -104,32 +95,27 @@ const program = new Command()
   .option('-m, --model <model>', 'AIモデル')
   .option('-b, --base-url <url>', 'API baseURL')
   .action(async (url: string | undefined, options: CliOptions) => {
-    try {
-      const generator = new FlashcardGenerator()
-      const flashcards = await generator.generate({
-        url,
-        input: options.input,
-        apiKey: options.apiKey,
-        baseUrl: options.baseUrl,
-        model: options.model,
-        sourceLang: options.sourceLang,
-        targetLang: options.targetLang,
-      })
+    const generator = new FlashcardGenerator()
+    const flashcards = await generator.generate({
+      url,
+      input: options.input,
+      apiKey: options.apiKey,
+      baseUrl: options.baseUrl,
+      model: options.model,
+      sourceLang: options.sourceLang,
+      targetLang: options.targetLang,
+    })
 
-      if (options.addToAnki) {
-        const ankiConnector = new AnkiConnector()
-        const noteIds = await ankiConnector.addCards(flashcards, options.deckName, options.modelName)
-        console.log(`${noteIds.length}枚のフラッシュカードをAnkiに追加しました`)
-        console.log(`デッキ名: ${options.deckName}`)
-      }
+    if (options.addToAnki) {
+      const ankiConnector = new AnkiConnector()
+      const noteIds = await ankiConnector.addCards(flashcards, options.deckName, options.modelName)
+      console.log(`${noteIds.length}枚のフラッシュカードをAnkiに追加しました`)
+      console.log(`デッキ名: ${options.deckName}`)
+    }
 
-      const output = FlashcardFormatter.toString(flashcards, options.format)
-      writeFileSync(options.output, output, 'utf8')
-      console.log(`フラッシュカードを ${options.output} に保存しました（形式: ${options.format}）`)
-    }
-    catch (error) {
-      handleError(error)
-    }
+    const output = FlashcardFormatter.toString(flashcards, options.format)
+    writeFileSync(options.output, output, 'utf8')
+    console.log(`フラッシュカードを ${options.output} に保存しました（形式: ${options.format}）`)
   })
 
 program.parse()

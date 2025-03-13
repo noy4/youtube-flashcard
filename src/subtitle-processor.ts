@@ -27,6 +27,7 @@ export class SubtitleProcessor {
     })
 
     const content = response.choices[0]?.message.content?.trim() || '[]'
+    console.log('content:', content)
     return JSON.parse(content) as Subtitle[]
   }
 
@@ -46,7 +47,10 @@ export class SubtitleProcessor {
     toLang: string = 'ja',
   ): Promise<Flashcard[]> {
     // パイプライン: 字幕 -> 整形 -> 翻訳 -> フラッシュカード
+    console.log('model:', this.model)
+    console.log('Processing subtitles...')
     const formatted = await this.processWithAI('formatter', { subtitles })
+    console.log('Translating subtitles...')
     const translated = await this.processWithAI('translator', {
       subtitles: formatted,
       fromLang,

@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 
 import type { Flashcard, OutputFormat } from '../types.js'
-import { readFileSync, writeFileSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { Command } from 'commander'
 import packageJson from '../../package.json' with { type: 'json' }
-import { AnkiConnector } from '../anki.js'
 import { SubtitleConverter } from '../converter.js'
-import { FlashcardFormatter } from '../formatter.js'
+import { OutputManager } from '../output.js'
 import { extractVideoId, fetchSubtitles } from '../youtube.js'
 
 interface CliOptions {
@@ -106,16 +105,18 @@ const program = new Command()
       targetLang: options.targetLang,
     })
 
-    if (options.addToAnki) {
-      const ankiConnector = new AnkiConnector()
-      const noteIds = await ankiConnector.addCards(flashcards, options.deckName, options.modelName)
-      console.log(`${noteIds.length}枚のフラッシュカードをAnkiに追加しました`)
-      console.log(`デッキ名: ${options.deckName}`)
-    }
-
-    const output = FlashcardFormatter.toString(flashcards, options.format)
-    writeFileSync(options.output, output, 'utf8')
-    console.log(`フラッシュカードを ${options.output} に保存しました（形式: ${options.format}）`)
+    const outputManager = new OutputManager(flashcards)
+    await outputManager.output({
+      format: options.format,
+      filePath: options.output,
+      anki: options.addToAnki
+        ? {
+            enabled: true,
+            deckName: options.deckName,
+            modelName: options.modelName,
+          }
+        : undefined,
+    })
   })
 
 program.parse()

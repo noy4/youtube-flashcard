@@ -3,27 +3,16 @@ import type { Subtitle } from './youtube.js'
 import { writeFileSync } from 'node:fs'
 import OpenAI from 'openai'
 
-export type TranslatorOptions = ClientOptions & {
-  model?: string
-}
+export type TranslatorOptions = ClientOptions & { model: string }
 
 export class Translator {
   private client: OpenAI
   private model: string
 
-  constructor(options?: TranslatorOptions) {
-    if (!options?.apiKey) {
-      throw new Error('OpenRouter APIキーが必要です')
-    }
-
+  constructor(options: TranslatorOptions) {
     const { model, ...clientOptions } = options
-
-    this.client = new OpenAI({
-      ...clientOptions,
-      baseURL: clientOptions.baseURL || process.env.OPENAI_BASE_URL || 'https://openrouter.ai/api/v1',
-    })
-
-    this.model = model || process.env.AI_MODEL || 'google/gemini-2.0-flash-exp:free'
+    this.client = new OpenAI(clientOptions)
+    this.model = model
   }
 
   /**

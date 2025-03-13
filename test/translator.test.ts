@@ -21,14 +21,12 @@ describe('translator', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
-    translator = new Translator({ apiKey: 'test-api-key' })
+    translator = new Translator({
+      apiKey: 'test-api-key',
+      model: 'test-model',
+    })
     const mockClient = (translator as any).client
     mockCreate = mockClient.chat.completions.create
-  })
-
-  it('aPIキーなしでインスタンス化するとエラーを投げる', () => {
-    expect(() => new Translator(undefined)).toThrow('OpenRouter APIキーが必要です')
-    expect(() => new Translator({ apiKey: '' })).toThrow('OpenRouter APIキーが必要です')
   })
 
   describe('translate', () => {
@@ -56,7 +54,7 @@ describe('translator', () => {
 
       expect(result[0].translation).toBe('翻訳されたテキスト')
       expect(mockCreate).toHaveBeenCalledWith({
-        model: 'google/gemini-2.0-flash-exp:free',
+        model: 'test-model',
         messages: [
           {
             role: 'system',

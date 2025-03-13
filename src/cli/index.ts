@@ -19,14 +19,14 @@ interface CliOptions {
   modelName: string
   apiKey?: string
   baseUrl?: string
-  model?: string
+  model: string
 }
 
 class FlashcardGenerator {
   private async generateFromUrl(url: string, options: {
     apiKey: string
     baseUrl?: string
-    model?: string
+    model: string
     sourceLang: string
     targetLang: string
   }) {
@@ -50,7 +50,7 @@ class FlashcardGenerator {
     input?: string
     apiKey?: string
     baseUrl?: string
-    model?: string
+    model: string
     sourceLang: string
     targetLang: string
   }): Promise<Flashcard[]> {
@@ -91,8 +91,8 @@ const program = new Command()
   .option('--model-name <name>', 'Ankiのモデル名', '基本')
   // api
   .option('--api-key <key>', 'OpenAI APIキー', process.env.OPENAI_API_KEY)
-  .option('-b, --base-url <url>', 'API baseURL')
-  .option('-m, --model <model>', 'AIモデル')
+  .option('-b, --base-url <url>', 'API baseURL', process.env.OPENAI_BASE_URL || 'https://openrouter.ai/api/v1')
+  .option('-m, --model <model>', 'AIモデル', process.env.AI_MODEL || 'google/gemini-2.0-flash-exp:free')
   .action(async (url: string | undefined, options: CliOptions) => {
     const generator = new FlashcardGenerator()
     const flashcards = await generator.generate({

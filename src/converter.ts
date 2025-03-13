@@ -10,7 +10,7 @@ export class SubtitleConverter {
   constructor(
     subtitles: Subtitle[],
     private videoId: string,
-    translatorOptions?: TranslatorOptions,
+    translatorOptions: TranslatorOptions,
   ) {
     this.translator = new Translator(translatorOptions)
     this.subtitles = subtitles

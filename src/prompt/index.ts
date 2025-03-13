@@ -4,25 +4,18 @@ import { join } from 'node:path'
 import Mustache from 'mustache'
 
 export class Prompt {
-  markdown: string
-  messages: ChatCompletionMessageParam[] = []
+  constructor(public markdown: string) {}
 
-  constructor(name: string) {
-    this.markdown = this.load(name)
-  }
-
-  /**
-   * プロンプトファイルを読み込んで解析
-   */
-  private load(name: string) {
+  static load(name: string) {
     const path = join(import.meta.dirname, 'prompts', `${name}.md`)
-    return readFileSync(path, 'utf-8')
+    const markdown = readFileSync(path, 'utf-8')
+    return new Prompt(markdown)
   }
 
   /**
-   * プロンプトセクションを解析
+   * markdownをパースしてメッセージに変換
    */
-  private parse(content: string) {
+  parse(content: string) {
     const messages: ChatCompletionMessageParam[] = []
     const chunks = content.split(/^# (\w+)\n/gm)
     const first = chunks.shift()
@@ -45,7 +38,7 @@ export class Prompt {
   }
 
   /**
-   * OpenAI APIのメッセージ形式に変換
+   * テンプレートをパースしてメッセージに変換
    */
   toMessages(variables: Record<string, unknown> = {}) {
     const rendered = Mustache.render(this.markdown, variables)

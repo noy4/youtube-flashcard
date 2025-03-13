@@ -14,7 +14,7 @@ export class Translator {
     const { model, ...clientOptions } = options
     this.client = new OpenAI(clientOptions)
     this.model = model
-    this.prompt = new Prompt('translator')
+    this.prompt = Prompt.load('translator')
   }
 
   /**
@@ -30,22 +30,22 @@ export class Translator {
     toLang: string,
   ): Promise<Subtitle[]> {
     console.log('model:', this.model)
+
+    const messages = this.prompt.toMessages({
+      fromLang,
+      toLang,
+      subtitles: JSON.stringify(subtitles, null, 2),
+    })
+
     const response = await this.client.chat.completions.create({
       model: this.model,
-      messages: this.prompt.toMessages({
-        fromLang,
-        toLang,
-        subtitles: JSON.stringify(subtitles, null, 2),
-      }),
+      messages,
       temperature: 0.3,
       response_format: { type: 'json_object' },
     })
 
     const content = response.choices[0]?.message.content?.trim() || ''
     console.log('content:', content)
-    const parsed = JSON.parse(content)
-    const translatedSubtitles = parsed as Subtitle[]
-
-    return translatedSubtitles
+    return JSON.parse(content) as Subtitle[]
   }
 }

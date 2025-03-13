@@ -22,9 +22,8 @@ export class SubtitleProcessor {
   /**
    * OpenAI APIを使用して字幕を処理
    */
-  private async process(
+  async process(
     promptName: string,
-    subtitles: Subtitle[],
     params: Record<string, any> = {},
   ) {
     console.log('model:', this.model)
@@ -32,7 +31,7 @@ export class SubtitleProcessor {
     const prompt = Prompt.load(promptName)
     const messages = prompt.toMessages({
       ...params,
-      subtitles: JSON.stringify(subtitles, null, 2),
+      subtitles: JSON.stringify(params.subtitles, null, 2),
     })
 
     const response = await this.openai.chat.completions.create({
@@ -50,23 +49,21 @@ export class SubtitleProcessor {
   /**
    * 字幕テキストを整形
    */
-  private async format(subtitles: Subtitle[]) {
-    return this.process('formatter', subtitles)
+  async format(subtitles: Subtitle[]) {
+    return this.process('formatter', { subtitles })
   }
 
   /**
    * 字幕を翻訳
    */
-  private async translate(subtitles: Subtitle[], fromLang: string, toLang: string) {
-    return this.process('translator', subtitles, { fromLang, toLang })
+  async translate(subtitles: Subtitle[], fromLang: string, toLang: string) {
+    return this.process('translator', { subtitles, fromLang, toLang })
   }
 
   /**
    * 字幕をフラッシュカードに変換
-   * @param sourceLang 元の言語コード（例: 'en'）
-   * @param targetLang 翻訳後の言語コード（例: 'ja'）
    */
-  public async convert(
+  async convert(
     subtitles: Subtitle[],
     sourceLang: string = 'en',
     targetLang: string = 'ja',

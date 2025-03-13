@@ -38,10 +38,11 @@ export class Translator {
     fromLang: string,
     toLang: string,
   ): Promise<Subtitle[]> {
-    const systemPrompt = `You are a professional subtitle translator. You will receive a list of subtitles in JSON format.
+    const systemPrompt = `You are a professional subtitle translator.`
 
-Input example:
-\`\`\`json
+    const userPrompt = `You will receive a JSON array of subtitles.
+
+<input_example>
 [
   {
     "text": "hi there its nice to meet",
@@ -54,13 +55,11 @@ Input example:
     "end": 2
   }
 ]
-\`\`\`
+</input_example>
 
-Translate each subtitle's text field from ${fromLang} to ${toLang} and add a 'translation' field with the translated text.
-As the input text might be auto-generated, please format it into proper sentences before translation.
+Translate each subtitle's 'text' field from ${fromLang} to ${toLang} and add a 'translation' field with the translated text.
 
-Output example:
-\`\`\`json
+<output_example>
 [
   {
     "text": "Hi there! It's nice to meet",
@@ -75,25 +74,30 @@ Output example:
     "translation": "うれしいです。お元気ですか？"
   }
 ]
-\`\`\`
+</output_example>
 
-The output will be JSON parsed, so make sure to output valid JSON.`
+Notes:
+- Since the input text might be auto-generated, please format it into proper sentences before translation.
+- The output will be JSON parsed, so ensure it is completely valid JSON.
+Do not return truncated or incomplete JSON.
+
+Now, please translate the following subtitles:
+
+<input>
+${JSON.stringify(subtitles, null, 2)}
+</input>
+`
 
     try {
       console.log('model:', this.model)
       const response = await this.client.chat.completions.create({
         model: this.model,
         messages: [
-          {
-            role: 'system',
-            content: systemPrompt,
-          },
-          {
-            role: 'user',
-            content: JSON.stringify(subtitles, null, 2),
-          },
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
         ],
         temperature: 0.3,
+        response_format: { type: 'json_object' },
       })
 
       if (!response.choices || response.choices.length === 0) {

@@ -15,24 +15,24 @@ program
   .version(packageJson.version)
 
 program
-  // Input
+  // input
   .argument('[url]', 'YouTube動画のURL', process.env.VIDEO_URL)
   .option('-i, --input <path>', '既存のJSONファイルパス（指定時は字幕取得とフラッシュカード生成をスキップ）')
 
-  // Output
+  // output
   .option('-f, --format <format>', '出力形式 (json, obsidian または anki)', 'json')
   .option('-o, --output <path>', '出力ファイルパス', 'output/json.json')
 
-  // Languages
+  // languages
   .option('-s, --source-lang <code>', '元の言語コード', 'en')
   .option('-t, --target-lang <code>', '翻訳後の言語コード', 'ja')
 
-  // Anki
+  // anki
   .option('--add-to-anki', 'フラッシュカードを直接Ankiに追加')
   .option('--deck-name <name>', 'Ankiのデッキ名', 'Default')
   .option('--model-name <name>', 'Ankiのモデル名', '基本')
 
-  // API
+  // api
   .option('--api-key <key>', 'OpenAI APIキー', process.env.OPENAI_API_KEY)
   .option('-m, --model <model>', 'AIモデル')
   .option('-b, --base-url <url>', 'API baseURL')

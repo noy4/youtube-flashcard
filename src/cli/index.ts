@@ -33,8 +33,32 @@ program
   .option('--api-key <key>', 'OpenAI APIキー（環境変数 OPENAI_API_KEY でも指定可能）')
   .option('-m, --model <model>', 'AIモデル（環境変数 AI_MODEL でも指定可能）')
   .option('-b, --base-url <url>', 'API baseURL（環境変数 OPENAI_BASE_URL でも指定可能）')
+  .option('-i, --input <path>', '既存のJSONファイルパス（指定時は字幕取得とフラッシュカード生成をスキップ）')
   .action(async (url, options) => {
     try {
+      if (options.input) {
+        console.log(`JSONファイルからフラッシュカードを読み込み中... (${options.input})`)
+        const jsonContent = readFileSync(options.input, 'utf8')
+        const flashcards = JSON.parse(jsonContent)
+        const dummyConverter = new SubtitleConverter([], '', {})
+
+        if (options.addToAnki) {
+          console.log('Ankiにフラッシュカードを追加中...')
+          const noteIds = await dummyConverter.addToAnki(
+            flashcards,
+            options.deckName,
+            options.modelName,
+          )
+          console.log(`${noteIds.length}枚のフラッシュカードをAnkiに追加しました`)
+          console.log(`デッキ名: ${options.deckName}`)
+        }
+
+        const output = dummyConverter.toString(flashcards, options.format as 'obsidian' | 'anki')
+        writeFileSync(options.output, output, 'utf8')
+        console.log(`フラッシュカードを ${options.output} に保存しました（形式: ${options.format}）`)
+        return
+      }
+
       const videoUrl = url || process.env.VIDEO_URL
       if (!videoUrl) {
         console.error('エラー: YouTube URLが必要です。引数または環境変数VIDEO_URLで指定してください。')

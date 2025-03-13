@@ -101,8 +101,8 @@ describe('subtitle processor', () => {
     // APIの呼び出し回数を検証
     expect(mockOpenAI.chat.completions.create).toHaveBeenCalledTimes(2)
     // formatter と translator のプロンプトが読み込まれたことを確認
-    expect(Prompt.load).toHaveBeenCalledWith('formatter')
-    expect(Prompt.load).toHaveBeenCalledWith('translator')
+    expect(Prompt.load).toHaveBeenCalledWith('format')
+    expect(Prompt.load).toHaveBeenCalledWith('translate')
     // 最終的な出力を検証
     expect(flashcards).toEqual(expectedFlashcards)
   })
@@ -153,7 +153,7 @@ describe('subtitle processor', () => {
     await processor.convert(mockSubtitles, 'fr', 'es')
 
     // translator呼び出し時のパラメータを検証
-    expect(Prompt.load).toHaveBeenLastCalledWith('translator')
+    expect(Prompt.load).toHaveBeenLastCalledWith('translate')
     expect(Prompt.load('translator').toMessages).toHaveBeenLastCalledWith({
       subtitles: [],
       fromLang: 'fr',

@@ -48,10 +48,10 @@ export class SubtitleProcessor {
     // パイプライン: 字幕 -> 整形 -> 翻訳 -> フラッシュカード
 
     console.log('Processing subtitles...')
-    const formatted = await this.process('formatter', { subtitles })
+    const formatted = await this.process('format', { subtitles })
 
     console.log('Translating subtitles...')
-    const translated = await this.process('translator', {
+    const translated = await this.process('translate', {
       subtitles: formatted,
       fromLang,
       toLang,

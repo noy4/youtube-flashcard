@@ -4,26 +4,8 @@ import { SubtitleProcessor } from './subtitle-processor.js'
 import { extractVideoId, fetchSubtitles } from './youtube.js'
 
 export class FlashcardGenerator {
-  private async generateFromUrl(url: string, options: {
-    apiKey: string
-    baseUrl?: string
-    model: string
-    fromLang: string
-    toLang: string
-  }) {
-    const subtitles = await fetchSubtitles(url, options.fromLang)
-    const videoId = extractVideoId(url)
-    const processor = new SubtitleProcessor({
-      apiKey: options.apiKey,
-      baseURL: options.baseUrl,
-      model: options.model,
-    }, videoId)
-    return await processor.convert(subtitles, options.fromLang, options.toLang)
-  }
-
   private loadFromJson(path: string): Flashcard[] {
-    const jsonContent = readFileSync(path, 'utf8')
-    return JSON.parse(jsonContent)
+    return JSON.parse(readFileSync(path, 'utf8'))
   }
 
   async generate(options: {
@@ -44,12 +26,13 @@ export class FlashcardGenerator {
     if (!options.apiKey)
       throw new Error('OpenAI APIキーを指定してください')
 
-    return await this.generateFromUrl(options.url, {
+    const subtitles = await fetchSubtitles(options.url, options.fromLang)
+    const videoId = extractVideoId(options.url)
+    const processor = new SubtitleProcessor({
       apiKey: options.apiKey,
-      baseUrl: options.baseUrl,
+      baseURL: options.baseUrl,
       model: options.model,
-      fromLang: options.fromLang,
-      toLang: options.toLang,
-    })
+    }, videoId)
+    return await processor.convert(subtitles, options.fromLang, options.toLang)
   }
 }

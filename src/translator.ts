@@ -1,16 +1,10 @@
 import type { ClientOptions } from 'openai'
 import type { Subtitle } from './youtube.js'
-import { readFileSync } from 'node:fs'
-import { join } from 'node:path'
 import Mustache from 'mustache'
 import OpenAI from 'openai'
+import { readPrompt } from './prompts/index.js'
 
 export type TranslatorOptions = ClientOptions & { model: string }
-
-const PROMPT_DIR = join(import.meta.dirname, 'prompts', 'translator')
-function readPrompt(filename: string): string {
-  return readFileSync(join(PROMPT_DIR, filename), 'utf-8')
-}
 
 export class Translator {
   private client: OpenAI
@@ -34,8 +28,8 @@ export class Translator {
     fromLang: string,
     toLang: string,
   ): Promise<Subtitle[]> {
-    const systemPrompt = readPrompt('system.md')
-    const userPromptTemplate = readPrompt('user.md')
+    const systemPrompt = readPrompt('translator', 'system.md')
+    const userPromptTemplate = readPrompt('translator', 'user.md')
     const userPrompt = Mustache.render(userPromptTemplate, {
       fromLang,
       toLang,

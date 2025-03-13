@@ -17,7 +17,7 @@ program
 program
   .command('convert')
   .description('YouTubeの動画URLからフラッシュカードを生成')
-  .argument('[url]', 'YouTube動画のURL（環境変数 VIDEO_URL でも指定可能）', process.env.VIDEO_URL)
+  .argument('[url]', 'YouTube動画のURL', process.env.VIDEO_URL)
   .option('-o, --output <path>', '出力ファイルパス', 'output/json.json')
   .option('-f, --format <format>', '出力形式 (json, obsidian または anki)', 'json')
   .option('-s, --source-lang <code>', '元の言語コード', 'en')
@@ -25,9 +25,9 @@ program
   .option('--add-to-anki', 'フラッシュカードを直接Ankiに追加')
   .option('--deck-name <name>', 'Ankiのデッキ名', 'Default')
   .option('--model-name <name>', 'Ankiのモデル名', '基本')
-  .option('--api-key <key>', 'OpenAI APIキー（環境変数 OPENAI_API_KEY でも指定可能）', process.env.OPENAI_API_KEY)
-  .option('-m, --model <model>', 'AIモデル（環境変数 AI_MODEL でも指定可能）')
-  .option('-b, --base-url <url>', 'API baseURL（環境変数 OPENAI_BASE_URL でも指定可能）')
+  .option('--api-key <key>', 'OpenAI APIキー', process.env.OPENAI_API_KEY)
+  .option('-m, --model <model>', 'AIモデル')
+  .option('-b, --base-url <url>', 'API baseURL')
   .option('-i, --input <path>', '既存のJSONファイルパス（指定時は字幕取得とフラッシュカード生成をスキップ）')
   .action(async (url, options) => {
     try {
@@ -40,12 +40,12 @@ program
       }
       else {
         if (!url) {
-          console.error('エラー: YouTube URLが必要です。引数または環境変数VIDEO_URLで指定してください。')
+          console.error('pass video url')
           process.exit(1)
         }
 
         if (!options.apiKey) {
-          console.error('エラー: OpenAI APIキーが必要です。--api-keyオプションまたは環境変数OPENAI_API_KEYで指定してください。')
+          console.error('pass openai api key')
           process.exit(1)
         }
 

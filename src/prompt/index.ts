@@ -28,7 +28,10 @@ export class Prompt {
 
     for (const match of matches) {
       const [, role, content] = match
-      messages.push({ role, content: content.trim() } as ChatCompletionMessageParam)
+      messages.push({
+        role: role.toLowerCase(),
+        content: content.trim(),
+      } as ChatCompletionMessageParam)
     }
 
     return messages

@@ -40,8 +40,21 @@ export class Prompt {
   /**
    * テンプレートをパースしてメッセージに変換
    */
+  private serializeValue(value: unknown): string {
+    if (typeof value === 'object' && value !== null) {
+      return JSON.stringify(value, null, 2)
+    }
+    return String(value)
+  }
+
   toMessages(variables: Record<string, unknown> = {}) {
-    const rendered = Mustache.render(this.markdown, variables)
+    const serializedVars = Object.fromEntries(
+      Object.entries(variables).map(([key, value]) => [
+        key,
+        this.serializeValue(value),
+      ]),
+    )
+    const rendered = Mustache.render(this.markdown, serializedVars)
     return this.parse(rendered)
   }
 }

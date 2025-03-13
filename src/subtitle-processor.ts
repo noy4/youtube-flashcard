@@ -25,7 +25,11 @@ export class SubtitleProcessor {
       model: this.model,
       messages,
       temperature: 0.3,
-      // response_format: { type: 'json_object' },
+      // json_mode, except for openai (they doesn't return array in json_mode)
+      // ref: [`json_mode` returns no JSON arrays - API - OpenAI Developer Community](https://community.openai.com/t/json-mode-returns-no-json-arrays/480792)
+      ...(!this.model.includes('openai') && {
+        response_format: { type: 'json_object' },
+      }),
     })
 
     const content = response.choices[0]?.message.content?.trim() || '[]'

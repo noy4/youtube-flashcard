@@ -1,18 +1,11 @@
 #!/usr/bin/env node
 import { readFileSync, writeFileSync } from 'node:fs'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { Command } from 'commander'
+import packageJson from '../../package.json' with { type: 'json' }
 import { AnkiConnector } from '../anki.js'
 import { SubtitleConverter } from '../converter.js'
 import { FlashcardFormatter } from '../formatter.js'
 import { extractVideoId, fetchSubtitles, getAvailableLanguages } from '../youtube.js'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const packageJson = JSON.parse(
-  readFileSync(path.join(__dirname, '../../package.json'), 'utf8'),
-)
 
 const program = new Command()
 

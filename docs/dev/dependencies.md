@@ -30,6 +30,22 @@ program.parse()
 - [Express CLI](https://github.com/expressjs/express/tree/master/bin) - Expressフレームワークのコマンドラインツール
 - [Vue CLI](https://github.com/vuejs/vue-cli) - Vue.jsの開発ツール
 
+### Mustache
+
+テンプレートエンジンで、シンプルで使いやすい構文を提供します。プロンプトテンプレートの管理に使用しています。
+
+```typescript
+import Mustache from 'mustache'
+
+const template = '{{name}}さん、こんにちは！'
+const rendered = Mustache.render(template, { name: '山田' })
+// => "山田さん、こんにちは！"
+```
+
+参考プロジェクト：
+- [Express](https://github.com/expressjs/express) - Mustacheをビューエンジンとして使用
+- [Ghost](https://github.com/TryGhost/Ghost) - ブログプラットフォームでテンプレート管理に使用
+
 ### openai
 
 OpenAI APIを使用して、字幕の翻訳を行うためのライブラリです。

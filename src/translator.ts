@@ -1,8 +1,16 @@
 import type { ClientOptions } from 'openai'
 import type { Subtitle } from './youtube.js'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import Mustache from 'mustache'
 import OpenAI from 'openai'
 
 export type TranslatorOptions = ClientOptions & { model: string }
+
+const PROMPT_DIR = join(import.meta.dirname, 'prompts', 'translator')
+function readPrompt(filename: string): string {
+  return readFileSync(join(PROMPT_DIR, filename), 'utf-8')
+}
 
 export class Translator {
   private client: OpenAI
@@ -26,55 +34,13 @@ export class Translator {
     fromLang: string,
     toLang: string,
   ): Promise<Subtitle[]> {
-    const systemPrompt = `You are a professional subtitle translator.`
-
-    const userPrompt = `You will receive a JSON array of subtitles.
-
-<input_example>
-[
-  {
-    "text": "hi there its nice to meet",
-    "start": 0,
-    "end": 1
-  },
-  {
-    "text": "you today how are you doing",
-    "start": 1,
-    "end": 2
-  }
-]
-</input_example>
-
-Translate each subtitle's 'text' field from ${fromLang} to ${toLang} and add a 'translation' field with the translated text.
-
-<output_example>
-[
-  {
-    "text": "Hi there! It's nice to meet",
-    "start": 0,
-    "end": 1,
-    "translation": "こんにちは！お会いできて"
-  },
-  {
-    "text": "you today. How are you doing?",
-    "start": 1,
-    "end": 2,
-    "translation": "うれしいです。お元気ですか？"
-  }
-]
-</output_example>
-
-Notes:
-- Since the input text might be auto-generated, please format it into proper sentences before translation.
-- The output will be JSON parsed, so ensure it is completely valid JSON.
-Do not return truncated or incomplete JSON.
-
-Now, please translate the following subtitles:
-
-<input>
-${JSON.stringify(subtitles, null, 2)}
-</input>
-`
+    const systemPrompt = readPrompt('system.md')
+    const userPromptTemplate = readPrompt('user.md')
+    const userPrompt = Mustache.render(userPromptTemplate, {
+      fromLang,
+      toLang,
+      subtitles: JSON.stringify(subtitles, null, 2),
+    })
 
     console.log('model:', this.model)
     const response = await this.client.chat.completions.create({
@@ -84,7 +50,6 @@ ${JSON.stringify(subtitles, null, 2)}
         { role: 'user', content: userPrompt },
       ],
       temperature: 0.3,
-      max_completion_tokens: 1_000_000,
       response_format: { type: 'json_object' },
     })
 

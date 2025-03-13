@@ -66,7 +66,6 @@ describe('translator', () => {
           },
         ],
         temperature: 0.3,
-        max_completion_tokens: 1_000_000,
         response_format: { type: 'json_object' },
       })
     })

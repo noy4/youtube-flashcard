@@ -28,8 +28,10 @@
   "dependencies": {
     "@commander-js/extra-typings": "^13.1.0",
     "@types/big.js": "^6.2.2",
+    "@types/mustache": "^4.2.5",
     "big.js": "^6.2.2",
     "commander": "^13.1.0",
+    "mustache": "^4.2.0",
     "openai": "^4.87.3",
     "yanki-connect": "^2.1.12",
     "youtube-caption-extractor": "^1.4.3"

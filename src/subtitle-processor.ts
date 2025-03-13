@@ -27,7 +27,7 @@ export class SubtitleProcessor {
     })
 
     const content = response.choices[0]?.message.content?.trim() || '[]'
-    console.log('content:', content)
+    console.log('usage:', response.usage)
     return JSON.parse(content) as Subtitle[]
   }
 

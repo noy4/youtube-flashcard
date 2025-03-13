@@ -15,8 +15,6 @@ program
   .version(packageJson.version)
 
 program
-  .command('convert')
-  .description('YouTubeの動画URLからフラッシュカードを生成')
   // Input
   .argument('[url]', 'YouTube動画のURL', process.env.VIDEO_URL)
   .option('-i, --input <path>', '既存のJSONファイルパス（指定時は字幕取得とフラッシュカード生成をスキップ）')

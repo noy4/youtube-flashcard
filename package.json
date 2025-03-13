@@ -12,9 +12,7 @@
     "cli"
   ],
   "main": "dist/cli/index.js",
-  "bin": {
-    "youtube-flashcard": "dist/cli/index.js"
-  },
+  "bin": "dist/cli/index.js",
   "scripts": {
     "exec": "vite-node src/cli/index.ts",
     "build": "tsc",

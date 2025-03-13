@@ -1,19 +1,20 @@
 import type { ClientOptions } from 'openai'
 import type { Subtitle } from './youtube.js'
-import Mustache from 'mustache'
 import OpenAI from 'openai'
-import { loadPrompt } from './prompt/index.js'
+import { Prompt } from './prompt/index.js'
 
 export type TranslatorOptions = ClientOptions & { model: string }
 
 export class Translator {
   private client: OpenAI
   private model: string
+  private prompt: Prompt
 
   constructor(options: TranslatorOptions) {
     const { model, ...clientOptions } = options
     this.client = new OpenAI(clientOptions)
     this.model = model
+    this.prompt = new Prompt('translator')
   }
 
   /**
@@ -28,21 +29,14 @@ export class Translator {
     fromLang: string,
     toLang: string,
   ): Promise<Subtitle[]> {
-    const prompts = loadPrompt('translator')
-    const systemPrompt = prompts.System
-    const userPrompt = Mustache.render(prompts.User, {
-      fromLang,
-      toLang,
-      subtitles: JSON.stringify(subtitles, null, 2),
-    })
-
     console.log('model:', this.model)
     const response = await this.client.chat.completions.create({
       model: this.model,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ],
+      messages: this.prompt.toMessages({
+        fromLang,
+        toLang,
+        subtitles: JSON.stringify(subtitles, null, 2),
+      }),
       temperature: 0.3,
       response_format: { type: 'json_object' },
     })

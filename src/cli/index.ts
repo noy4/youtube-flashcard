@@ -25,7 +25,7 @@ const program = new Command()
   // api
   .option('--api-key <key>', 'OpenAI APIキー', process.env.OPENAI_API_KEY)
   .option('-b, --base-url <url>', 'API baseURL', process.env.OPENAI_BASE_URL || 'https://openrouter.ai/api/v1')
-  .option('-m, --model <model>', 'AIモデル', process.env.AI_MODEL || 'google/gemini-2.0-flash-exp:free')
+  .option('-m, --model <model>', 'AIモデル', process.env.AI_MODEL || 'google/gemini-flash-1.5-8b')
   .action(async (url, options) => {
     try {
       const generator = new FlashcardGenerator()

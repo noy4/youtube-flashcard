@@ -12,7 +12,11 @@ export class Translator {
   private model: string
 
   constructor(options?: TranslatorOptions) {
-    const { model, ...clientOptions } = options || {}
+    if (!options?.apiKey) {
+      throw new Error('OpenRouter APIキーが必要です')
+    }
+
+    const { model, ...clientOptions } = options
 
     this.client = new OpenAI({
       ...clientOptions,
@@ -90,7 +94,6 @@ The output will be JSON parsed, so make sure to output valid JSON.`
           },
         ],
         temperature: 0.3,
-        response_format: { type: 'json_object' },
       })
 
       if (!response.choices || response.choices.length === 0) {
@@ -102,30 +105,30 @@ The output will be JSON parsed, so make sure to output valid JSON.`
         throw new Error('翻訳結果が空でした')
       }
 
-      let translatedSubtitles: Subtitle[]
       try {
         console.log('content:', content)
         const parsed = JSON.parse(content)
         if (!Array.isArray(parsed)) {
           throw new TypeError('翻訳結果が配列ではありません')
         }
-        translatedSubtitles = parsed
+        const translatedSubtitles = parsed as Subtitle[]
+        writeFileSync('output/translations.json', JSON.stringify(translatedSubtitles, null, 2), 'utf8')
+
+        if (translatedSubtitles.length !== subtitles.length) {
+          throw new TypeError('翻訳結果の数が入力字幕の数と一致しません')
+        }
+
+        return translatedSubtitles
       }
       catch (error) {
-        throw new Error('翻訳結果のJSONパースに失敗しました')
+        throw new Error('翻訳中にエラーが発生しました')
       }
-
-      writeFileSync('output/translations.json', JSON.stringify(translatedSubtitles, null, 2), 'utf8')
-
-      if (translatedSubtitles.length !== subtitles.length) {
-        throw new Error('翻訳結果の数が入力字幕の数と一致しません')
-      }
-
-      return translatedSubtitles
     }
     catch (error) {
       if (error instanceof Error) {
-        throw error
+        if (error.message === '翻訳結果が空でした') {
+          throw error
+        }
       }
       throw new Error('翻訳中にエラーが発生しました')
     }

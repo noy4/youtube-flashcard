@@ -3,7 +3,9 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { Command } from 'commander'
+import { AnkiConnector } from '../anki.js'
 import { SubtitleConverter } from '../converter.js'
+import { FlashcardFormatter } from '../formatter.js'
 import { extractVideoId, fetchSubtitles, getAvailableLanguages } from '../youtube.js'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -36,65 +38,48 @@ program
   .option('-i, --input <path>', '既存のJSONファイルパス（指定時は字幕取得とフラッシュカード生成をスキップ）')
   .action(async (url, options) => {
     try {
+      let flashcards
+
       if (options.input) {
         console.log(`JSONファイルからフラッシュカードを読み込み中... (${options.input})`)
         const jsonContent = readFileSync(options.input, 'utf8')
-        const flashcards = JSON.parse(jsonContent)
-        const dummyConverter = new SubtitleConverter([], '', {})
-
-        if (options.addToAnki) {
-          console.log('Ankiにフラッシュカードを追加中...')
-          const noteIds = await dummyConverter.addToAnki(
-            flashcards,
-            options.deckName,
-            options.modelName,
-          )
-          console.log(`${noteIds.length}枚のフラッシュカードをAnkiに追加しました`)
-          console.log(`デッキ名: ${options.deckName}`)
+        flashcards = JSON.parse(jsonContent)
+      }
+      else {
+        const videoUrl = url || process.env.VIDEO_URL
+        if (!videoUrl) {
+          console.error('エラー: YouTube URLが必要です。引数または環境変数VIDEO_URLで指定してください。')
+          process.exit(1)
         }
 
-        const output = dummyConverter.toString(flashcards, options.format as 'obsidian' | 'anki')
-        writeFileSync(options.output, output, 'utf8')
-        console.log(`フラッシュカードを ${options.output} に保存しました（形式: ${options.format}）`)
-        return
+        const apiKey = options.apiKey || process.env.OPENAI_API_KEY
+        if (!apiKey) {
+          console.error('エラー: OpenAI APIキーが必要です。--api-keyオプションまたは環境変数OPENAI_API_KEYで指定してください。')
+          process.exit(1)
+        }
+
+        console.log('字幕を取得中...')
+        const subtitles = await fetchSubtitles(videoUrl, options.sourceLang)
+        const videoId = extractVideoId(videoUrl)
+
+        console.log('フラッシュカードを生成中...')
+        const converter = new SubtitleConverter(subtitles, videoId, {
+          apiKey,
+          baseURL: options.baseUrl,
+          model: options.model,
+        })
+        flashcards = await converter.convert(options.sourceLang, options.targetLang)
       }
-
-      const videoUrl = url || process.env.VIDEO_URL
-      if (!videoUrl) {
-        console.error('エラー: YouTube URLが必要です。引数または環境変数VIDEO_URLで指定してください。')
-        process.exit(1)
-      }
-
-      const apiKey = options.apiKey || process.env.OPENAI_API_KEY
-      if (!apiKey) {
-        console.error('エラー: OpenAI APIキーが必要です。--api-keyオプションまたは環境変数OPENAI_API_KEYで指定してください。')
-        process.exit(1)
-      }
-
-      console.log('字幕を取得中...')
-      const subtitles = await fetchSubtitles(videoUrl, options.sourceLang)
-      const videoId = extractVideoId(videoUrl)
-
-      console.log('フラッシュカードを生成中...')
-      const converter = new SubtitleConverter(subtitles, videoId, {
-        apiKey,
-        baseURL: options.baseUrl,
-        model: options.model,
-      })
-      const flashcards = await converter.convert(options.sourceLang, options.targetLang)
 
       if (options.addToAnki) {
         console.log('Ankiにフラッシュカードを追加中...')
-        const noteIds = await converter.addToAnki(
-          flashcards,
-          options.deckName,
-          options.modelName,
-        )
+        const ankiConnector = new AnkiConnector()
+        const noteIds = await ankiConnector.addCards(flashcards, options.deckName, options.modelName)
         console.log(`${noteIds.length}枚のフラッシュカードをAnkiに追加しました`)
         console.log(`デッキ名: ${options.deckName}`)
       }
 
-      const output = converter.toString(flashcards, options.format as 'obsidian' | 'anki')
+      const output = FlashcardFormatter.toString(flashcards, options.format)
       writeFileSync(options.output, output, 'utf8')
       console.log(`フラッシュカードを ${options.output} に保存しました（形式: ${options.format}）`)
     }

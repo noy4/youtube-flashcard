@@ -21,30 +21,42 @@ describe('translator', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
-    translator = new Translator('test-api-key')
+    translator = new Translator({ apiKey: 'test-api-key' })
     const mockClient = (translator as any).client
     mockCreate = mockClient.chat.completions.create
   })
 
   it('aPIキーなしでインスタンス化するとエラーを投げる', () => {
-    expect(() => new Translator('')).toThrow('OpenRouter APIキーが必要です')
+    expect(() => new Translator(undefined)).toThrow('OpenRouter APIキーが必要です')
+    expect(() => new Translator({ apiKey: '' })).toThrow('OpenRouter APIキーが必要です')
   })
 
   describe('translate', () => {
     it('テキストを正常に翻訳できる', async () => {
+      const mockSubtitles = [{
+        text: 'Hello',
+        start: 0,
+        end: 1,
+      }]
+
       mockCreate.mockResolvedValueOnce({
         choices: [{
           message: {
-            content: '翻訳されたテキスト',
+            content: JSON.stringify([{
+              text: 'Hello',
+              start: 0,
+              end: 1,
+              translation: '翻訳されたテキスト',
+            }]),
           },
         }],
       })
 
-      const result = await translator.translate('Hello', 'en', 'ja')
+      const result = await translator.translate(mockSubtitles, 'en', 'ja')
 
-      expect(result).toBe('翻訳されたテキスト')
+      expect(result[0].translation).toBe('翻訳されたテキスト')
       expect(mockCreate).toHaveBeenCalledWith({
-        model: 'google/gemini-2.0-flash-001',
+        model: 'google/gemini-2.0-flash-exp:free',
         messages: [
           {
             role: 'system',
@@ -62,7 +74,7 @@ describe('translator', () => {
     it('aPIエラーの場合はエラーを投げる', async () => {
       mockCreate.mockRejectedValueOnce(new Error('API Error'))
 
-      await expect(translator.translate('Hello', 'en', 'ja'))
+      await expect(translator.translate([], 'en', 'ja'))
         .rejects
         .toThrow('翻訳中にエラーが発生しました')
     })
@@ -76,7 +88,7 @@ describe('translator', () => {
         }],
       })
 
-      await expect(translator.translate('Hello', 'en', 'ja'))
+      await expect(translator.translate([], 'en', 'ja'))
         .rejects
         .toThrow('翻訳結果が空でした')
     })
@@ -86,7 +98,7 @@ describe('translator', () => {
         choices: [],
       })
 
-      await expect(translator.translate('Hello', 'en', 'ja'))
+      await expect(translator.translate([], 'en', 'ja'))
         .rejects
         .toThrow('翻訳結果が空でした')
     })

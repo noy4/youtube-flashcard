@@ -5,7 +5,7 @@ import packageJson from '../../package.json' with { type: 'json' }
 import { AnkiConnector } from '../anki.js'
 import { SubtitleConverter } from '../converter.js'
 import { FlashcardFormatter } from '../formatter.js'
-import { extractVideoId, fetchSubtitles, getAvailableLanguages } from '../youtube.js'
+import { extractVideoId, fetchSubtitles } from '../youtube.js'
 
 const program = new Command()
 
@@ -73,33 +73,6 @@ program
       const output = FlashcardFormatter.toString(flashcards, options.format)
       writeFileSync(options.output, output, 'utf8')
       console.log(`フラッシュカードを ${options.output} に保存しました（形式: ${options.format}）`)
-    }
-    catch (error) {
-      if (error instanceof Error) {
-        console.error('エラーが発生しました:', error.message)
-      }
-      else {
-        console.error('予期せぬエラーが発生しました')
-      }
-      process.exit(1)
-    }
-  })
-
-program
-  .command('languages')
-  .description('YouTubeの動画で利用可能な字幕の言語コードを表示')
-  .argument('<url>', 'YouTube動画のURL')
-  .action(async (url) => {
-    try {
-      const languages = await getAvailableLanguages(url)
-      if (languages.length > 0) {
-        console.log('利用可能な言語コード:')
-        languages.forEach(lang => console.log(`- ${lang}`))
-        console.log('\n注意: 現在は英語(en)の字幕のみに対応しています。')
-      }
-      else {
-        console.log('この動画で利用可能な字幕が見つかりませんでした。')
-      }
     }
     catch (error) {
       if (error instanceof Error) {

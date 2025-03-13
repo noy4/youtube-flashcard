@@ -1,6 +1,5 @@
 import type { ClientOptions } from 'openai'
 import type { Subtitle } from './youtube.js'
-import { writeFileSync } from 'node:fs'
 import OpenAI from 'openai'
 
 export type TranslatorOptions = ClientOptions & { model: string }
@@ -105,7 +104,6 @@ ${JSON.stringify(subtitles, null, 2)}
           throw new TypeError('翻訳結果が配列ではありません')
         }
         const translatedSubtitles = parsed as Subtitle[]
-        writeFileSync('output/translations.json', JSON.stringify(translatedSubtitles, null, 2), 'utf8')
 
         if (translatedSubtitles.length !== subtitles.length) {
           throw new TypeError('翻訳結果の数が入力字幕の数と一致しません')

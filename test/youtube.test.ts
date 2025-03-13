@@ -50,7 +50,7 @@ describe('youTube機能のテスト', () => {
         { text: 'First subtitle', start: 0.0, end: 1.0 },
         { text: 'Second subtitle', start: 1.0, end: 2.0 },
       ])
-      expect(getSubtitles).toHaveBeenCalledWith({ videoID: 'abcd1234' })
+      expect(getSubtitles).toHaveBeenCalledWith({ videoID: 'abcd1234', lang: 'en' })
     })
 
     it('字幕が見つからない場合はエラーを投げる', async () => {

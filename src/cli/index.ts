@@ -16,8 +16,8 @@ const program = new Command()
   .option('-o, --output <path>', '出力ファイルパス', 'output/json.json')
   .option('-f, --format <format>', '出力形式 (json, obsidian または anki)', 'json')
   // languages
-  .option('-f, --from-lang <code>', '元の言語コード', 'en')
-  .option('-t, --to-lang <code>', '翻訳後の言語コード', 'ja')
+  .option('--from-lang <code>', '元の言語コード', 'en')
+  .option('--to-lang <code>', '翻訳後の言語コード', 'ja')
   // anki
   .option('--add-to-anki', 'フラッシュカードを直接Ankiに追加')
   .option('--deck-name <name>', 'Ankiのデッキ名', 'Default')

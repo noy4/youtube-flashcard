@@ -23,7 +23,6 @@ export class SubtitleProcessor {
       model: this.model,
       messages,
       temperature: 0.3,
-      response_format: { type: 'json_object' },
     })
 
     const content = response.choices[0]?.message.content?.trim() || '[]'

@@ -43,10 +43,11 @@ Output example:
 ```
 
 Notes:
-- The output will be JSON parsed, so ensure it is completely valid JSON.
-Do not return truncated or incomplete JSON.
+- Your response will be directly parsed as JSON array.
+- DO NOT include any additional text like "Here is the formatted subtitles:", "```json", .etc.
+- DO NOT return truncated or incomplete JSON array.
 
-Now, please translate the following subtitles:
+Now, please process the following subtitles:
 
 <input>
 {{{subtitles}}}

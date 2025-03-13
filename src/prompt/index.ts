@@ -5,8 +5,8 @@ import { join } from 'node:path'
  * プロンプトセクションのマッピング
  */
 interface PromptSections {
-  'System Prompt': string
-  'User Prompt': string
+  System: string
+  User: string
 }
 
 /**
@@ -16,8 +16,8 @@ interface PromptSections {
  */
 function parsePrompt(content: string): PromptSections {
   const sections = {
-    'System Prompt': '',
-    'User Prompt': '',
+    System: '',
+    User: '',
   } as PromptSections
 
   const matches = content.matchAll(/^# (.+)\n([\s\S]+?)(?=\n# |$)/g)
@@ -25,7 +25,7 @@ function parsePrompt(content: string): PromptSections {
   for (const match of matches) {
     const [, title, content] = match
     const sectionTitle = title.trim()
-    if (sectionTitle === 'System Prompt' || sectionTitle === 'User Prompt') {
+    if (sectionTitle === 'System' || sectionTitle === 'User') {
       sections[sectionTitle] = content.trim()
     }
   }

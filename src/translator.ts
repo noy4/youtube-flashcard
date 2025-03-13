@@ -29,8 +29,8 @@ export class Translator {
     toLang: string,
   ): Promise<Subtitle[]> {
     const prompts = loadPrompt('translator')
-    const systemPrompt = prompts['System Prompt']
-    const userPrompt = Mustache.render(prompts['User Prompt'], {
+    const systemPrompt = prompts.System
+    const userPrompt = Mustache.render(prompts.User, {
       fromLang,
       toLang,
       subtitles: JSON.stringify(subtitles, null, 2),

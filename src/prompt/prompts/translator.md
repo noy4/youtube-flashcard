@@ -1,8 +1,8 @@
-# System Prompt
+# System
 
 You are a professional subtitle translator.
 
-# User Prompt
+# User
 
 You will receive a JSON array of subtitles.
 

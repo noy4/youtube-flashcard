@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { getSubtitles } from 'youtube-caption-extractor'
-import { extractVideoId, fetchSubtitles, getAvailableLanguages } from '../src/youtube.js'
+import { extractVideoId, fetchSubtitles } from '../src/youtube.js'
 
 // youtube-caption-extractorをモック化
 vi.mock('youtube-caption-extractor', () => ({
@@ -60,45 +60,11 @@ describe('youTube機能のテスト', () => {
       await expect(fetchSubtitles(url, 'en')).rejects.toThrow('字幕が見つかりませんでした')
     })
 
-    it('aPIエラーの場合はエラーを投げる', async () => {
+    it('api エラーの場合はエラーを投げる', async () => {
       (getSubtitles as any).mockRejectedValue(new Error('API Error'))
 
       const url = 'https://www.youtube.com/watch?v=abcd1234'
       await expect(fetchSubtitles(url, 'en')).rejects.toThrow()
-    })
-  })
-
-  describe('getAvailableLanguages', () => {
-    beforeEach(() => {
-      vi.clearAllMocks()
-    })
-
-    it('字幕が利用可能な場合は言語コードを返す', async () => {
-      const mockSubtitles = [{ text: 'Subtitle' }];
-      (getSubtitles as any).mockResolvedValue(mockSubtitles)
-
-      const url = 'https://www.youtube.com/watch?v=abcd1234'
-      const result = await getAvailableLanguages(url)
-
-      expect(result).toEqual(['en'])
-    })
-
-    it('字幕が利用できない場合は空配列を返す', async () => {
-      (getSubtitles as any).mockResolvedValue([])
-
-      const url = 'https://www.youtube.com/watch?v=abcd1234'
-      const result = await getAvailableLanguages(url)
-
-      expect(result).toEqual([])
-    })
-
-    it('エラーが発生した場合は空配列を返す', async () => {
-      (getSubtitles as any).mockRejectedValue(new Error('API Error'))
-
-      const url = 'https://www.youtube.com/watch?v=abcd1234'
-      const result = await getAvailableLanguages(url)
-
-      expect(result).toEqual([])
     })
   })
 })

@@ -33,7 +33,7 @@ export interface Options {
 }
 
 async function extractAudioSegments(segments: Segment[]) {
-  const outputDir = 'segments'
+  const outputDir = 'output/segments'
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir)
   }
@@ -45,7 +45,7 @@ async function extractAudioSegments(segments: Segment[]) {
 
     try {
       await execAsync(
-        `ffmpeg -i video.mp4 -ss ${segment.start} -t ${duration} -vn -acodec mp3 "${outputFile}"`,
+        `ffmpeg -i output/video.mp4 -ss ${segment.start} -t ${duration} -vn -acodec mp3 "${outputFile}"`,
       )
       console.log(`セグメント ${index + 1}/${segments.length} を抽出しました`)
     }
@@ -64,14 +64,14 @@ export async function createFlashcardsV2(
   console.log('文字起こしを開始します...')
   try {
     const openai = new OpenAI()
-    const file = fs.createReadStream('video.mp4')
+    const file = fs.createReadStream('output/video.mp4')
     const transcription = await openai.audio.transcriptions.create({
       model: 'whisper-1',
       file,
       response_format: 'verbose_json',
     }) as TranscriptionResponse
 
-    fs.writeFileSync('transcription.json', JSON.stringify(transcription, null, 2))
+    fs.writeFileSync('output/transcription.json', JSON.stringify(transcription, null, 2))
     console.log('文字起こしが完了しました')
 
     await extractAudioSegments(transcription.segments)

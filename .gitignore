@@ -16,3 +16,6 @@ coverage
 
 # environment variables
 .env
+
+# output files
+output

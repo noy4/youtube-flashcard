@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 
-import type { OutputFormat } from '../types.js'
 import { Command } from '@commander-js/extra-typings'
 import packageJson from '../../package.json' with { type: 'json' }
-import { FlashcardGenerator } from '../generator.js'
-import { OutputManager } from '../output.js'
+import { handle } from '../handler.js'
 
 const program = new Command()
   .name('youtube-flashcard')
@@ -28,29 +26,7 @@ const program = new Command()
   .option('-m, --model <model>', 'AIモデル', process.env.AI_MODEL || 'google/gemini-flash-1.5-8b')
   .action(async (url, options) => {
     try {
-      const generator = new FlashcardGenerator()
-      const flashcards = await generator.generate({
-        url,
-        input: options.input,
-        apiKey: options.apiKey,
-        baseUrl: options.baseUrl,
-        model: options.model,
-        fromLang: options.fromLang,
-        toLang: options.toLang,
-      })
-
-      const outputManager = new OutputManager(flashcards)
-      await outputManager.output({
-        format: options.format as OutputFormat,
-        filePath: options.output,
-        anki: options.addToAnki
-          ? {
-              enabled: true,
-              deckName: options.deckName,
-              modelName: options.modelName,
-            }
-          : undefined,
-      })
+      await handle(url, options)
     }
     catch (error) {
       console.error('Error:', error.message)

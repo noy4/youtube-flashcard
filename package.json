@@ -34,7 +34,8 @@
     "mustache": "^4.2.0",
     "openai": "^4.87.3",
     "yanki-connect": "^2.1.12",
-    "youtube-caption-extractor": "^1.4.3"
+    "youtube-caption-extractor": "^1.4.3",
+    "youtube-dl-exec": "^3.0.19"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.10.1",

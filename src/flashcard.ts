@@ -16,7 +16,7 @@ export interface Options {
   model: string
 }
 
-export async function handle(
+export async function createFlashcards(
   url: string | undefined,
   options: Options,
 ) {

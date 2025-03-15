@@ -40,17 +40,17 @@ async function loadVideo(input?: string): Promise<string> {
   const outputPath = 'output/video.mp4'
   const isUrl = /^https?:\/\//.test(input)
 
+  console.log(`Loading ${input}...`)
+
   if (isUrl) {
-    // YouTubeからの読み込み
     await youtubeDl(input, {
       output: outputPath,
       format: 'mp4',
     })
   }
   else {
-    // ファイルシステムからの読み込み
     if (!fs.existsSync(input))
-      throw new Error(`入力ファイル ${input} が見つかりません`)
+      throw new Error(`${input} not found`)
 
     fs.copyFileSync(input, outputPath)
   }
@@ -91,6 +91,7 @@ async function loadTranscription(videoPath: string, options: Options): Promise<{
   else {
     // OpenAIで文字起こしを生成
     const file = fs.createReadStream(videoPath)
+    console.log('Transcribing audio...')
     subs1 = await openai.audio.transcriptions.create({
       model: 'whisper-1',
       file,
@@ -105,6 +106,7 @@ async function loadTranscription(videoPath: string, options: Options): Promise<{
   }
   else {
     // OpenAIで翻訳を生成
+    console.log('Translating subtitles...')
     subs2 = await translateWithOpenAI(subs1, options.fromLang, options.toLang, openai)
     fs.writeFileSync('output/subs2.srt', subs2)
   }
@@ -164,14 +166,13 @@ export async function createFlashcards(options: Options) {
 
   // ビデオのロード
   const videoPath = await loadVideo(options.input!)
-  console.log('ビデオのロードが完了しました')
 
   // 文字起こしの読み込み
-  console.log('文字起こしを開始します...')
   const transcriptions = await loadTranscription(videoPath, options)
-  console.log('文字起こしが完了しました')
 
   // 出力処理
   if (options.addToAnki)
     await outputToAnki(transcriptions, options.deckName, options.modelName)
+
+  console.log('Done.')
 }

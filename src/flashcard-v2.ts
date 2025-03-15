@@ -24,12 +24,15 @@ export interface Options {
   model: string
 }
 
+// 出力フォルダを作成
+function ensureOutputDirectory() {
+  if (!fs.existsSync('output'))
+    fs.mkdirSync('output', { recursive: true })
+}
+
 // ビデオの読み込み処理
 async function loadVideo(url?: string, inputPath?: string): Promise<string> {
   const outputPath = 'output/video.mp4'
-
-  if (!fs.existsSync('output'))
-    fs.mkdirSync('output', { recursive: true })
 
   if (inputPath) {
     // ファイルシステムからの読み込み
@@ -136,6 +139,9 @@ export async function createFlashcardsV2(
   url: string | undefined,
   options: Options,
 ) {
+  // 出力ディレクトリを作成
+  ensureOutputDirectory()
+
   // ビデオのロード
   const videoPath = await loadVideo(url, options.input)
   console.log('ビデオのロードが完了しました')

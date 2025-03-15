@@ -9,7 +9,7 @@ const program = new Command()
   .description('YouTubeの字幕からフラッシュカードを生成')
   .version(packageJson.version)
   // input
-  .argument('[video]', 'ビデオファイルのパスまたはYouTube URL', process.env.VIDEO_URL)
+  .argument('[video]', 'ビデオファイルのパスまたはYouTube URL', process.env.VIDEO)
   .argument('[srt1]', '字幕ファイル1のパス')
   .argument('[srt2]', '字幕ファイル2のパス')
   .option('-o, --output <path>', '出力ファイルパス', 'output/json.json')

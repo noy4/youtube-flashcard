@@ -35,7 +35,7 @@ function setupOutputDirectory() {
 // ビデオの読み込み処理
 async function loadVideo(input?: string): Promise<string> {
   if (!input)
-    throw new Error('ビデオファイルのパスまたはYouTube URLが指定されていません。VIDEO_URL環境変数も設定されていません。')
+    throw new Error('ビデオファイルのパスまたはYouTube URLが指定されていません。')
 
   const outputPath = 'output/video.mp4'
 

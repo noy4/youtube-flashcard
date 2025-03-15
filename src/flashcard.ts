@@ -38,9 +38,7 @@ async function loadVideo(input?: string): Promise<string> {
     throw new Error('ビデオファイルのパスまたはYouTube URLが指定されていません。')
 
   const outputPath = 'output/video.mp4'
-
-  // URLかファイルパスかを判定
-  const isUrl = input.startsWith('http://') || input.startsWith('https://')
+  const isUrl = /^https?:\/\//.test(input)
 
   if (isUrl) {
     // YouTubeからの読み込み

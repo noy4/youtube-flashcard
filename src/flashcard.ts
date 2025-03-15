@@ -27,20 +27,28 @@ export interface Options {
 
 export interface Context {
   options: Options
+  openai: OpenAI
   paths: {
     video: string
     subs1: string
     subs2: string
   }
+  subs1Content: string
+  subs2Content: string
 }
 
 function createContext(options: Options): Context {
-  const paths = {
-    video: 'output/video.mp4',
-    subs1: 'output/subs1.srt',
-    subs2: 'output/subs2.srt',
+  return {
+    options,
+    openai: new OpenAI({ apiKey: options.apiKey }),
+    paths: {
+      video: 'output/video.mp4',
+      subs1: 'output/subs1.srt',
+      subs2: 'output/subs2.srt',
+    },
+    subs1Content: '',
+    subs2Content: '',
   }
-  return { options, paths }
 }
 
 // 出力フォルダを準備
@@ -74,57 +82,62 @@ async function loadVideo(context: Context) {
 }
 
 // 字幕のOpenAI翻訳
-async function translateWithOpenAI(text: string, fromLang: string, toLang: string, openai: OpenAI): Promise<string> {
+async function translateWithOpenAI(context: Context) {
+  const { options, openai, subs1Content } = context
+
   const response = await openai.chat.completions.create({
     model: 'gpt-4o',
     messages: [
       {
         role: 'system',
-        content: `You are a skilled translator from ${fromLang} to ${toLang}. Your task is to accurately translate each subtitle segment while preserving the timing information. Keep the SRT format intact.`,
+        content: `You are a skilled translator from ${options.fromLang} to ${options.toLang}. Your task is to accurately translate each subtitle segment while preserving the timing information. Keep the SRT format intact.`,
       },
       {
         role: 'user',
-        content: text,
+        content: subs1Content,
       },
     ],
   })
 
-  return response.choices[0].message.content || text
+  return response.choices[0].message.content || ''
 }
 
 // 文字起こしの読み込み
 async function loadTranscription(context: Context) {
   const { options, paths } = context
-  let subs1: string
-  let subs2: string
-
   const openai = new OpenAI({ apiKey: options.apiKey })
 
   // 字幕1の読み込み
-  if (options.subs1 && fs.existsSync(options.subs1)) {
-    subs1 = fs.readFileSync(options.subs1, 'utf-8')
+  if (options.subs1) {
+    if (!fs.existsSync(options.subs1))
+      throw new Error(`${options.subs1} not found`)
+
+    context.subs1Content = fs.readFileSync(options.subs1, 'utf-8')
   }
   else {
     // OpenAIで文字起こしを生成
     const file = fs.createReadStream(paths.video)
     console.log('Transcribing audio...')
-    subs1 = await openai.audio.transcriptions.create({
+    const transcription = await openai.audio.transcriptions.create({
       model: 'whisper-1',
       file,
       response_format: 'srt',
     })
-    fs.writeFileSync(paths.subs1, subs1)
+    context.subs1Content = transcription
+    fs.writeFileSync(paths.subs1, transcription)
   }
 
   // 字幕2の読み込み
-  if (options.subs2 && fs.existsSync(options.subs2)) {
-    subs2 = fs.readFileSync(options.subs2, 'utf-8')
+  if (options.subs2) {
+    if (!fs.existsSync(options.subs2))
+      throw new Error(`${options.subs2} not found`)
   }
   else {
     // OpenAIで翻訳を生成
     console.log('Translating subtitles...')
-    subs2 = await translateWithOpenAI(subs1, options.fromLang, options.toLang, openai)
-    fs.writeFileSync(paths.subs2, subs2)
+    const translation = await translateWithOpenAI(context)
+    context.subs2Content = translation
+    fs.writeFileSync(paths.subs2, translation)
   }
 }
 

@@ -24,8 +24,8 @@ export interface Options {
   model: string
 }
 
-// 出力フォルダを作成
-function ensureOutputDirectory() {
+// 出力フォルダを準備
+function setupOutputDirectory() {
   if (!fs.existsSync('output'))
     fs.mkdirSync('output', { recursive: true })
 }
@@ -139,8 +139,8 @@ export async function createFlashcardsV2(
   url: string | undefined,
   options: Options,
 ) {
-  // 出力ディレクトリを作成
-  ensureOutputDirectory()
+  // 出力ディレクトリを準備
+  setupOutputDirectory()
 
   // ビデオのロード
   const videoPath = await loadVideo(url, options.input)

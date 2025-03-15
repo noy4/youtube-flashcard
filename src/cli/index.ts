@@ -41,3 +41,5 @@ const program = new Command()
   })
 
 program.parse()
+
+export { program }

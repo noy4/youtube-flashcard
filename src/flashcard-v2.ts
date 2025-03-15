@@ -24,48 +24,32 @@ export interface Options {
   model: string
 }
 
-// ビデオプロバイダーインターフェース
-interface VideoProvider {
-  loadVideo: {
-    (url?: string, input?: string): Promise<string>
+// ビデオの読み込み処理
+async function loadVideo(url?: string, inputPath?: string): Promise<string> {
+  const outputPath = 'output/video.mp4'
+
+  if (!fs.existsSync('output'))
+    fs.mkdirSync('output', { recursive: true })
+
+  if (inputPath) {
+    // ファイルシステムからの読み込み
+    if (!fs.existsSync(inputPath))
+      throw new Error(`入力ファイル ${inputPath} が見つかりません`)
+
+    fs.copyFileSync(inputPath, outputPath)
   }
-}
-
-// ファイルシステムからのビデオプロバイダー
-class FileVideoProvider implements VideoProvider {
-  async loadVideo(_url?: string, input?: string): Promise<string> {
-    if (!input)
-      throw new Error('入力ファイルが指定されていません')
-
-    if (!fs.existsSync(input))
-      throw new Error(`入力ファイル ${input} が見つかりません`)
-
-    const outputPath = 'output/video.mp4'
-    if (!fs.existsSync('output'))
-      fs.mkdirSync('output', { recursive: true })
-
-    fs.copyFileSync(input, outputPath)
-    return outputPath
-  }
-}
-
-// YouTubeからのビデオプロバイダー
-class YouTubeVideoProvider implements VideoProvider {
-  async loadVideo(url?: string, _input?: string): Promise<string> {
-    if (!url)
-      throw new Error('URLが指定されていません')
-
-    const outputPath = 'output/video.mp4'
-    if (!fs.existsSync('output'))
-      fs.mkdirSync('output', { recursive: true })
-
+  else if (url) {
+    // YouTubeからの読み込み
     await youtubeDl(url, {
       output: outputPath,
       format: 'mp4',
     })
-
-    return outputPath
   }
+  else {
+    throw new Error('URLまたは入力ファイルが指定されていません')
+  }
+
+  return outputPath
 }
 
 // 文字起こしプロバイダーインターフェース
@@ -164,13 +148,8 @@ export async function createFlashcardsV2(
   url: string | undefined,
   options: Options,
 ) {
-  // ビデオプロバイダーの選択
-  const videoProvider: VideoProvider = options.input
-    ? new FileVideoProvider()
-    : new YouTubeVideoProvider()
-
   // ビデオのロード
-  const videoPath = await videoProvider.loadVideo(url, options.input)
+  const videoPath = await loadVideo(url, options.input)
   console.log('ビデオのロードが完了しました')
 
   // 文字起こしプロバイダーの選択と実行

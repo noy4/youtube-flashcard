@@ -52,8 +52,8 @@ async function loadVideo(url?: string, inputPath?: string): Promise<string> {
   return outputPath
 }
 
-// 文字起こしの取得
-async function getTranscription(videoPath: string, options: Options): Promise<string> {
+// 文字起こしの読み込み
+async function loadTranscription(videoPath: string, options: Options): Promise<string> {
   const srtPath = 'output/transcription.srt'
 
   // 既存のSRTファイルがある場合はそれを使用
@@ -68,6 +68,9 @@ async function getTranscription(videoPath: string, options: Options): Promise<st
     file,
     response_format: 'srt',
   })
+
+  // SRTファイルとして保存
+  fs.writeFileSync(srtPath, transcription)
 
   return transcription
 }
@@ -137,10 +140,9 @@ export async function createFlashcardsV2(
   const videoPath = await loadVideo(url, options.input)
   console.log('ビデオのロードが完了しました')
 
-  // 文字起こしの取得
+  // 文字起こしの読み込み
   console.log('文字起こしを開始します...')
-  const transcription = await getTranscription(videoPath, options)
-  fs.writeFileSync('output/transcription.srt', transcription)
+  const transcription = await loadTranscription(videoPath, options)
   console.log('文字起こしが完了しました')
 
   // 出力処理

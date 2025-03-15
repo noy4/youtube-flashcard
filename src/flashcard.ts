@@ -5,6 +5,7 @@ import * as path from 'node:path'
 import { promisify } from 'node:util'
 import OpenAI from 'openai'
 import { parseSync } from 'subtitle'
+import { youtubeDl } from 'youtube-dl-exec'
 import { AnkiConnector } from './anki.js'
 
 const execAsync = promisify(exec)
@@ -32,14 +33,30 @@ function setupOutputDirectory() {
 }
 
 // ビデオの読み込み処理
-async function loadVideo(inputPath: string): Promise<string> {
+async function loadVideo(input?: string): Promise<string> {
+  if (!input)
+    throw new Error('ビデオファイルのパスまたはYouTube URLが指定されていません。VIDEO_URL環境変数も設定されていません。')
+
   const outputPath = 'output/video.mp4'
 
-  // ファイルシステムからの読み込み
-  if (!fs.existsSync(inputPath))
-    throw new Error(`入力ファイル ${inputPath} が見つかりません`)
+  // URLかファイルパスかを判定
+  const isUrl = input.startsWith('http://') || input.startsWith('https://')
 
-  fs.copyFileSync(inputPath, outputPath)
+  if (isUrl) {
+    // YouTubeからの読み込み
+    await youtubeDl(input, {
+      output: outputPath,
+      format: 'mp4',
+    })
+  }
+  else {
+    // ファイルシステムからの読み込み
+    if (!fs.existsSync(input))
+      throw new Error(`入力ファイル ${input} が見つかりません`)
+
+    fs.copyFileSync(input, outputPath)
+  }
+
   return outputPath
 }
 

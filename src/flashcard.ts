@@ -58,10 +58,31 @@ async function loadVideo(input?: string): Promise<string> {
   return outputPath
 }
 
+// 字幕のOpenAI翻訳
+async function translateWithOpenAI(text: string, fromLang: string, toLang: string, openai: OpenAI): Promise<string> {
+  const response = await openai.chat.completions.create({
+    model: 'gpt-4o',
+    messages: [
+      {
+        role: 'system',
+        content: `You are a skilled translator from ${fromLang} to ${toLang}. Your task is to accurately translate each subtitle segment while preserving the timing information. Keep the SRT format intact.`,
+      },
+      {
+        role: 'user',
+        content: text,
+      },
+    ],
+  })
+
+  return response.choices[0].message.content || text
+}
+
 // 文字起こしの読み込み
 async function loadTranscription(videoPath: string, options: Options): Promise<{ front: string, back: string }> {
   let subs1: string
   let subs2: string
+
+  const openai = new OpenAI({ apiKey: options.apiKey })
 
   // 字幕1の読み込み
   if (options.subs1 && fs.existsSync(options.subs1)) {
@@ -69,10 +90,9 @@ async function loadTranscription(videoPath: string, options: Options): Promise<{
   }
   else {
     // OpenAIで文字起こしを生成
-    const openai = new OpenAI({ apiKey: options.apiKey })
     const file = fs.createReadStream(videoPath)
     subs1 = await openai.audio.transcriptions.create({
-      model: options.model,
+      model: 'whisper-1',
       file,
       response_format: 'srt',
     })
@@ -84,8 +104,9 @@ async function loadTranscription(videoPath: string, options: Options): Promise<{
     subs2 = fs.readFileSync(options.subs2, 'utf-8')
   }
   else {
-    // 字幕1と同じSRTを使用
-    subs2 = subs1
+    // OpenAIで翻訳を生成
+    subs2 = await translateWithOpenAI(subs1, options.fromLang, options.toLang, openai)
+    fs.writeFileSync('output/subs2.srt', subs2)
   }
 
   return { front: subs1, back: subs2 }
@@ -127,12 +148,10 @@ async function outputToAnki(
   deckName: string,
   modelName: string,
 ): Promise<void> {
-  // フロント用の音声セグメント抽出
-  const _frontSegments = await extractAudioSegments(transcriptions.front)
-  // バック用の音声セグメント抽出
-  const _backSegments = await extractAudioSegments(transcriptions.back)
+  // 音声セグメントの抽出（1回だけ実行）
+  const _segments = await extractAudioSegments(transcriptions.front)
 
-  // TODO: フロントとバックのセグメントを組み合わせてフラッシュカードを生成
+  // TODO: セグメントとトランスクリプションを組み合わせてフラッシュカードを生成
   const cards: Flashcard[] = []
 
   const ankiConnector = new AnkiConnector()

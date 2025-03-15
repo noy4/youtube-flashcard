@@ -55,24 +55,18 @@ export async function createFlashcardsV2(
   _options: Options,
 ) {
   console.log('文字起こしを開始します...')
-  try {
-    // const openai = new OpenAI()
-    // const file = fs.createReadStream('output/video.mp4')
-    // const transcription = await openai.audio.transcriptions.create({
-    //   model: 'whisper-1',
-    //   file,
-    //   response_format: 'srt',
-    // })
+  // const openai = new OpenAI()
+  // const file = fs.createReadStream('output/video.mp4')
+  // const transcription = await openai.audio.transcriptions.create({
+  //   model: 'whisper-1',
+  //   file,
+  //   response_format: 'srt',
+  // })
 
-    const transcription = fs.readFileSync('output/transcription.srt', 'utf-8')
+  const transcription = fs.readFileSync('output/transcription.srt', 'utf-8')
 
-    fs.writeFileSync('output/transcription.srt', transcription)
-    console.log('文字起こしが完了しました')
+  fs.writeFileSync('output/transcription.srt', transcription)
+  console.log('文字起こしが完了しました')
 
-    await extractAudioSegments(transcription)
-  }
-  catch (error) {
-    console.error('エラーが発生しました:', error)
-    throw error
-  }
+  await extractAudioSegments(transcription)
 }

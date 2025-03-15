@@ -1,4 +1,3 @@
-import type { Flashcard } from './types.js'
 import { exec } from 'node:child_process'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
@@ -26,10 +25,22 @@ export interface Options {
   model: string
 }
 
-const paths = {
-  video: 'output/video.mp4',
-  subs1: 'output/subs1.srt',
-  subs2: 'output/subs2.srt',
+export interface Context {
+  options: Options
+  paths: {
+    video: string
+    subs1: string
+    subs2: string
+  }
+}
+
+function createContext(options: Options): Context {
+  const paths = {
+    video: 'output/video.mp4',
+    subs1: 'output/subs1.srt',
+    subs2: 'output/subs2.srt',
+  }
+  return { options, paths }
 }
 
 // 出力フォルダを準備
@@ -39,7 +50,8 @@ function setupOutputDirectory() {
 }
 
 // ビデオの読み込み処理
-async function loadVideo(input?: string) {
+async function loadVideo(context: Context) {
+  const { input } = context.options
   if (!input)
     throw new Error('ビデオファイルのパスまたはYouTube URLが指定されていません。')
 
@@ -49,7 +61,7 @@ async function loadVideo(input?: string) {
 
   if (isUrl) {
     await youtubeDl(input, {
-      output: paths.video,
+      output: context.paths.video,
       format: 'mp4',
     })
   }
@@ -57,7 +69,7 @@ async function loadVideo(input?: string) {
     if (!fs.existsSync(input))
       throw new Error(`${input} not found`)
 
-    fs.copyFileSync(input, paths.video)
+    fs.copyFileSync(input, context.paths.video)
   }
 }
 
@@ -81,7 +93,8 @@ async function translateWithOpenAI(text: string, fromLang: string, toLang: strin
 }
 
 // 文字起こしの読み込み
-async function loadTranscription(options: Options) {
+async function loadTranscription(context: Context) {
+  const { options, paths } = context
   let subs1: string
   let subs2: string
 
@@ -116,13 +129,14 @@ async function loadTranscription(options: Options) {
 }
 
 // 音声セグメントの抽出
-async function extractAudioSegments(srtContent: string) {
+async function extractAudioSegments(context: Context) {
   console.log('音声セグメントの抽出を開始します...')
   const outputDir = 'output/segments'
 
   if (!fs.existsSync(outputDir))
     fs.mkdirSync(outputDir, { recursive: true })
 
+  const srtContent = fs.readFileSync(context.paths.subs1, 'utf-8')
   const segments = parseSync(srtContent)
     .filter(node => node.type === 'cue')
 
@@ -130,46 +144,27 @@ async function extractAudioSegments(srtContent: string) {
     const duration = segment.data.end - segment.data.start
     const outputFile = path.join(outputDir, `segment_${index}.mp3`)
 
-    try {
-      await execAsync(
-        `ffmpeg -i ${paths.video} -ss ${segment.data.start} -t ${duration} -vn -acodec mp3 "${outputFile}"`,
-      )
-      console.log(`セグメント ${index + 1}/${segments.length} を抽出しました`)
-    }
-    catch (error) {
-      console.error(`セグメント ${index + 1} の抽出に失敗しました:`, error)
-      throw error
-    }
+    await execAsync(
+      `ffmpeg -i ${context.paths.video} -ss ${segment.data.start} -t ${duration} -vn -acodec mp3 "${outputFile}"`,
+    )
+    console.log(`セグメント ${index + 1}/${segments.length} を抽出しました`)
   }
   console.log('すべてのセグメントの抽出が完了しました')
   return segments
 }
 
 // Ankiへの出力処理
-async function outputToAnki(
-  transcriptions: { front: string, back: string },
-  deckName: string,
-  modelName: string,
-): Promise<void> {
-  // 音声セグメントの抽出（1回だけ実行）
-  const _segments = await extractAudioSegments(transcriptions.front)
-
-  // TODO: セグメントとトランスクリプションを組み合わせてフラッシュカードを生成
-  const cards: Flashcard[] = []
-
+async function outputToAnki(context: Context) {
+  const _segments = await extractAudioSegments(context)
   const ankiConnector = new AnkiConnector()
-  await ankiConnector.addCards(cards, deckName, modelName)
+  // await ankiConnector.addCards(cards, deckName, modelName)
 }
 
 export async function createFlashcards(options: Options) {
-  // 出力ディレクトリを準備
+  const context = createContext(options)
   setupOutputDirectory()
-
-  // ビデオのロード
-  await loadVideo(options.input!)
-
-  // 文字起こしの読み込み
-  await loadTranscription(options)
+  await loadVideo(context)
+  await loadTranscription(context)
 
   // // 出力処理
   // if (options.addToAnki)

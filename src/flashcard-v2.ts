@@ -52,45 +52,24 @@ async function loadVideo(url?: string, inputPath?: string): Promise<string> {
   return outputPath
 }
 
-// 文字起こしプロバイダーインターフェース
-interface TranscriptionProvider {
-  getTranscription: {
-    (videoPath: string): Promise<string>
-  }
-}
+// 文字起こしの取得
+async function getTranscription(videoPath: string, options: Options): Promise<string> {
+  const srtPath = 'output/transcription.srt'
 
-// SRTファイルからの文字起こしプロバイダー
-class SrtFileTranscriptionProvider implements TranscriptionProvider {
-  async getTranscription(): Promise<string> {
-    const srtPath = 'output/transcription.srt'
-    if (!fs.existsSync(srtPath))
-      throw new Error('SRTファイルが見つかりません')
-
+  // 既存のSRTファイルがある場合はそれを使用
+  if (fs.existsSync(srtPath))
     return fs.readFileSync(srtPath, 'utf-8')
-  }
-}
 
-// OpenAIからの文字起こしプロバイダー
-class OpenAITranscriptionProvider implements TranscriptionProvider {
-  private readonly apiKey: string
-  private readonly model: string
+  // OpenAIで文字起こしを生成
+  const openai = new OpenAI({ apiKey: options.apiKey })
+  const file = fs.createReadStream(videoPath)
+  const transcription = await openai.audio.transcriptions.create({
+    model: options.model,
+    file,
+    response_format: 'srt',
+  })
 
-  constructor(apiKey: string, model: string) {
-    this.apiKey = apiKey
-    this.model = model
-  }
-
-  async getTranscription(videoPath: string): Promise<string> {
-    const openai = new OpenAI({ apiKey: this.apiKey })
-    const file = fs.createReadStream(videoPath)
-    const transcription = await openai.audio.transcriptions.create({
-      model: this.model,
-      file,
-      response_format: 'srt',
-    })
-
-    return transcription
-  }
+  return transcription
 }
 
 // 出力インターフェース
@@ -140,7 +119,8 @@ class AnkiFlashcardOutputter implements FlashcardOutputter {
   }
 
   async output(transcription: string): Promise<void> {
-    const segments = await this.extractAudioSegments(transcription)
+    // 音声セグメントの抽出とフラッシュカードの生成
+    const _segments = await this.extractAudioSegments(transcription)
     // TODO: フラッシュカードの生成処理を実装
     const cards: Flashcard[] = []
 
@@ -157,13 +137,9 @@ export async function createFlashcardsV2(
   const videoPath = await loadVideo(url, options.input)
   console.log('ビデオのロードが完了しました')
 
-  // 文字起こしプロバイダーの選択と実行
-  const transcriptionProvider: TranscriptionProvider = fs.existsSync('output/transcription.srt')
-    ? new SrtFileTranscriptionProvider()
-    : new OpenAITranscriptionProvider(options.apiKey, options.model)
-
+  // 文字起こしの取得
   console.log('文字起こしを開始します...')
-  const transcription = await transcriptionProvider.getTranscription(videoPath)
+  const transcription = await getTranscription(videoPath, options)
   fs.writeFileSync('output/transcription.srt', transcription)
   console.log('文字起こしが完了しました')
 

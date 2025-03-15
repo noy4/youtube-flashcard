@@ -13,6 +13,9 @@ const program = new Command()
   .option('-i, --input <path>', '既存のJSONファイルパス（指定時は字幕取得とフラッシュカード生成をスキップ）')
   .option('-o, --output <path>', '出力ファイルパス', 'output/json.json')
   .option('-f, --format <format>', '出力形式 (json, obsidian または anki)', 'json')
+  // srt files
+  .option('--subs1 <path>', '字幕ファイル1のパス')
+  .option('--subs2 <path>', '字幕ファイル2のパス')
   // languages
   .option('--from-lang <code>', '元の言語コード', 'en')
   .option('--to-lang <code>', '翻訳後の言語コード', 'ja')

@@ -14,6 +14,8 @@ export interface Options {
   input?: string | undefined
   output: string
   format: string
+  subs1?: string | undefined
+  subs2?: string | undefined
   fromLang: string
   toLang: string
   addToAnki?: true | undefined
@@ -56,26 +58,36 @@ async function loadVideo(url?: string, inputPath?: string): Promise<string> {
 }
 
 // 文字起こしの読み込み
-async function loadTranscription(videoPath: string, options: Options): Promise<string> {
-  const srtPath = 'output/transcription.srt'
+async function loadTranscription(videoPath: string, options: Options): Promise<{ front: string, back: string }> {
+  let subs1: string
+  let subs2: string
 
-  // 既存のSRTファイルがある場合はそれを使用
-  if (fs.existsSync(srtPath))
-    return fs.readFileSync(srtPath, 'utf-8')
+  // 字幕1の読み込み
+  if (options.subs1 && fs.existsSync(options.subs1)) {
+    subs1 = fs.readFileSync(options.subs1, 'utf-8')
+  }
+  else {
+    // OpenAIで文字起こしを生成
+    const openai = new OpenAI({ apiKey: options.apiKey })
+    const file = fs.createReadStream(videoPath)
+    subs1 = await openai.audio.transcriptions.create({
+      model: options.model,
+      file,
+      response_format: 'srt',
+    })
+    fs.writeFileSync('output/subs1.srt', subs1)
+  }
 
-  // OpenAIで文字起こしを生成
-  const openai = new OpenAI({ apiKey: options.apiKey })
-  const file = fs.createReadStream(videoPath)
-  const transcription = await openai.audio.transcriptions.create({
-    model: options.model,
-    file,
-    response_format: 'srt',
-  })
+  // 字幕2の読み込み
+  if (options.subs2 && fs.existsSync(options.subs2)) {
+    subs2 = fs.readFileSync(options.subs2, 'utf-8')
+  }
+  else {
+    // 字幕1と同じSRTを使用
+    subs2 = subs1
+  }
 
-  // SRTファイルとして保存
-  fs.writeFileSync(srtPath, transcription)
-
-  return transcription
+  return { front: subs1, back: subs2 }
 }
 
 // 音声セグメントの抽出
@@ -109,10 +121,17 @@ async function extractAudioSegments(srtContent: string) {
 }
 
 // Ankiへの出力処理
-async function outputToAnki(transcription: string, deckName: string, modelName: string): Promise<void> {
-  // 音声セグメントの抽出とフラッシュカードの生成
-  const _segments = await extractAudioSegments(transcription)
-  // TODO: フラッシュカードの生成処理を実装
+async function outputToAnki(
+  transcriptions: { front: string, back: string },
+  deckName: string,
+  modelName: string,
+): Promise<void> {
+  // フロント用の音声セグメント抽出
+  const _frontSegments = await extractAudioSegments(transcriptions.front)
+  // バック用の音声セグメント抽出
+  const _backSegments = await extractAudioSegments(transcriptions.back)
+
+  // TODO: フロントとバックのセグメントを組み合わせてフラッシュカードを生成
   const cards: Flashcard[] = []
 
   const ankiConnector = new AnkiConnector()
@@ -132,10 +151,10 @@ export async function createFlashcards(
 
   // 文字起こしの読み込み
   console.log('文字起こしを開始します...')
-  const transcription = await loadTranscription(videoPath, options)
+  const transcriptions = await loadTranscription(videoPath, options)
   console.log('文字起こしが完了しました')
 
   // 出力処理
   if (options.addToAnki)
-    await outputToAnki(transcription, options.deckName, options.modelName)
+    await outputToAnki(transcriptions, options.deckName, options.modelName)
 }

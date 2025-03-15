@@ -2,8 +2,7 @@
 
 import { Command } from '@commander-js/extra-typings'
 import packageJson from '../../package.json' with { type: 'json' }
-// import { createFlashcards } from '../flashcard.js'
-import { createFlashcardsV2 } from '../flashcard-v2.js'
+import { createFlashcards } from '../flashcard.js'
 
 const program = new Command()
   .name('youtube-flashcard')
@@ -27,7 +26,7 @@ const program = new Command()
   .option('-m, --model <model>', 'AIモデル', process.env.AI_MODEL || 'google/gemini-flash-1.5-8b')
   .action(async (url, options) => {
     try {
-      await createFlashcardsV2(url, options)
+      await createFlashcards(url, options)
     }
     catch (error) {
       console.error('Error:', error.message)

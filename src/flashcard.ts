@@ -119,7 +119,7 @@ async function outputToAnki(transcription: string, deckName: string, modelName: 
   await ankiConnector.addCards(cards, deckName, modelName)
 }
 
-export async function createFlashcardsV2(
+export async function createFlashcards(
   url: string | undefined,
   options: Options,
 ) {

@@ -26,6 +26,12 @@ export interface Options {
   model: string
 }
 
+const paths = {
+  video: 'output/video.mp4',
+  subs1: 'output/subs1.srt',
+  subs2: 'output/subs2.srt',
+}
+
 // 出力フォルダを準備
 function setupOutputDirectory() {
   if (!fs.existsSync('output'))
@@ -33,18 +39,17 @@ function setupOutputDirectory() {
 }
 
 // ビデオの読み込み処理
-async function loadVideo(input?: string): Promise<string> {
+async function loadVideo(input?: string) {
   if (!input)
     throw new Error('ビデオファイルのパスまたはYouTube URLが指定されていません。')
 
-  const outputPath = 'output/video.mp4'
   const isUrl = /^https?:\/\//.test(input)
 
   console.log(`Loading ${input}...`)
 
   if (isUrl) {
     await youtubeDl(input, {
-      output: outputPath,
+      output: paths.video,
       format: 'mp4',
     })
   }
@@ -52,10 +57,8 @@ async function loadVideo(input?: string): Promise<string> {
     if (!fs.existsSync(input))
       throw new Error(`${input} not found`)
 
-    fs.copyFileSync(input, outputPath)
+    fs.copyFileSync(input, paths.video)
   }
-
-  return outputPath
 }
 
 // 字幕のOpenAI翻訳
@@ -78,7 +81,7 @@ async function translateWithOpenAI(text: string, fromLang: string, toLang: strin
 }
 
 // 文字起こしの読み込み
-async function loadTranscription(videoPath: string, options: Options): Promise<{ front: string, back: string }> {
+async function loadTranscription(options: Options) {
   let subs1: string
   let subs2: string
 
@@ -90,14 +93,14 @@ async function loadTranscription(videoPath: string, options: Options): Promise<{
   }
   else {
     // OpenAIで文字起こしを生成
-    const file = fs.createReadStream(videoPath)
+    const file = fs.createReadStream(paths.video)
     console.log('Transcribing audio...')
     subs1 = await openai.audio.transcriptions.create({
       model: 'whisper-1',
       file,
       response_format: 'srt',
     })
-    fs.writeFileSync('output/subs1.srt', subs1)
+    fs.writeFileSync(paths.subs1, subs1)
   }
 
   // 字幕2の読み込み
@@ -108,10 +111,8 @@ async function loadTranscription(videoPath: string, options: Options): Promise<{
     // OpenAIで翻訳を生成
     console.log('Translating subtitles...')
     subs2 = await translateWithOpenAI(subs1, options.fromLang, options.toLang, openai)
-    fs.writeFileSync('output/subs2.srt', subs2)
+    fs.writeFileSync(paths.subs2, subs2)
   }
-
-  return { front: subs1, back: subs2 }
 }
 
 // 音声セグメントの抽出
@@ -131,7 +132,7 @@ async function extractAudioSegments(srtContent: string) {
 
     try {
       await execAsync(
-        `ffmpeg -i output/video.mp4 -ss ${segment.data.start} -t ${duration} -vn -acodec mp3 "${outputFile}"`,
+        `ffmpeg -i ${paths.video} -ss ${segment.data.start} -t ${duration} -vn -acodec mp3 "${outputFile}"`,
       )
       console.log(`セグメント ${index + 1}/${segments.length} を抽出しました`)
     }
@@ -165,14 +166,14 @@ export async function createFlashcards(options: Options) {
   setupOutputDirectory()
 
   // ビデオのロード
-  const videoPath = await loadVideo(options.input!)
+  await loadVideo(options.input!)
 
   // 文字起こしの読み込み
-  const transcriptions = await loadTranscription(videoPath, options)
+  await loadTranscription(options)
 
-  // 出力処理
-  if (options.addToAnki)
-    await outputToAnki(transcriptions, options.deckName, options.modelName)
+  // // 出力処理
+  // if (options.addToAnki)
+  //   await outputToAnki(transcriptions, options.deckName, options.modelName)
 
   console.log('Done.')
 }

@@ -29,6 +29,7 @@ program.parse()
 参考プロジェクト：
 - [Express CLI](https://github.com/expressjs/express/tree/master/bin) - Expressフレームワークのコマンドラインツール
 - [Vue CLI](https://github.com/vuejs/vue-cli) - Vue.jsの開発ツール
+- [sv - the Svelte CLI](https://github.com/sveltejs/cli/blob/main/packages/cli/bin.ts)
 
 ### Mustache
 

@@ -5,7 +5,6 @@ import * as path from 'node:path'
 import { promisify } from 'node:util'
 import OpenAI from 'openai'
 import { parseSync } from 'subtitle'
-import { youtubeDl } from 'youtube-dl-exec'
 import { AnkiConnector } from './anki.js'
 
 const execAsync = promisify(exec)
@@ -33,27 +32,14 @@ function setupOutputDirectory() {
 }
 
 // ビデオの読み込み処理
-async function loadVideo(url?: string, inputPath?: string): Promise<string> {
+async function loadVideo(inputPath: string): Promise<string> {
   const outputPath = 'output/video.mp4'
 
-  if (inputPath) {
-    // ファイルシステムからの読み込み
-    if (!fs.existsSync(inputPath))
-      throw new Error(`入力ファイル ${inputPath} が見つかりません`)
+  // ファイルシステムからの読み込み
+  if (!fs.existsSync(inputPath))
+    throw new Error(`入力ファイル ${inputPath} が見つかりません`)
 
-    fs.copyFileSync(inputPath, outputPath)
-  }
-  else if (url) {
-    // YouTubeからの読み込み
-    await youtubeDl(url, {
-      output: outputPath,
-      format: 'mp4',
-    })
-  }
-  else {
-    throw new Error('URLまたは入力ファイルが指定されていません')
-  }
-
+  fs.copyFileSync(inputPath, outputPath)
   return outputPath
 }
 
@@ -138,15 +124,12 @@ async function outputToAnki(
   await ankiConnector.addCards(cards, deckName, modelName)
 }
 
-export async function createFlashcards(
-  url: string | undefined,
-  options: Options,
-) {
+export async function createFlashcards(options: Options) {
   // 出力ディレクトリを準備
   setupOutputDirectory()
 
   // ビデオのロード
-  const videoPath = await loadVideo(url, options.input)
+  const videoPath = await loadVideo(options.input!)
   console.log('ビデオのロードが完了しました')
 
   // 文字起こしの読み込み

@@ -78,61 +78,45 @@ async function loadTranscription(videoPath: string, options: Options): Promise<s
   return transcription
 }
 
-// 出力インターフェース
-interface FlashcardOutputter {
-  output: {
-    (transcription: string): Promise<void>
+// 音声セグメントの抽出
+async function extractAudioSegments(srtContent: string) {
+  console.log('音声セグメントの抽出を開始します...')
+  const outputDir = 'output/segments'
+
+  if (!fs.existsSync(outputDir))
+    fs.mkdirSync(outputDir, { recursive: true })
+
+  const segments = parseSync(srtContent)
+    .filter(node => node.type === 'cue')
+
+  for (const [index, segment] of segments.entries()) {
+    const duration = segment.data.end - segment.data.start
+    const outputFile = path.join(outputDir, `segment_${index}.mp3`)
+
+    try {
+      await execAsync(
+        `ffmpeg -i output/video.mp4 -ss ${segment.data.start} -t ${duration} -vn -acodec mp3 "${outputFile}"`,
+      )
+      console.log(`セグメント ${index + 1}/${segments.length} を抽出しました`)
+    }
+    catch (error) {
+      console.error(`セグメント ${index + 1} の抽出に失敗しました:`, error)
+      throw error
+    }
   }
+  console.log('すべてのセグメントの抽出が完了しました')
+  return segments
 }
 
-// Anki出力実装
-class AnkiFlashcardOutputter implements FlashcardOutputter {
-  private readonly deckName: string
-  private readonly modelName: string
+// Ankiへの出力処理
+async function outputToAnki(transcription: string, deckName: string, modelName: string): Promise<void> {
+  // 音声セグメントの抽出とフラッシュカードの生成
+  const _segments = await extractAudioSegments(transcription)
+  // TODO: フラッシュカードの生成処理を実装
+  const cards: Flashcard[] = []
 
-  constructor(deckName: string, modelName: string) {
-    this.deckName = deckName
-    this.modelName = modelName
-  }
-
-  private async extractAudioSegments(srtContent: string) {
-    console.log('音声セグメントの抽出を開始します...')
-    const outputDir = 'output/segments'
-
-    if (!fs.existsSync(outputDir))
-      fs.mkdirSync(outputDir, { recursive: true })
-
-    const segments = parseSync(srtContent)
-      .filter(node => node.type === 'cue')
-
-    for (const [index, segment] of segments.entries()) {
-      const duration = segment.data.end - segment.data.start
-      const outputFile = path.join(outputDir, `segment_${index}.mp3`)
-
-      try {
-        await execAsync(
-          `ffmpeg -i output/video.mp4 -ss ${segment.data.start} -t ${duration} -vn -acodec mp3 "${outputFile}"`,
-        )
-        console.log(`セグメント ${index + 1}/${segments.length} を抽出しました`)
-      }
-      catch (error) {
-        console.error(`セグメント ${index + 1} の抽出に失敗しました:`, error)
-        throw error
-      }
-    }
-    console.log('すべてのセグメントの抽出が完了しました')
-    return segments
-  }
-
-  async output(transcription: string): Promise<void> {
-    // 音声セグメントの抽出とフラッシュカードの生成
-    const _segments = await this.extractAudioSegments(transcription)
-    // TODO: フラッシュカードの生成処理を実装
-    const cards: Flashcard[] = []
-
-    const ankiConnector = new AnkiConnector()
-    await ankiConnector.addCards(cards, this.deckName, this.modelName)
-  }
+  const ankiConnector = new AnkiConnector()
+  await ankiConnector.addCards(cards, deckName, modelName)
 }
 
 export async function createFlashcardsV2(
@@ -152,8 +136,6 @@ export async function createFlashcardsV2(
   console.log('文字起こしが完了しました')
 
   // 出力処理
-  if (options.addToAnki) {
-    const outputter = new AnkiFlashcardOutputter(options.deckName, options.modelName)
-    await outputter.output(transcription)
-  }
+  if (options.addToAnki)
+    await outputToAnki(transcription, options.deckName, options.modelName)
 }

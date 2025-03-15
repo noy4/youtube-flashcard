@@ -13,9 +13,35 @@ interface Segment {
   text: string
 }
 
-interface TranscriptionResponse {
-  text: string
-  segments: Segment[]
+// SRTのタイムスタンプを秒数に変換
+function timeToSeconds(timestamp: string): number {
+  const [hours, minutes, seconds] = timestamp.split(':').map(Number)
+  const [secs, ms] = seconds.toString().split(',').map(Number)
+  return hours * 3600 + minutes * 60 + secs + ms / 1000
+}
+
+// SRTファイルをパースしてセグメントの配列に変換
+function parseSrt(srtContent: string): Segment[] {
+  const segments: Segment[] = []
+  const blocks = srtContent.trim().split('\n\n')
+
+  for (const block of blocks) {
+    const [_, timeLine, ...textLines] = block.split('\n')
+    if (!timeLine)
+      continue
+
+    const [start, end] = timeLine.split(' --> ')
+    if (!start || !end)
+      continue
+
+    segments.push({
+      start: timeToSeconds(start),
+      end: timeToSeconds(end),
+      text: textLines.join('\n'),
+    })
+  }
+
+  return segments
 }
 
 export interface Options {
@@ -68,13 +94,14 @@ export async function createFlashcardsV2(
     const transcription = await openai.audio.transcriptions.create({
       model: 'whisper-1',
       file,
-      response_format: 'verbose_json',
-    }) as TranscriptionResponse
+      response_format: 'srt',
+    })
 
-    fs.writeFileSync('output/transcription.json', JSON.stringify(transcription, null, 2))
+    fs.writeFileSync('output/transcription.srt', transcription)
     console.log('文字起こしが完了しました')
 
-    await extractAudioSegments(transcription.segments)
+    const segments = parseSrt(transcription)
+    await extractAudioSegments(segments)
   }
   catch (error) {
     console.error('エラーが発生しました:', error)

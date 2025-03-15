@@ -10,8 +10,8 @@ const program = new Command()
   .version(packageJson.version)
   // input
   .argument('[video]', 'ビデオファイルのパスまたはYouTube URL', process.env.VIDEO)
-  .argument('[srt1]', '字幕ファイル1のパス')
-  .argument('[srt2]', '字幕ファイル2のパス')
+  .argument('[subs1]', '字幕ファイル1のパス')
+  .argument('[subs2]', '字幕ファイル2のパス')
   .option('-o, --output <path>', '出力ファイルパス', 'output/json.json')
   .option('-f, --format <format>', '出力形式 (json, obsidian または anki)', 'json')
   // languages
@@ -25,12 +25,12 @@ const program = new Command()
   .option('--api-key <key>', 'OpenAI APIキー', process.env.OPENAI_API_KEY)
   .option('-b, --base-url <url>', 'API baseURL', process.env.OPENAI_BASE_URL || 'https://openrouter.ai/api/v1')
   .option('-m, --model <model>', 'AIモデル', process.env.AI_MODEL || 'google/gemini-flash-1.5-8b')
-  .action(async (video, srt1, srt2, options) => {
+  .action(async (video, subs1, subs2, options) => {
     try {
       await createFlashcards({
         input: video,
-        subs1: srt1,
-        subs2: srt2,
+        subs1,
+        subs2,
         ...options,
       })
     }

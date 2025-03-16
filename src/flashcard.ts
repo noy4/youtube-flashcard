@@ -5,8 +5,6 @@ import { outputToAnki } from './anki.js'
 
 export interface Options {
   input?: string | undefined
-  output: string
-  format: string
   subs1?: string | undefined
   subs2?: string | undefined
   fromLang: string
@@ -15,8 +13,6 @@ export interface Options {
   deckName: string
   modelName: string
   apiKey: string
-  baseUrl: string
-  model: string
 }
 
 export interface Context {

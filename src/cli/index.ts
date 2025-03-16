@@ -12,8 +12,6 @@ const program = new Command()
   .argument('[video]', 'ビデオファイルのパスまたはYouTube URL', process.env.VIDEO)
   .argument('[subs1]', '字幕ファイル1のパス')
   .argument('[subs2]', '字幕ファイル2のパス')
-  .option('-o, --output <path>', '出力ファイルパス', 'output/json.json')
-  .option('-f, --format <format>', '出力形式 (json, obsidian または anki)', 'json')
   // languages
   .option('--from-lang <code>', '元の言語コード', 'en')
   .option('--to-lang <code>', '翻訳後の言語コード', 'ja')
@@ -23,8 +21,6 @@ const program = new Command()
   .option('--model-name <name>', 'Ankiのモデル名', 'Basic')
   // api
   .option('--api-key <key>', 'OpenAI APIキー', process.env.OPENAI_API_KEY)
-  .option('-b, --base-url <url>', 'API baseURL', process.env.OPENAI_BASE_URL || 'https://openrouter.ai/api/v1')
-  .option('-m, --model <model>', 'AIモデル', process.env.AI_MODEL || 'google/gemini-flash-1.5-8b')
   .action(async (video, subs1, subs2, options) => {
     try {
       await createFlashcards({

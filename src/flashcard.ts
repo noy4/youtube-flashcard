@@ -4,10 +4,10 @@ import { youtubeDl } from 'youtube-dl-exec'
 import { AIClient } from './ai.js'
 import { outputToAnki } from './anki.js'
 import { loadSubtitles } from './subtitle.js'
+import { ensureDirectory } from './utils.js'
 
 export async function createFlashcards(options: Options) {
   const context = createContext(options)
-  setupOutputDirectory()
   await loadVideo(context)
   await loadSubtitles(context)
 
@@ -25,16 +25,10 @@ function createContext(options: Options): Context {
       video: 'output/video.mp4',
       subs1: 'output/subs1.srt',
       subs2: 'output/subs2.srt',
-      segments: 'output/segments',
+      segments: index => `output/segments/segment_${index}.mp3`,
     },
     subtitles: [],
   }
-}
-
-// 出力フォルダを準備
-function setupOutputDirectory() {
-  if (!fs.existsSync('output'))
-    fs.mkdirSync('output', { recursive: true })
 }
 
 // ビデオの読み込み処理
@@ -43,11 +37,11 @@ async function loadVideo(context: Context) {
   const { input } = options
 
   if (!input)
-    throw new Error('ビデオファイルのパスまたはYouTube URLが指定されていません。')
+    throw new Error('You must specify a video file path or YouTube URL.')
 
   const isUrl = /^https?:\/\//.test(input)
-
   console.log(`Loading ${input}...`)
+  ensureDirectory(paths.video)
 
   if (isUrl) {
     await youtubeDl(input, {

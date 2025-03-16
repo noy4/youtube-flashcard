@@ -1,7 +1,7 @@
 import type { Context } from './types.js'
 import * as fs from 'node:fs'
-import path from 'node:path'
 import { parseSync } from 'subtitle'
+import { ensureDirectory } from './utils.js'
 
 /**
  * Load subtitles from files or generate them using AI.
@@ -36,7 +36,7 @@ export async function loadSubtitles(context: Context) {
   const subtitles = subs1.map((sub, index) => ({
     ...sub,
     translation: subs2[index].text,
-    audioPath: path.join(paths.segments, `segment_${index}.mp3`),
+    audioPath: paths.segments(index),
   }))
 
   context.subtitles = subtitles
@@ -54,6 +54,7 @@ async function loadSubtitle(params: {
   }
   else {
     const content = await generate()
+    ensureDirectory(output)
     fs.writeFileSync(output, content)
     return content
   }

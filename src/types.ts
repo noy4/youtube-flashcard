@@ -19,7 +19,7 @@ export interface Context {
     video: string
     subs1: string
     subs2: string
-    segments: string
+    segments: (index: number) => string
   }
   subtitles: Subtitle[]
 }

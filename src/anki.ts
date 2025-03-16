@@ -4,6 +4,7 @@ import * as crypto from 'node:crypto'
 import * as fs from 'node:fs'
 import { promisify } from 'node:util'
 import { YankiConnect } from 'yanki-connect'
+import { ensureDirectory } from './utils.js'
 
 const execAsync = promisify(exec)
 
@@ -85,10 +86,10 @@ class AnkiService {
 async function extractAudioSegments(context: Context) {
   const { paths, subtitles } = context
 
-  if (fs.existsSync(paths.segments))
+  if (fs.existsSync(paths.segments(0)))
     return
 
-  fs.mkdirSync(paths.segments, { recursive: true })
+  ensureDirectory(paths.segments(0))
 
   for (const [index, sub] of subtitles.entries()) {
     const duration = sub.end - sub.start

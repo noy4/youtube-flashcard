@@ -12,7 +12,7 @@ export class AIClient {
   /**
    * 音声ファイルから文字起こしを生成
    */
-  async transcribe(audioFilePath: string): Promise<string> {
+  async transcribe(audioFilePath: string, language: string) {
     const file = fs.createReadStream(audioFilePath)
     console.log('Transcribing audio...')
 
@@ -20,6 +20,7 @@ export class AIClient {
       const transcription = await this.client.audio.transcriptions.create({
         model: 'whisper-1',
         file,
+        language,
         response_format: 'srt',
       })
       return transcription

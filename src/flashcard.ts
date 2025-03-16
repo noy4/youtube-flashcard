@@ -104,7 +104,7 @@ async function loadSubtitles(context: Context) {
   }
   else {
     // AIで文字起こしを生成
-    const transcription = await context.ai.transcribe(paths.video)
+    const transcription = await context.ai.transcribe(paths.video, options.fromLang)
     context.subs1Content = transcription
     fs.writeFileSync(paths.subs1, transcription)
   }

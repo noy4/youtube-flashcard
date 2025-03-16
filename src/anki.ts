@@ -9,34 +9,14 @@ const execAsync = promisify(exec)
 
 // Ankiへの出力処理
 export async function outputToAnki(context: Context) {
-  const { deckName, modelName } = context.options
+  const { options, subtitles } = context
+  const { deckName, modelName } = options
   const anki = new YankiConnect({ autoLaunch: true })
 
   await createDeckIfNotExists(anki, deckName)
   await createModelIfNotExists(anki, modelName)
   await extractAudioSegments(context)
-
-  const notes = context.subtitles.map((segment) => {
-    return {
-      deckName,
-      modelName,
-      fields: {
-        Front: segment.translation, // 翻訳テキスト
-        Back: segment.text, // 元のテキスト
-      },
-      tags: ['youtube-flashcard'],
-      audio: [
-        {
-          filename: `${crypto.randomUUID()}.mp3`,
-          data: fs.readFileSync(segment.audioPath!).toString('base64'),
-          fields: ['Back'],
-        },
-      ],
-    }
-  })
-
-  const results = await anki.note.addNotes({ notes })
-  return results.filter(id => id !== null)
+  await addNotes(anki, subtitles, deckName, modelName)
 }
 
 async function createDeckIfNotExists(
@@ -81,11 +61,40 @@ async function extractAudioSegments(context: Context) {
 
   for (const [index, sub] of subtitles.entries()) {
     const duration = sub.end - sub.start
-    await execAsync(
-      `ffmpeg -i ${paths.video} -ss ${sub.start / 1000} -t ${duration / 1000} -vn -acodec mp3 "${sub.audioPath}"`,
-    )
+    const command = `ffmpeg -i ${paths.video} -ss ${sub.start / 1000} -t ${duration / 1000} -vn -acodec mp3 "${sub.audioPath}"`
+
+    await execAsync(command)
     console.log(`セグメント ${index + 1}/${subtitles.length} を抽出しました`)
   }
 
   console.log('すべてのセグメントの抽出が完了しました')
+}
+
+async function addNotes(
+  anki: YankiConnect,
+  subtitles: Context['subtitles'],
+  deckName: string,
+  modelName: string,
+) {
+  const notes = subtitles.map((sub) => {
+    return {
+      deckName,
+      modelName,
+      fields: {
+        Front: sub.translation, // 翻訳テキスト
+        Back: sub.text, // 元のテキスト
+      },
+      tags: ['youtube-flashcard'],
+      audio: [
+        {
+          filename: `${crypto.randomUUID()}.mp3`,
+          data: fs.readFileSync(sub.audioPath!).toString('base64'),
+          fields: ['Back'],
+        },
+      ],
+    }
+  })
+
+  const results = await anki.note.addNotes({ notes })
+  return results.filter(id => id !== null)
 }

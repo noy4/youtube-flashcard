@@ -85,10 +85,10 @@ class AnkiService {
 async function extractAudioSegments(context: Context) {
   const { paths, subtitles } = context
 
-  if (fs.existsSync(paths.audioDir))
+  if (fs.existsSync(paths.segments))
     return
 
-  fs.mkdirSync(paths.audioDir, { recursive: true })
+  fs.mkdirSync(paths.segments, { recursive: true })
 
   for (const [index, sub] of subtitles.entries()) {
     const duration = sub.end - sub.start

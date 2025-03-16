@@ -24,7 +24,7 @@ export interface Context {
     video: string
     subs1: string
     subs2: string
-    audioDir: string
+    segments: string
   }
   subs1Content: string
   subs2Content: string
@@ -47,7 +47,7 @@ function createContext(options: Options): Context {
       video: 'output/video.mp4',
       subs1: 'output/subs1.srt',
       subs2: 'output/subs2.srt',
-      audioDir: 'output/segments',
+      segments: 'output/segments',
     },
     subs1Content: '',
     subs2Content: '',
@@ -160,7 +160,7 @@ async function loadSubtitles(context: Context) {
     subtitles.push({
       ...sub,
       translation: subs2[index].text,
-      audioPath: path.join(paths.audioDir, `segment_${index}.mp3`),
+      audioPath: path.join(paths.segments, `segment_${index}.mp3`),
     })
   }
   context.subtitles = subtitles

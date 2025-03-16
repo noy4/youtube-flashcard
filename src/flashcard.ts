@@ -6,6 +6,18 @@ import { youtubeDl } from 'youtube-dl-exec'
 import { AIClient } from './ai.js'
 import { outputToAnki } from './anki.js'
 
+export async function createFlashcards(options: Options) {
+  const context = createContext(options)
+  setupOutputDirectory()
+  await loadVideo(context)
+  await loadSubtitles(context)
+
+  if (options.addToAnki)
+    await outputToAnki(context)
+
+  console.log('Done.')
+}
+
 function createContext(options: Options): Context {
   return {
     options,
@@ -117,16 +129,4 @@ async function loadSubtitles(context: Context) {
     })
   }
   context.subtitles = subtitles
-}
-
-export async function createFlashcards(options: Options) {
-  const context = createContext(options)
-  setupOutputDirectory()
-  await loadVideo(context)
-  await loadSubtitles(context)
-
-  if (options.addToAnki)
-    await outputToAnki(context)
-
-  console.log('Done.')
 }

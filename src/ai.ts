@@ -11,7 +11,11 @@ export class AIClient {
   /**
    * 音声ファイルから文字起こしを生成
    */
-  async transcribe(audioPath: string, language: string) {
+  async transcribe(params: {
+    audioPath: string
+    language: string
+  }) {
+    const { audioPath, language } = params
     const file = fs.createReadStream(audioPath)
     console.log('Transcribing audio...')
 
@@ -27,7 +31,12 @@ export class AIClient {
   /**
    * テキストを翻訳
    */
-  async translate(text: string, fromLang: string, toLang: string) {
+  async translate(params: {
+    content: string
+    fromLang: string
+    toLang: string
+  }) {
+    const { content, fromLang, toLang } = params
     console.log('Translating text...')
 
     const systemPrompt = `You are a skilled translator from ${fromLang} to ${toLang}. Your task is to accurately translate each subtitle segment while preserving the timing information. Keep the SRT format intact.`
@@ -36,7 +45,7 @@ export class AIClient {
       model: 'gpt-4o',
       messages: [
         { role: 'system', content: systemPrompt },
-        { role: 'user', content: text },
+        { role: 'user', content },
       ],
     })
 

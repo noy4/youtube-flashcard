@@ -104,7 +104,10 @@ async function loadSubtitles(context: Context) {
   }
   else {
     // AIで文字起こしを生成
-    const transcription = await context.ai.transcribe(paths.video, options.fromLang)
+    const transcription = await context.ai.transcribe({
+      audioPath: paths.video,
+      language: options.fromLang,
+    })
     context.subs1Content = transcription
     fs.writeFileSync(paths.subs1, transcription)
   }
@@ -118,11 +121,11 @@ async function loadSubtitles(context: Context) {
   }
   else {
     // AIで翻訳を生成
-    const translation = await context.ai.translate(
-      context.subs1Content,
-      options.fromLang,
-      options.toLang,
-    )
+    const translation = await context.ai.translate({
+      content: context.subs1Content,
+      fromLang: options.fromLang,
+      toLang: options.toLang,
+    })
     context.subs2Content = translation
     fs.writeFileSync(paths.subs2, translation)
   }

@@ -39,7 +39,9 @@ function setupOutputDirectory() {
 
 // ビデオの読み込み処理
 async function loadVideo(context: Context) {
-  const { input } = context.options
+  const { options, paths } = context
+  const { input } = options
+
   if (!input)
     throw new Error('ビデオファイルのパスまたはYouTube URLが指定されていません。')
 
@@ -49,11 +51,11 @@ async function loadVideo(context: Context) {
 
   if (isUrl) {
     await youtubeDl(input, {
-      output: context.paths.video,
+      output: paths.video,
       format: 'mp4',
     })
   }
   else {
-    fs.copyFileSync(input, context.paths.video)
+    fs.copyFileSync(input, paths.video)
   }
 }

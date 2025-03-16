@@ -1,4 +1,4 @@
-import type { Context, Subtitle } from './flashcard.js'
+import type { Context, Subtitle } from './types.js'
 import { exec } from 'node:child_process'
 import * as crypto from 'node:crypto'
 import * as fs from 'node:fs'

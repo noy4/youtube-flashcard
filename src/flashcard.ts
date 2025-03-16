@@ -1,41 +1,10 @@
+import type { Context, Options, Subtitle } from './types.js'
 import * as fs from 'node:fs'
 import path from 'node:path'
 import { parseSync } from 'subtitle'
 import { youtubeDl } from 'youtube-dl-exec'
 import { AIClient } from './ai.js'
 import { outputToAnki } from './anki.js'
-
-export interface Options {
-  input?: string | undefined
-  subs1?: string | undefined
-  subs2?: string | undefined
-  fromLang: string
-  toLang: string
-  addToAnki?: true | undefined
-  deckName: string
-  modelName: string
-  apiKey: string
-}
-
-export interface Context {
-  options: Options
-  ai: AIClient
-  paths: {
-    video: string
-    subs1: string
-    subs2: string
-    segments: string
-  }
-  subtitles: Subtitle[]
-}
-
-export interface Subtitle {
-  start: number
-  end: number
-  text: string
-  translation: string
-  audioPath?: string
-}
 
 function createContext(options: Options): Context {
   return {

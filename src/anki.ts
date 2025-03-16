@@ -11,42 +11,66 @@ const execAsync = promisify(exec)
 export async function outputToAnki(context: Context) {
   const { options, subtitles } = context
   const { deckName, modelName } = options
-  const anki = new YankiConnect({ autoLaunch: true })
+  const ankiService = new AnkiService()
 
-  await createDeckIfNotExists(anki, deckName)
-  await createModelIfNotExists(anki, modelName)
+  await ankiService.createDeckIfNotExists(deckName)
+  await ankiService.createModelIfNotExists(modelName)
   await extractAudioSegments(context)
-  await addNotes(anki, subtitles, deckName, modelName)
+  await ankiService.addNotes(subtitles, deckName, modelName)
 }
 
-async function createDeckIfNotExists(
-  anki: YankiConnect,
-  deckName: string,
-) {
-  const decks = await anki.deck.deckNames()
+class AnkiService {
+  private anki: YankiConnect
 
-  if (!decks.includes(deckName)) {
-    await anki.deck.createDeck({ deck: deckName })
-    console.log(`デッキ "${deckName}" を作成しました`)
+  constructor() {
+    this.anki = new YankiConnect({ autoLaunch: true })
   }
-}
 
-async function createModelIfNotExists(
-  anki: YankiConnect,
-  modelName: string,
-) {
-  const models = await anki.model.modelNames()
+  async createDeckIfNotExists(deckName: string) {
+    const decks = await this.anki.deck.deckNames()
+    if (!decks.includes(deckName)) {
+      await this.anki.deck.createDeck({ deck: deckName })
+      console.log(`デッキ "${deckName}" を作成しました`)
+    }
+  }
 
-  if (!models.includes(modelName)) {
-    await anki.model.createModel({
-      modelName,
-      inOrderFields: ['Front', 'Back'],
-      cardTemplates: [{
-        Front: '{{Front}}',
-        Back: '{{FrontSide}}<hr id="answer">{{Back}}',
-      }],
+  async createModelIfNotExists(modelName: string) {
+    const models = await this.anki.model.modelNames()
+    if (!models.includes(modelName)) {
+      await this.anki.model.createModel({
+        modelName,
+        inOrderFields: ['Front', 'Back'],
+        cardTemplates: [{
+          Front: '{{Front}}',
+          Back: '{{FrontSide}}<hr id="answer">{{Back}}',
+        }],
+      })
+      console.log(`モデル "${modelName}" を作成しました`)
+    }
+  }
+
+  async addNotes(subtitles: Context['subtitles'], deckName: string, modelName: string) {
+    const notes = subtitles.map((sub) => {
+      return {
+        deckName,
+        modelName,
+        fields: {
+          Front: sub.translation, // 翻訳テキスト
+          Back: sub.text, // 元のテキスト
+        },
+        tags: ['youtube-flashcard'],
+        audio: [
+          {
+            filename: `${crypto.randomUUID()}.mp3`,
+            data: fs.readFileSync(sub.audioPath!).toString('base64'),
+            fields: ['Back'],
+          },
+        ],
+      }
     })
-    console.log(`モデル "${modelName}" を作成しました`)
+
+    const results = await this.anki.note.addNotes({ notes })
+    return results.filter(id => id !== null)
   }
 }
 
@@ -68,33 +92,4 @@ async function extractAudioSegments(context: Context) {
   }
 
   console.log('すべてのセグメントの抽出が完了しました')
-}
-
-async function addNotes(
-  anki: YankiConnect,
-  subtitles: Context['subtitles'],
-  deckName: string,
-  modelName: string,
-) {
-  const notes = subtitles.map((sub) => {
-    return {
-      deckName,
-      modelName,
-      fields: {
-        Front: sub.translation, // 翻訳テキスト
-        Back: sub.text, // 元のテキスト
-      },
-      tags: ['youtube-flashcard'],
-      audio: [
-        {
-          filename: `${crypto.randomUUID()}.mp3`,
-          data: fs.readFileSync(sub.audioPath!).toString('base64'),
-          fields: ['Back'],
-        },
-      ],
-    }
-  })
-
-  const results = await anki.note.addNotes({ notes })
-  return results.filter(id => id !== null)
 }

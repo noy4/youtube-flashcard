@@ -125,6 +125,8 @@ async function loadTranscription(context: Context) {
   if (options.subs2) {
     if (!fs.existsSync(options.subs2))
       throw new Error(`${options.subs2} not found`)
+
+    context.subs2Content = fs.readFileSync(options.subs2, 'utf-8')
   }
   else {
     // OpenAIで翻訳を生成

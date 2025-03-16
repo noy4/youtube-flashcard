@@ -19,8 +19,8 @@ const program = new Command()
   .option('--to-lang <code>', '翻訳後の言語コード', 'ja')
   // anki
   .option('--add-to-anki', 'フラッシュカードを直接Ankiに追加')
-  .option('--deck-name <name>', 'Ankiのデッキ名', 'Default')
-  .option('--model-name <name>', 'Ankiのモデル名', '基本')
+  .option('--deck-name <name>', 'Ankiのデッキ名', 'YouTube Flashcards')
+  .option('--model-name <name>', 'Ankiのモデル名', 'Basic')
   // api
   .option('--api-key <key>', 'OpenAI APIキー', process.env.OPENAI_API_KEY)
   .option('-b, --base-url <url>', 'API baseURL', process.env.OPENAI_BASE_URL || 'https://openrouter.ai/api/v1')

@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 import { Command } from '@commander-js/extra-typings'
-import packageJson from '../../package.json' with { type: 'json' }
+import pkgJson from '../../package.json' with { type: 'json' }
 import { createFlashcards } from '../flashcard.js'
 
 const program = new Command()
   .name('youtube-flashcard')
   .description('YouTubeの字幕からフラッシュカードを生成')
-  .version(packageJson.version)
+  .version(pkgJson.version)
   // input
   .argument('[video]', 'ビデオファイルのパスまたはYouTube URL', process.env.VIDEO)
   .argument('[subs1]', '字幕ファイル1のパス')

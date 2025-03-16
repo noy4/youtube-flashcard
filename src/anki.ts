@@ -74,8 +74,10 @@ class AnkiService {
       }
     })
 
-    const results = await this.anki.note.addNotes({ notes })
-    return results.filter(id => id !== null)
+    const _ids = await this.anki.note.addNotes({ notes })
+    const ids = _ids.filter(id => id !== null)
+    console.log(`${ids.length} 枚のフラッシュカードを追加しました`)
+    return ids
   }
 }
 

@@ -1,4 +1,4 @@
-import type { Context } from './flashcard.js'
+import type { Context, Subtitle } from './flashcard.js'
 import { exec } from 'node:child_process'
 import * as crypto from 'node:crypto'
 import * as fs from 'node:fs'
@@ -11,22 +11,22 @@ const execAsync = promisify(exec)
 export async function outputToAnki(context: Context) {
   const { options, subtitles } = context
   const { deckName, modelName } = options
-  const ankiService = new AnkiService()
 
-  await ankiService.createDeckIfNotExists(deckName)
-  await ankiService.createModelIfNotExists(modelName)
+  const ankiService = new AnkiService()
+  await ankiService.ensureDeckExists(deckName)
+  await ankiService.ensureModelExists(modelName)
   await extractAudioSegments(context)
-  await ankiService.addNotes(subtitles, deckName, modelName)
+  await ankiService.addNotes({ subtitles, deckName, modelName })
 }
 
 class AnkiService {
-  private anki: YankiConnect
+  anki: YankiConnect
 
   constructor() {
     this.anki = new YankiConnect({ autoLaunch: true })
   }
 
-  async createDeckIfNotExists(deckName: string) {
+  async ensureDeckExists(deckName: string) {
     const decks = await this.anki.deck.deckNames()
     if (!decks.includes(deckName)) {
       await this.anki.deck.createDeck({ deck: deckName })
@@ -34,7 +34,7 @@ class AnkiService {
     }
   }
 
-  async createModelIfNotExists(modelName: string) {
+  async ensureModelExists(modelName: string) {
     const models = await this.anki.model.modelNames()
     if (!models.includes(modelName)) {
       await this.anki.model.createModel({
@@ -49,7 +49,12 @@ class AnkiService {
     }
   }
 
-  async addNotes(subtitles: Context['subtitles'], deckName: string, modelName: string) {
+  async addNotes(params: {
+    subtitles: Subtitle[]
+    deckName: string
+    modelName: string
+  }) {
+    const { subtitles, deckName, modelName } = params
     const notes = subtitles.map((sub) => {
       return {
         deckName,

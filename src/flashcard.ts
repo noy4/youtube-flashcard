@@ -31,7 +31,7 @@ export interface Context {
   subtitles: Subtitle[]
 }
 
-interface Subtitle {
+export interface Subtitle {
   start: number
   end: number
   text: string

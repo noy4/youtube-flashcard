@@ -1,8 +1,8 @@
 import * as fs from 'node:fs'
 import path from 'node:path'
-import OpenAI from 'openai'
 import { parseSync } from 'subtitle'
 import { youtubeDl } from 'youtube-dl-exec'
+import { AIClient } from './ai.js'
 import { outputToAnki } from './anki.js'
 
 export interface Options {
@@ -19,7 +19,7 @@ export interface Options {
 
 export interface Context {
   options: Options
-  openai: OpenAI
+  ai: AIClient
   paths: {
     video: string
     subs1: string
@@ -42,7 +42,7 @@ export interface Subtitle {
 function createContext(options: Options): Context {
   return {
     options,
-    openai: new OpenAI({ apiKey: options.apiKey }),
+    ai: new AIClient(options.apiKey),
     paths: {
       video: 'output/video.mp4',
       subs1: 'output/subs1.srt',
@@ -85,27 +85,6 @@ async function loadVideo(context: Context) {
   }
 }
 
-// 字幕のOpenAI翻訳
-async function translateWithOpenAI(context: Context) {
-  const { options, openai, subs1Content } = context
-
-  const response = await openai.chat.completions.create({
-    model: 'gpt-4o',
-    messages: [
-      {
-        role: 'system',
-        content: `You are a skilled translator from ${options.fromLang} to ${options.toLang}. Your task is to accurately translate each subtitle segment while preserving the timing information. Keep the SRT format intact.`,
-      },
-      {
-        role: 'user',
-        content: subs1Content,
-      },
-    ],
-  })
-
-  return response.choices[0].message.content || ''
-}
-
 function parseSubs(content: string) {
   return parseSync(content)
     .filter(node => node.type === 'cue')
@@ -115,7 +94,6 @@ function parseSubs(content: string) {
 // 文字起こしの読み込み
 async function loadSubtitles(context: Context) {
   const { options, paths } = context
-  const openai = new OpenAI({ apiKey: options.apiKey })
 
   // 字幕1の読み込み
   if (options.subs1) {
@@ -125,14 +103,8 @@ async function loadSubtitles(context: Context) {
     context.subs1Content = fs.readFileSync(options.subs1, 'utf-8')
   }
   else {
-    // OpenAIで文字起こしを生成
-    const file = fs.createReadStream(paths.video)
-    console.log('Transcribing audio...')
-    const transcription = await openai.audio.transcriptions.create({
-      model: 'whisper-1',
-      file,
-      response_format: 'srt',
-    })
+    // AIで文字起こしを生成
+    const transcription = await context.ai.transcribe(paths.video)
     context.subs1Content = transcription
     fs.writeFileSync(paths.subs1, transcription)
   }
@@ -145,9 +117,12 @@ async function loadSubtitles(context: Context) {
     context.subs2Content = fs.readFileSync(options.subs2, 'utf-8')
   }
   else {
-    // OpenAIで翻訳を生成
-    console.log('Translating subtitles...')
-    const translation = await translateWithOpenAI(context)
+    // AIで翻訳を生成
+    const translation = await context.ai.translate(
+      context.subs1Content,
+      options.fromLang,
+      options.toLang,
+    )
     context.subs2Content = translation
     fs.writeFileSync(paths.subs2, translation)
   }

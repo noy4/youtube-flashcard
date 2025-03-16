@@ -1,4 +1,4 @@
-import type { Context, Subtitle } from './types.js'
+import type { Context } from './types.js'
 import * as fs from 'node:fs'
 import path from 'node:path'
 import { parseSync } from 'subtitle'
@@ -33,14 +33,12 @@ export async function loadSubtitles(context: Context) {
   const subs1 = parseSubs(subs1Content)
   const subs2 = parseSubs(subs2Content)
 
-  const subtitles: Subtitle[] = []
-  for (const [index, sub] of subs1.entries()) {
-    subtitles.push({
-      ...sub,
-      translation: subs2[index].text,
-      audioPath: path.join(paths.segments, `segment_${index}.mp3`),
-    })
-  }
+  const subtitles = subs1.map((sub, index) => ({
+    ...sub,
+    translation: subs2[index].text,
+    audioPath: path.join(paths.segments, `segment_${index}.mp3`),
+  }))
+
   context.subtitles = subtitles
 }
 

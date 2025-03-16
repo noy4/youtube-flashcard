@@ -17,9 +17,6 @@ async function loadSubtitle(params: {
   const { input, output, generate } = params
 
   if (input) {
-    if (!fs.existsSync(input))
-      throw new Error(`${input} not found`)
-
     return fs.readFileSync(input, 'utf-8')
   }
   else {

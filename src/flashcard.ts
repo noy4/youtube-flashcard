@@ -54,9 +54,6 @@ async function loadVideo(context: Context) {
     })
   }
   else {
-    if (!fs.existsSync(input))
-      throw new Error(`${input} not found`)
-
     fs.copyFileSync(input, context.paths.video)
   }
 }

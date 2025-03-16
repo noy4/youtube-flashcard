@@ -1,7 +1,7 @@
 import * as fs from 'node:fs'
 import OpenAI from 'openai'
 import { youtubeDl } from 'youtube-dl-exec'
-import { outputToAnki } from './anki-v2.js'
+import { outputToAnki } from './anki.js'
 
 export interface Options {
   input?: string | undefined

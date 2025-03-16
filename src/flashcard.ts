@@ -1,5 +1,7 @@
 import * as fs from 'node:fs'
+import path from 'node:path'
 import OpenAI from 'openai'
+import { parseSync } from 'subtitle'
 import { youtubeDl } from 'youtube-dl-exec'
 import { outputToAnki } from './anki.js'
 
@@ -22,9 +24,19 @@ export interface Context {
     video: string
     subs1: string
     subs2: string
+    audioDir: string
   }
   subs1Content: string
   subs2Content: string
+  subtitles: Subtitle[]
+}
+
+interface Subtitle {
+  start: number
+  end: number
+  text: string
+  translation: string
+  audioPath?: string
 }
 
 function createContext(options: Options): Context {
@@ -35,9 +47,11 @@ function createContext(options: Options): Context {
       video: 'output/video.mp4',
       subs1: 'output/subs1.srt',
       subs2: 'output/subs2.srt',
+      audioDir: 'output/segments',
     },
     subs1Content: '',
     subs2Content: '',
+    subtitles: [],
   }
 }
 
@@ -92,8 +106,14 @@ async function translateWithOpenAI(context: Context) {
   return response.choices[0].message.content || ''
 }
 
+function parseSubs(content: string) {
+  return parseSync(content)
+    .filter(node => node.type === 'cue')
+    .map(v => v.data)
+}
+
 // 文字起こしの読み込み
-async function loadTranscription(context: Context) {
+async function loadSubtitles(context: Context) {
   const { options, paths } = context
   const openai = new OpenAI({ apiKey: options.apiKey })
 
@@ -131,13 +151,26 @@ async function loadTranscription(context: Context) {
     context.subs2Content = translation
     fs.writeFileSync(paths.subs2, translation)
   }
+
+  const subs1 = parseSubs(context.subs1Content)
+  const subs2 = parseSubs(context.subs2Content)
+
+  const subtitles: Subtitle[] = []
+  for (const [index, sub] of subs1.entries()) {
+    subtitles.push({
+      ...sub,
+      translation: subs2[index].text,
+      audioPath: path.join(paths.audioDir, `segment_${index}.mp3`),
+    })
+  }
+  context.subtitles = subtitles
 }
 
 export async function createFlashcards(options: Options) {
   const context = createContext(options)
   setupOutputDirectory()
   await loadVideo(context)
-  await loadTranscription(context)
+  await loadSubtitles(context)
 
   if (options.addToAnki)
     await outputToAnki(context)

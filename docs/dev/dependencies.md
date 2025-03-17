@@ -4,102 +4,132 @@
 
 ## 本番環境の依存関係
 
-### commander
+### @commander-js/extra-typings
 
-CLIアプリケーションを作成するためのライブラリです。コマンドライン引数のパース、オプションの定義、ヘルプメッセージの生成などの機能を提供します。
+CLIアプリケーションを作成するためのライブラリです。TypeScript向けの型定義が強化されたCommanderのラッパーです。
 
 ```typescript
-import { Command } from 'commander'
+import { Command } from '@commander-js/extra-typings'
 
 const program = new Command()
-
-program
   .name('youtube-flashcard')
-  .description('YouTubeの字幕からフラッシュカードを生成するツール')
+  .description('YouTubeの字幕からフラッシュカードを生成')
   .version('1.0.0')
-  .option('-l, --lang <language>', '字幕の言語を指定', 'en')
-  .argument('<url>', 'YouTubeのURL')
-  .action(async (url, options) => {
-    // コマンド実行時の処理
-  })
-
-program.parse()
+  .argument('[video]', 'ビデオファイルのパスまたはYouTube URL')
+  .option('--from-lang <code>', '元の言語コード', 'en')
+  .option('--to-lang <code>', '翻訳後の言語コード', 'ja')
 ```
 
 参考プロジェクト：
-- [Express CLI](https://github.com/expressjs/express/tree/master/bin) - Expressフレームワークのコマンドラインツール
-- [Vue CLI](https://github.com/vuejs/vue-cli) - Vue.jsの開発ツール
-- [sv - the Svelte CLI](https://github.com/sveltejs/cli/blob/main/packages/cli/bin.ts)
+- [Express CLI](https://github.com/expressjs/express/tree/master/bin)
+- [Vue CLI](https://github.com/vuejs/vue-cli)
 
-### Mustache
+### youtube-dl-exec
 
-テンプレートエンジンで、シンプルで使いやすい構文を提供します。プロンプトテンプレートの管理に使用しています。
+YouTubeからビデオと字幕をダウンロードするためのライブラリです。yt-dlpの Node.js ラッパーです。
 
 ```typescript
-import Mustache from 'mustache'
+import { youtubeDl } from 'youtube-dl-exec'
 
-const template = '{{name}}さん、こんにちは！'
-const rendered = Mustache.render(template, { name: '山田' })
-// => "山田さん、こんにちは！"
+// ビデオ情報の取得
+const info = await youtubeDl(url, {
+  dumpJson: true,
+})
+
+// ビデオのダウンロード
+await youtubeDl(url, {
+  output: 'video.mp4',
+  format: 'mp4',
+})
 ```
 
-参考プロジェクト：
-- [Express](https://github.com/expressjs/express) - Mustacheをビューエンジンとして使用
-- [Ghost](https://github.com/TryGhost/Ghost) - ブログプラットフォームでテンプレート管理に使用
+代替ライブラリ：
+- [youtube-dl](https://github.com/ytdl-org/youtube-dl) - オリジナルのyt-dlプロジェクト
+- [node-ytdl-core](https://github.com/fent/node-ytdl-core) - YouTube APIベースの実装
+
+### subtitle
+
+字幕ファイル（SRT形式）のパースと操作を行うためのライブラリです。
+
+```typescript
+import { parseSync } from 'subtitle'
+
+const subs = parseSync(srtContent)
+  .filter(node => node.type === 'cue')
+  .map(v => v.data)
+```
+
+代替ライブラリ：
+- [subtitles-parser](https://github.com/bazh/subtitles-parser)
+- [node-srt](https://github.com/joshnuss/node-srt)
 
 ### openai
 
-OpenAI APIを使用して、字幕の翻訳を行うためのライブラリです。
+文字起こしと翻訳のためのOpenAI APIクライアントです。
 
 ```typescript
 import OpenAI from 'openai'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+const client = new OpenAI({ apiKey })
+
+// 音声ファイルの文字起こし
+const transcription = await client.audio.transcriptions.create({
+  model: 'whisper-1',
+  file,
+  language: 'en',
+  response_format: 'srt',
 })
 
-async function translateText(text: string): Promise<string> {
-  const completion = await openai.chat.completions.create({
-    model: 'gpt-3.5-turbo',
-    messages: [
-      {
-        role: 'system',
-        content: 'You are a helpful translator.'
-      },
-      {
-        role: 'user',
-        content: `Translate the following text to Japanese: ${text}`
-      }
-    ]
-  })
-
-  return completion.choices[0].message.content || ''
-}
+// テキストの翻訳
+const response = await client.chat.completions.create({
+  model: 'gpt-4',
+  messages: [
+    {
+      role: 'system',
+      content: 'You are a skilled translator from en to ja.'
+    },
+    {
+      role: 'user',
+      content: textToTranslate
+    }
+  ]
+})
 ```
 
-参考プロジェクト：
-- [ChatGPT CLI](https://github.com/j178/chatgpt) - OpenAI APIを使用したCLIチャットツール
-- [GitHub Copilot CLI](https://github.com/github/gh-copilot) - GitHubのAIアシスタントツール
+### yanki-connect
 
-### youtube-caption-extractor
-
-YouTubeの字幕を抽出するためのライブラリです。
+Ankiのフラッシュカードを管理するためのライブラリです。AnkiConnectのTypeScriptラッパーです。
 
 ```typescript
-import { extractCaptions } from 'youtube-caption-extractor'
+import { YankiConnect } from 'yanki-connect'
 
-async function getCaptions(url: string, lang: string = 'en'): Promise<string[]> {
-  const captions = await extractCaptions(url, {
-    language: lang
-  })
+const anki = new YankiConnect({ autoLaunch: true })
 
-  return captions.map(caption => caption.text)
-}
+// デッキの作成
+await anki.deck.createDeck({ deck: 'English Study' })
+
+// ノートの追加
+await anki.note.addNotes({
+  notes: [{
+    deckName: 'English Study',
+    modelName: 'Basic',
+    fields: {
+      Front: '翻訳テキスト',
+      Back: '元のテキスト',
+    },
+    tags: ['youtube-flashcard'],
+    audio: [{
+      filename: 'audio.mp3',
+      data: audioBase64,
+      fields: ['Back'],
+    }],
+  }],
+})
 ```
 
-参考プロジェクト：
-- [youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api) - YouTubeの字幕を取得するPythonライブラリ
-- [youtube-captions-scraper](https://github.com/algolia/youtube-captions-scraper) - YouTubeの字幕をスクレイピングするNode.jsライブラリ
+代替ライブラリ：
+- [anki-connect-js](https://github.com/FooSoft/anki-connect-js)
+- [anki-api](https://github.com/kerrickstaley/anki-api)
 
 ## 開発環境の依存関係
 
@@ -107,10 +137,10 @@ async function getCaptions(url: string, lang: string = 'en'): Promise<string[]> 
 
 型安全な開発を可能にするJavaScriptのスーパーセットです。
 
-### Vitest
+### ESLint
 
-高速な単体テストフレームワークです。Jest互換のAPIを提供しながら、Viteのビルドパイプラインを活用します。
+コードの品質を保つための静的解析ツールです。
 
-### VitePress
+### ts-node
 
-Vue.js製の静的サイトジェネレーターで、このプロジェクトのドキュメントを生成するために使用しています。
+TypeScriptをNode.jsで直接実行するためのツールです。

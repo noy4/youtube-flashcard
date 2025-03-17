@@ -1,59 +1,52 @@
 # 出力形式
 
-- [Anki](https://apps.ankiweb.net/) 形式
-- [Obsidian Spaced Repetition](https://github.com/st3v3nmw/obsidian-spaced-repetition) 形式
-- JSON 形式
+このツールは、Ankiのフラッシュカード形式で出力を行います。
 
-## Anki 形式
+## Anki形式
 
-```html
-{{text}}
-<br>
+### カードの構成
 
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/{{id}}?start={{startSeconds}}&end={{endSeconds}}&autoplay=1"
-  frameborder="0"
-  autoplay="1"
-/>
+- 表面（Front）: 翻訳されたテキスト（日本語）
+- 裏面（Back）: 元のテキスト（英語）+ 音声
+
+例：
+```
+表面（Front）：
+私は毎朝6時に起きます。
+
+裏面（Back）：
+I wake up at 6 o'clock every morning.
+[音声再生]
 ```
 
-## Obsidian Spaced Repetition 形式
+### デッキ設定
 
-```markdown
-#flashcards
+デッキ名は以下のいずれかになります：
+- `--deck-name`オプションで指定された名前
+- 指定がない場合は動画のタイトル
 
-彼は毎朝6時に起きます
-?
-He wakes up at 6 o'clock every morning.
+### カードのモデル
 
-私は週末に友達と映画を見に行きました
-?
-I went to see a movie with my friends on the weekend.
+デフォルトでは"Basic"モデルを使用します：
+- フィールド：
+  - Front: 翻訳テキスト
+  - Back: 元のテキスト + 音声
+- オーディオ：
+  - 元のテキストに対応する音声セグメントを自動添付
+  - 裏面（Back）フィールドで再生
 
-この本は先週図書館で借りました
-?
-I borrowed this book from the library last week.
-```
+### カスタマイズ
 
-## JSON 形式
+- `--model-name`オプションで異なるモデルを指定可能
+- モデルが存在しない場合は自動的に作成
 
-```json
-[
-  {
-    "front": "彼は毎朝6時に起きます",
-    "back": "He wakes up at 6 o'clock every morning.",
-    "videoId": "abc123",
-    "startTime": 0,
-    "endTime": 10
-  },
-  {
-    "front": "私は週末に友達と映画を見に行きました",
-    "back": "I went to see a movie with my friends on the weekend.",
-    "videoId": "abc123",
-    "startTime": 10,
-    "endTime": 20
-  }
-]
-```
+### タグ
+
+すべてのカードに`youtube-flashcard`タグが付与されます。
+
+### 音声ファイル
+
+- 形式: MP3
+- 音声セグメントは字幕のタイミングに合わせて自動的に抽出
+- ファイル名はUUIDで生成
+- カード削除時に音声ファイルも自動的に削除

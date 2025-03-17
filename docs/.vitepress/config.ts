@@ -27,8 +27,7 @@ export default defineConfig({
         items: [
           { text: 'TODO', link: '/dev/todo' },
           { text: 'ドキュメント', link: '/dev/docs' },
-          { text: '依存ライブラリ', link: '/dev/dependencies' },
-          { text: 'YouTube字幕ライブラリ比較', link: '/dev/youtube-libraries-comparison' },
+          { text: 'Dependencies', link: '/dev/dependencies' },
         ],
       },
     ],

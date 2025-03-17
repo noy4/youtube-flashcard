@@ -3,6 +3,9 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'Flashcard Converter',
   description: 'YouTube字幕からフラッシュカードを生成',
+  markdown: {
+    breaks: true,
+  },
   themeConfig: {
     outline: {
       level: [2, 3],

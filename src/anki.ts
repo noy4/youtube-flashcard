@@ -10,8 +10,9 @@ const execAsync = promisify(exec)
 
 // Ankiへの出力処理
 export async function outputToAnki(context: Context) {
-  const { options, subtitles } = context
-  const { deckName, modelName } = options
+  const { options, subtitles, videoTitle } = context
+  const { modelName } = options
+  const deckName = options.deckName || videoTitle
 
   const ankiService = new AnkiService()
   await ankiService.ensureDeckExists(deckName)

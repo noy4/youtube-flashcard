@@ -1,3 +1,4 @@
+import type { Payload } from 'youtube-dl-exec'
 import type { Context, Options } from './types.js'
 import * as fs from 'node:fs'
 import { youtubeDl } from 'youtube-dl-exec'
@@ -28,6 +29,7 @@ function createContext(options: Options): Context {
       segments: index => `output/segments/segment_${index}.mp3`,
     },
     subtitles: [],
+    videoTitle: '',
   }
 }
 
@@ -44,6 +46,13 @@ async function loadVideo(context: Context) {
   ensureDirectory(paths.video)
 
   if (isUrl) {
+    // get video title
+    const info = await youtubeDl(input, {
+      dumpJson: true,
+    }) as Payload
+    context.videoTitle = info.title || ''
+
+    // download video
     await youtubeDl(input, {
       output: paths.video,
       format: 'mp4',
@@ -51,5 +60,6 @@ async function loadVideo(context: Context) {
   }
   else {
     fs.copyFileSync(input, paths.video)
+    context.videoTitle = input.split('/').pop()?.split('.')[0] || ''
   }
 }

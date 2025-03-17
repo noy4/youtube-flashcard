@@ -7,7 +7,7 @@ export interface Options {
   fromLang: string
   toLang: string
   addToAnki?: true | undefined
-  deckName: string
+  deckName?: string
   modelName: string
   apiKey: string
 }
@@ -22,6 +22,7 @@ export interface Context {
     segments: (index: number) => string
   }
   subtitles: Subtitle[]
+  videoTitle: string
 }
 
 export interface Subtitle {

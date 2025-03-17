@@ -4,13 +4,13 @@
 
 ## 本番環境の依存関係
 
-### @commander-js/extra-typings
+### commander
 
-CLIアプリケーションを作成するためのライブラリです。TypeScript向けの型定義が強化されたCommanderのラッパーです。
+CLIアプリケーションを作成するためのライブラリです。
 
-参考プロジェクト：
-- [Express CLI](https://github.com/expressjs/express/tree/master/bin)
+Used by:
 - [Vue CLI](https://github.com/vuejs/vue-cli)
+- [sv - the Svelte CLI](https://github.com/sveltejs/cli/blob/main/packages/cli/bin.ts)
 
 ### youtube-dl-exec
 
@@ -36,9 +36,7 @@ YouTubeからビデオと字幕をダウンロードするためのライブラ�
 
 Ankiのフラッシュカードを管理するためのライブラリです。AnkiConnectのTypeScriptラッパーです。
 
-代替ライブラリ：
-- [anki-connect-js](https://github.com/FooSoft/anki-connect-js)
-- [anki-api](https://github.com/kerrickstaley/anki-api)
+他候補：なし？
 
 ## 開発環境の依存関係
 
@@ -49,7 +47,3 @@ Ankiのフラッシュカードを管理するためのライブラリです。A
 ### ESLint
 
 コードの品質を保つための静的解析ツールです。
-
-### ts-node
-
-TypeScriptをNode.jsで直接実行するためのツールです。

@@ -1,11 +1,15 @@
 import type { Payload } from 'youtube-dl-exec'
 import type { Context, Options } from './types.js'
+import { exec } from 'node:child_process'
 import * as fs from 'node:fs'
+import { promisify } from 'node:util'
 import { youtubeDl } from 'youtube-dl-exec'
 import { AIClient } from './ai.js'
 import { outputToAnki } from './anki.js'
 import { loadSubtitles } from './subtitle.js'
 import { ensureDirectory, formatFileSize } from './utils.js'
+
+const execAsync = promisify(exec)
 
 export async function createFlashcards(options: Options) {
   const context = createContext(options)
@@ -24,6 +28,7 @@ function createContext(options: Options): Context {
     ai: new AIClient(options.apiKey),
     paths: {
       video: '.youtube-flashcard/video.mp4',
+      audio: '.youtube-flashcard/audio.mp3',
       subs1: '.youtube-flashcard/subs1.srt',
       subs2: '.youtube-flashcard/subs2.srt',
       segments: index => `.youtube-flashcard/segments/segment_${index}.mp3`,
@@ -31,6 +36,7 @@ function createContext(options: Options): Context {
     subtitles: [],
     videoTitle: '',
     videoSize: 0,
+    audioSize: 0,
   }
 }
 
@@ -45,6 +51,7 @@ async function loadVideo(context: Context) {
   const isUrl = /^https?:\/\//.test(input)
   console.log(`Loading ${input}...`)
   ensureDirectory(paths.video)
+  ensureDirectory(paths.audio)
 
   if (isUrl) {
     // get video title
@@ -69,4 +76,15 @@ async function loadVideo(context: Context) {
 
   const size = formatFileSize(context.videoSize)
   console.log(`Video loaded: ${context.videoTitle} (${size})`)
+
+  // Extract audio from video
+  console.log('Extracting audio...')
+  const command = `ffmpeg -i ${paths.video} -vn -acodec libmp3lame -q:a 4 "${paths.audio}"`
+  await execAsync(command)
+
+  // Get audio file size
+  const stats = fs.statSync(paths.audio)
+  context.audioSize = stats.size
+  const audioSize = formatFileSize(context.audioSize)
+  console.log(`Audio extracted: ${audioSize}`)
 }

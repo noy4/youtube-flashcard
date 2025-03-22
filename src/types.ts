@@ -17,6 +17,7 @@ export interface Context {
   ai: AIClient
   paths: {
     video: string
+    audio: string
     subs1: string
     subs2: string
     segments: (index: number) => string
@@ -24,6 +25,7 @@ export interface Context {
   subtitles: Subtitle[]
   videoTitle: string
   videoSize: number
+  audioSize: number
 }
 
 export interface Subtitle {

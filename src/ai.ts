@@ -39,7 +39,7 @@ export class AIClient {
     const { content, fromLang, toLang } = params
     console.log('Translating text...')
 
-    const systemPrompt = `You are a skilled translator from ${fromLang} to ${toLang}. Your task is to accurately translate each subtitle segment while preserving the timing information. Keep the SRT format intact.`
+    const systemPrompt = `You are a skilled translator from ${fromLang} to ${toLang}. Your task is to accurately translate each subtitle segment while preserving the timing information. Keep the SRT format intact. Do not add any extra information or comments, including code block.`
 
     const response = await this.client.chat.completions.create({
       model: 'gpt-4o',

@@ -79,6 +79,11 @@ async function loadVideo(context: Context) {
 
   // Extract audio from video
   console.log('Extracting audio...')
+  // ffmpeg options:
+  // -i: 入力ファイルの指定
+  // -vn: ビデオストリームを無効化（音声のみを抽出）
+  // -acodec libmp3lame: MP3エンコーダーを使用
+  // -q:a 4: 音声品質の設定（0-9, 低いほど高品質）
   const command = `ffmpeg -i ${paths.video} -vn -acodec libmp3lame -q:a 4 "${paths.audio}"`
   await execAsync(command)
 

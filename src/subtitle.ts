@@ -14,7 +14,7 @@ export async function loadSubtitles(context: Context) {
     output: paths.subs1,
     // transcribe
     generate: () => context.ai.transcribe({
-      audioPath: paths.video,
+      audioPath: paths.audio,
       language: options.fromLang,
     }),
   })

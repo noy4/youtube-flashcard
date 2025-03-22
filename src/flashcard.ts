@@ -5,7 +5,7 @@ import { youtubeDl } from 'youtube-dl-exec'
 import { AIClient } from './ai.js'
 import { outputToAnki } from './anki.js'
 import { loadSubtitles } from './subtitle.js'
-import { ensureDirectory } from './utils.js'
+import { ensureDirectory, formatFileSize } from './utils.js'
 
 export async function createFlashcards(options: Options) {
   const context = createContext(options)
@@ -30,6 +30,7 @@ function createContext(options: Options): Context {
     },
     subtitles: [],
     videoTitle: '',
+    videoSize: 0,
   }
 }
 
@@ -51,6 +52,7 @@ async function loadVideo(context: Context) {
       dumpJson: true,
     }) as Payload
     context.videoTitle = info.title || ''
+    context.videoSize = info.filesize_approx
 
     // download video
     await youtubeDl(input, {
@@ -61,5 +63,10 @@ async function loadVideo(context: Context) {
   else {
     fs.copyFileSync(input, paths.video)
     context.videoTitle = input.split('/').pop()?.split('.')[0] || ''
+    const stats = fs.statSync(paths.video)
+    context.videoSize = stats.size
   }
+
+  const size = formatFileSize(context.videoSize)
+  console.log(`Video loaded: ${context.videoTitle} (${size})`)
 }

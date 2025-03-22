@@ -23,6 +23,7 @@ export interface Context {
   }
   subtitles: Subtitle[]
   videoTitle: string
+  videoSize: number
 }
 
 export interface Subtitle {

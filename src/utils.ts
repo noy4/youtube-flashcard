@@ -1,5 +1,7 @@
-import fs from 'node:fs'
+import { exec } from 'node:child_process'
+import * as fs from 'node:fs'
 import path from 'node:path'
+import { promisify } from 'node:util'
 
 export function formatFileSize(bytes: number): string {
   const units = ['B', 'KB', 'MB', 'GB']
@@ -19,3 +21,5 @@ export function ensureDirectory(filePath: string) {
   if (!fs.existsSync(dir))
     fs.mkdirSync(dir, { recursive: true })
 }
+
+export const execAsync = promisify(exec)

@@ -1,15 +1,11 @@
 import type { Payload } from 'youtube-dl-exec'
 import type { Context, Options } from './types.js'
-import { exec } from 'node:child_process'
 import * as fs from 'node:fs'
-import { promisify } from 'node:util'
 import { youtubeDl } from 'youtube-dl-exec'
 import { AIClient } from './ai.js'
 import { outputToAnki } from './anki.js'
 import { loadSubtitles } from './subtitle.js'
-import { ensureDirectory, formatFileSize } from './utils.js'
-
-const execAsync = promisify(exec)
+import { ensureDirectory, execAsync, formatFileSize } from './utils.js'
 
 export async function createFlashcards(options: Options) {
   const context = createContext(options)

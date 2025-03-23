@@ -1,13 +1,13 @@
 import type { Context } from './types.js'
 import * as fs from 'node:fs'
 import { parseSync } from 'subtitle'
-import { ensureDirectory } from './utils.js'
 
 /**
  * Load subtitles from files or generate them using AI.
  */
 export async function loadSubtitles(context: Context) {
-  const { options, paths } = context
+  const { options, pathManager } = context
+  const { paths } = pathManager
 
   const subs1Content = await loadSubtitle({
     input: options.subs1,
@@ -54,7 +54,6 @@ async function loadSubtitle(params: {
   }
   else {
     const content = await generate()
-    ensureDirectory(output)
     fs.writeFileSync(output, content)
     return content
   }

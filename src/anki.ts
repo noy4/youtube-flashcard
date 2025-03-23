@@ -2,7 +2,7 @@ import type { Context, Subtitle } from './types.js'
 import * as crypto from 'node:crypto'
 import * as fs from 'node:fs'
 import { YankiConnect } from 'yanki-connect'
-import { ensureDirectory, execAsync } from './utils.js'
+import { execAsync } from './utils.js'
 
 // Ankiへの出力処理
 export async function outputToAnki(context: Context) {
@@ -81,12 +81,9 @@ class AnkiService {
 
 // 音声セグメントの抽出
 async function extractAudioSegments(context: Context) {
-  const { paths, subtitles } = context
-
-  if (fs.existsSync(paths.segments(0)))
-    return
-
-  ensureDirectory(paths.segments(0))
+  const { pathManager, subtitles } = context
+  const { paths } = pathManager
+  pathManager.ensure('segments')
 
   for (const [index, sub] of subtitles.entries()) {
     const duration = sub.end - sub.start

@@ -4,16 +4,13 @@ import * as fs from 'node:fs'
 import { youtubeDl } from 'youtube-dl-exec'
 import { AIClient } from './ai.js'
 import { outputToAnki } from './anki.js'
+import { PathManager } from './path-manager.js'
 import { loadSubtitles } from './subtitle.js'
-import { ensureDirectory, execAsync, formatFileSize } from './utils.js'
+import { execAsync, formatFileSize } from './utils.js'
 
 export async function createFlashcards(options: Options) {
-  // クリーンアップ: 既存のワークディレクトリを削除
-  const workDir = '.youtube-flashcard'
-  if (fs.existsSync(workDir))
-    fs.rmSync(workDir, { recursive: true, force: true })
-
   const context = createContext(options)
+  context.pathManager.init()
   await loadVideo(context)
   await loadSubtitles(context)
 
@@ -27,13 +24,7 @@ function createContext(options: Options): Context {
   return {
     options,
     ai: new AIClient(options.apiKey),
-    paths: {
-      video: '.youtube-flashcard/video.mp4',
-      audio: '.youtube-flashcard/audio.mp3',
-      subs1: '.youtube-flashcard/subs1.srt',
-      subs2: '.youtube-flashcard/subs2.srt',
-      segments: index => `.youtube-flashcard/segments/segment_${index}.mp3`,
-    },
+    pathManager: new PathManager(),
     subtitles: [],
     videoTitle: '',
     videoSize: 0,
@@ -43,16 +34,15 @@ function createContext(options: Options): Context {
 
 // ビデオの読み込み処理
 async function loadVideo(context: Context) {
-  const { options, paths } = context
+  const { options, pathManager } = context
   const { input } = options
+  const { paths } = pathManager
 
   if (!input)
     throw new Error('You must specify a video file path or YouTube URL.')
 
   const isUrl = /^https?:\/\//.test(input)
   console.log(`Loading ${input}...`)
-  ensureDirectory(paths.video)
-  ensureDirectory(paths.audio)
 
   if (isUrl) {
     // get video title

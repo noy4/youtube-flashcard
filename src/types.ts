@@ -1,4 +1,5 @@
 import type { AIClient } from './ai.js'
+import type { PathManager } from './path-manager.js'
 
 export interface Options {
   input?: string | undefined
@@ -15,13 +16,7 @@ export interface Options {
 export interface Context {
   options: Options
   ai: AIClient
-  paths: {
-    video: string
-    audio: string
-    subs1: string
-    subs2: string
-    segments: (index: number) => string
-  }
+  pathManager: PathManager
   subtitles: Subtitle[]
   videoTitle: string
   videoSize: number

@@ -1,6 +1,3 @@
-import type { AIClient } from './ai.js'
-import type { PathManager } from './path-manager.js'
-
 export interface Options {
   input?: string | undefined
   subs1?: string | undefined
@@ -11,16 +8,6 @@ export interface Options {
   deckName?: string
   modelName: string
   apiKey: string
-}
-
-export interface Context {
-  options: Options
-  ai: AIClient
-  pathManager: PathManager
-  subtitles: Subtitle[]
-  videoTitle: string
-  videoSize: number
-  audioSize: number
 }
 
 export interface Subtitle {

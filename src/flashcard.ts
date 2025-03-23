@@ -1,10 +1,10 @@
 import type { Payload } from 'youtube-dl-exec'
-import type { Context, Options } from './types.js'
+import type { Context } from './context.js'
+import type { Options } from './types.js'
 import * as fs from 'node:fs'
 import { youtubeDl } from 'youtube-dl-exec'
-import { AIClient } from './ai.js'
 import { outputToAnki } from './anki.js'
-import { PathManager } from './path-manager.js'
+import { createContext } from './context.js'
 import { loadSubtitles } from './subtitle.js'
 import { execAsync, formatFileSize } from './utils.js'
 
@@ -18,18 +18,6 @@ export async function createFlashcards(options: Options) {
     await outputToAnki(context)
 
   console.log('Done.')
-}
-
-function createContext(options: Options): Context {
-  return {
-    options,
-    ai: new AIClient(options.apiKey),
-    pathManager: new PathManager(),
-    subtitles: [],
-    videoTitle: '',
-    videoSize: 0,
-    audioSize: 0,
-  }
 }
 
 // ビデオの読み込み処理

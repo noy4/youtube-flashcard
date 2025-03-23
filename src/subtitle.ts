@@ -1,4 +1,4 @@
-import type { Context } from './types.js'
+import type { Context } from './context.js'
 import * as fs from 'node:fs'
 import { parseSync } from 'subtitle'
 

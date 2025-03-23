@@ -1,4 +1,5 @@
-import type { Context, Subtitle } from './types.js'
+import type { Context } from './context.js'
+import type { Subtitle } from './types.js'
 import * as crypto from 'node:crypto'
 import * as fs from 'node:fs'
 import { YankiConnect } from 'yanki-connect'

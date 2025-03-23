@@ -36,6 +36,8 @@ export class PathManager {
   init() {
     if (fs.existsSync(this.workDir))
       fs.rmSync(this.workDir, { recursive: true, force: true })
+
+    fs.mkdirSync(this.workDir)
   }
 
   ensure(key: keyof Paths) {

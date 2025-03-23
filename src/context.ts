@@ -15,7 +15,7 @@ export interface Context {
 export function createContext(options: Options): Context {
   return {
     options,
-    ai: new AIClient(options.apiKey),
+    ai: new AIClient(options.openaiApiKey),
     pathManager: new PathManager(),
     subtitles: [],
     videoTitle: '',

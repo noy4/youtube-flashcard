@@ -20,7 +20,7 @@ const program = new Command()
   .option('--deck-name <name>', 'Ankiのデッキ名')
   .option('--model-name <name>', 'Ankiのモデル名', 'Basic')
   // api
-  .option('--api-key <key>', 'OpenAI APIキー', process.env.OPENAI_API_KEY)
+  .option('--openai-api-key <key>', 'OpenAI APIキー', process.env.OPENAI_API_KEY)
   .action(async (video, subs1, subs2, options) => {
     try {
       await createFlashcards({

@@ -7,7 +7,7 @@ export interface Options {
   addToAnki?: true | undefined
   deckName?: string
   modelName: string
-  apiKey: string
+  openaiApiKey: string
 }
 
 export interface Subtitle {

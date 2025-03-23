@@ -13,21 +13,14 @@ export async function loadSubtitles(context: Context) {
     input: options.subs1,
     output: paths.subs1,
     // transcribe
-    generate: () => context.ai.transcribe({
-      audioPath: paths.audio,
-      language: options.fromLang,
-    }),
+    generate: () => context.ai.transcribe(paths.audio),
   })
 
   const subs2Content = await loadSubtitle({
     input: options.subs2,
     output: paths.subs2,
     // translate
-    generate: () => context.ai.translate({
-      content: subs1Content,
-      fromLang: options.fromLang,
-      toLang: options.toLang,
-    }),
+    generate: () => context.ai.translate(subs1Content),
   })
 
   const subs1 = parseSubs(subs1Content)

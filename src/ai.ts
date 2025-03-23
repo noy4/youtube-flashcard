@@ -1,28 +1,26 @@
+import type { Options } from './types.js'
 import fs from 'node:fs'
 import OpenAI from 'openai'
 
 export class AIClient {
-  private client: OpenAI
-
-  constructor(apiKey: string) {
-    this.client = new OpenAI({ apiKey })
-  }
+  constructor(public options: Options) {}
 
   /**
    * 音声ファイルから文字起こしを生成
    */
-  async transcribe(params: {
-    audioPath: string
-    language: string
-  }) {
-    const { audioPath, language } = params
+  async transcribe(audioPath: string) {
+    const { openaiApiKey, fromLang } = this.options
+
+    const openai = new OpenAI({
+      apiKey: openaiApiKey,
+    })
     const file = fs.createReadStream(audioPath)
     console.log('Transcribing audio...')
 
-    const transcription = await this.client.audio.transcriptions.create({
+    const transcription = await openai.audio.transcriptions.create({
       model: 'whisper-1',
       file,
-      language,
+      language: fromLang,
       response_format: 'srt',
     })
     return transcription
@@ -31,18 +29,25 @@ export class AIClient {
   /**
    * テキストを翻訳
    */
-  async translate(params: {
-    content: string
-    fromLang: string
-    toLang: string
-  }) {
-    const { content, fromLang, toLang } = params
+  async translate(content: string) {
+    const {
+      fromLang,
+      toLang,
+      openaiApiKey,
+      translatorApiKey,
+      translatorBaseUrl,
+      translatorModel,
+    } = this.options
+    const openai = new OpenAI({
+      apiKey: translatorApiKey || openaiApiKey,
+      baseURL: translatorBaseUrl,
+    })
     console.log('Translating text...')
 
     const systemPrompt = `You are a skilled translator from ${fromLang} to ${toLang}. Your task is to accurately translate each subtitle segment while preserving the timing information. Keep the SRT format intact. Do not add any extra information or comments, including code block.`
 
-    const response = await this.client.chat.completions.create({
-      model: 'gpt-4o',
+    const response = await openai.chat.completions.create({
+      model: translatorModel,
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content },

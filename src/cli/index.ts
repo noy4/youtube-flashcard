@@ -21,6 +21,9 @@ const program = new Command()
   .option('--model-name <name>', 'Ankiのモデル名', 'Basic')
   // api
   .option('--openai-api-key <key>', 'OpenAI APIキー', process.env.OPENAI_API_KEY)
+  .option('--translator-api-key <key>', 'Translator APIキー', process.env.TRANSLATOR_API_KEY)
+  .option('--translator-base-url <url>', 'Translator APIのベースURL', process.env.TRANSLATOR_BASE_URL)
+  .option('--translator-model <model>', 'Translator APIのモデル', process.env.TRANSLATOR_MODEL || 'google/gemini-flash-1.5-8b-exp')
   .action(async (video, subs1, subs2, options) => {
     try {
       await createFlashcards({

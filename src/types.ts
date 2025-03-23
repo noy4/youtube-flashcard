@@ -8,6 +8,9 @@ export interface Options {
   deckName?: string
   modelName: string
   openaiApiKey: string
+  translatorApiKey: string
+  translatorBaseUrl: string
+  translatorModel: string
 }
 
 export interface Subtitle {

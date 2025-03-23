@@ -8,6 +8,11 @@ import { loadSubtitles } from './subtitle.js'
 import { ensureDirectory, execAsync, formatFileSize } from './utils.js'
 
 export async function createFlashcards(options: Options) {
+  // クリーンアップ: 既存のワークディレクトリを削除
+  const workDir = '.youtube-flashcard'
+  if (fs.existsSync(workDir))
+    fs.rmSync(workDir, { recursive: true, force: true })
+
   const context = createContext(options)
   await loadVideo(context)
   await loadSubtitles(context)

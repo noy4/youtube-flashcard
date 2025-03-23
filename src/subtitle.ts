@@ -26,6 +26,9 @@ export async function loadSubtitles(context: Context) {
   const subs1 = parseSubs(subs1Content)
   const subs2 = parseSubs(subs2Content)
 
+  if (subs1.length !== subs2.length)
+    throw new Error(`The number of subtitles does not match. (${subs1.length}-${subs2.length})`)
+
   const subtitles = subs1.map((sub, index) => ({
     ...sub,
     translation: subs2[index].text,

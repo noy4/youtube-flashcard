@@ -5,7 +5,9 @@ import * as fs from 'node:fs'
 import { YankiConnect } from 'yanki-connect'
 import { execAsync } from './utils.js'
 
-// Ankiへの出力処理
+/**
+ * Output to Anki
+ */
 export async function outputToAnki(context: Context) {
   const { options, subtitles, videoTitle } = context
   const { modelName } = options
@@ -29,7 +31,7 @@ class AnkiService {
     const decks = await this.anki.deck.deckNames()
     if (!decks.includes(deckName)) {
       await this.anki.deck.createDeck({ deck: deckName })
-      console.log(`デッキ "${deckName}" を作成しました`)
+      console.log(`Created deck "${deckName}"`)
     }
   }
 
@@ -44,7 +46,7 @@ class AnkiService {
           Back: '{{FrontSide}}<hr id="answer">{{Back}}',
         }],
       })
-      console.log(`モデル "${modelName}" を作成しました`)
+      console.log(`Created model "${modelName}"`)
     }
   }
 
@@ -61,10 +63,9 @@ class AnkiService {
         deckName,
         modelName,
         fields: {
-          Front: sub.translation, // 翻訳テキスト
-          Back: sub.text, // 元のテキスト
+          Front: sub.translation, // Translated text
+          Back: sub.text, // Original text
         },
-        tags: ['youtube-flashcard'],
         audio: [
           {
             filename: `${crypto.randomUUID()}.mp3`,
@@ -95,7 +96,9 @@ class AnkiService {
   }
 }
 
-// 音声セグメントの抽出
+/**
+ * Extract audio segments
+ */
 async function extractAudioSegments(context: Context) {
   const { pathManager, subtitles } = context
   const { paths } = pathManager
@@ -110,8 +113,8 @@ async function extractAudioSegments(context: Context) {
     const command = `ffmpeg -i ${paths.audio} -ss ${sub.start / 1000} -t ${duration / 1000} -vn -acodec mp3 "${sub.audioPath}"`
 
     await execAsync(command)
-    console.log(`セグメント ${index + 1}/${subtitles.length} を抽出しました`)
+    console.log(`Extracted segment ${index + 1}/${subtitles.length}`)
   }
 
-  console.log('すべてのセグメントの抽出が完了しました')
+  console.log('All segments have been extracted')
 }

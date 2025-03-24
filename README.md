@@ -1,69 +1,69 @@
 # YouTube Flashcard
 
-YouTubeの字幕から英語学習用のフラッシュカードを生成するCLIツール。
+A CLI tool to generate language learning flashcards from YouTube videos.
 
-## 機能
+## Features
 
-- YouTubeビデオの字幕を自動で文字起こし
-- 文字起こしから翻訳カードを自動生成
-- 音声セグメントの自動抽出
-- Ankiへのフラッシュカード直接追加
+- Automatic transcription of YouTube video subtitles
+- Automatic generation of translation from transcriptions
+- Automatic extraction of audio segments
+- Direct addition of flashcards to Anki
 
-## インストール
+## Installation
 
 ```bash
 npm install -g youtube-flashcard
 ```
 
-## 使い方
+## Usage
 
-### 基本的な使い方
+### Basic Usage
 
 ```bash
-# YouTubeビデオから字幕を自動生成してフラッシュカードを作成
-youtube-flashcard "https://www.youtube.com/watch?v=..."
+# Create flashcards by auto-generating subtitles from a YouTube video
+youtube-flashcard https://www.youtube.com/watch?v=dKz095P7LdU
 
-# 既存の字幕ファイルを使用
-youtube-flashcard "video.mp4" "subs1.srt" "subs2.srt"
+# Use existing subtitle files
+youtube-flashcard video.mp4 subs1.srt subs2.srt
 ```
 
-### オプション
+### Options
 
 ```bash
-# 言語の指定（デフォルト: en -> ja）
+# Specify languages (default: en -> ja)
 youtube-flashcard ... --from-lang en --to-lang ja
 
-# フラッシュカードをAnkiへ直接追加
-youtube-flashcard ... --add-to-anki --deck-name "英語学習" --model-name "Basic"
+# Add flashcards directly to Anki
+youtube-flashcard ... --add-to-anki --deck-name "English Study" --model-name "Basic"
 ```
 
-### 環境変数
+### Environment Variables
 
-以下の環境変数でデフォルト値を設定できます：
+You can set default values using the following environment variables:
 
-- `VIDEO`: デフォルトのビデオパスまたはURL
-- `OPENAI_API_KEY`: OpenAI APIキー（文字起こし・翻訳に必要）
+- `VIDEO`: Default video path or URL
+- `OPENAI_API_KEY`: OpenAI API key (required for transcription and translation)
 
-## 開発者向け
+## For Developers
 
-### 開発環境
+### Development Environment
 
 - TypeScript
 - Node.js
 
-### 必要なツール
+### Required Tools
 
-- OpenAI API: 文字起こしと翻訳に使用
-- FFmpeg: 音声セグメントの抽出に使用
-- Anki: フラッシュカードの追加に必要（--add-to-ankiオプション使用時）
+- OpenAI API: Used for transcription and translation
+- FFmpeg: Used for audio segment extraction
+- Anki: Required for adding flashcards (when using --add-to-anki option)
 
-### コマンド
+### Commands
 
 ```bash
-npm install   # セットアップ
-npm test      # テスト実行
+npm install   # Setup
+npm test      # Run tests
 ```
 
-## ライセンス
+## License
 
 MIT

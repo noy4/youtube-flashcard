@@ -24,6 +24,8 @@ const program = new Command()
   .option('--translator-api-key <key>', 'Translator APIキー', process.env.TRANSLATOR_API_KEY)
   .option('--translator-base-url <url>', 'Translator APIのベースURL', process.env.TRANSLATOR_BASE_URL)
   .option('--translator-model <model>', 'Translator APIのモデル', process.env.TRANSLATOR_MODEL || 'google/gemini-flash-1.5-8b-exp')
+  // dev
+  .option('--use-cache', 'キャッシュを使用')
   .action(async (video, subs1, subs2, options) => {
     try {
       await createFlashcards({

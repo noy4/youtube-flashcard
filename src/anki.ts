@@ -53,7 +53,9 @@ class AnkiService {
     deckName: string
     modelName: string
   }) {
+    console.log('Adding notes to Anki...')
     const { subtitles, deckName, modelName } = params
+
     const notes = subtitles.map((sub) => {
       return {
         deckName,
@@ -84,6 +86,10 @@ class AnkiService {
 async function extractAudioSegments(context: Context) {
   const { pathManager, subtitles } = context
   const { paths } = pathManager
+
+  if (fs.existsSync(paths.segments(0)))
+    return
+
   pathManager.ensure('segments')
 
   for (const [index, sub] of subtitles.entries()) {

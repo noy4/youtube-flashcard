@@ -10,7 +10,19 @@ import { execAsync, formatFileSize } from './utils.js'
 
 export async function createFlashcards(options: Options) {
   const context = createContext(options)
-  context.pathManager.init()
+  const { pathManager } = context
+  const { paths } = pathManager
+
+  if (options.useCache) {
+    console.log('Using cached files...')
+    context.options.input ||= paths.video
+    context.options.subs1 ||= paths.subs1
+    context.options.subs2 ||= paths.subs2
+  }
+  else {
+    context.pathManager.init()
+  }
+
   await loadVideo(context)
   await loadSubtitles(context)
 
@@ -57,6 +69,9 @@ async function loadVideo(context: Context) {
   console.log(`Video loaded: ${context.videoTitle} (${size})`)
 
   // Extract audio from video
+  if (fs.existsSync(paths.audio))
+    return
+
   console.log('Extracting audio...')
   // ffmpeg options:
   // -i: 入力ファイルの指定

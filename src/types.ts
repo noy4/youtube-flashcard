@@ -11,6 +11,7 @@ export interface Options {
   translatorApiKey: string
   translatorBaseUrl: string
   translatorModel: string
+  useCache?: true | undefined
 }
 
 export interface Subtitle {

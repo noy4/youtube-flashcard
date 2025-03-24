@@ -44,15 +44,15 @@ async function loadSubtitle(params: {
   generate: () => Promise<string>
 }) {
   const { input, output, generate } = params
+  let content: string
 
-  if (input) {
-    return fs.readFileSync(input, 'utf-8')
-  }
-  else {
-    const content = await generate()
-    fs.writeFileSync(output, content)
-    return content
-  }
+  if (input)
+    content = fs.readFileSync(input, 'utf-8')
+  else
+    content = await generate()
+
+  fs.writeFileSync(output, content)
+  return content
 }
 
 function parseSubs(content: string) {

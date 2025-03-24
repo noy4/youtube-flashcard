@@ -10,18 +10,9 @@ export default defineConfig({
     outline: {
       level: [2, 3],
     },
-    nav: [
-      { text: 'ホーム', link: '/' },
-      { text: 'ガイド', link: '/guide/' },
-    ],
     sidebar: [
-      {
-        text: 'ガイド',
-        items: [
-          { text: '使い方', link: '/guide/' },
-          { text: '出力形式', link: '/guide/output-format' },
-        ],
-      },
+      { text: 'Introduction', link: '/' },
+      { text: 'Output format', link: '/guide/output-format' },
       {
         text: '開発',
         items: [

@@ -75,10 +75,23 @@ class AnkiService {
       }
     })
 
-    const _ids = await this.anki.note.addNotes({ notes })
-    const ids = _ids.filter(id => id !== null)
-    console.log(`${ids.length} 枚のフラッシュカードを追加しました`)
-    return ids
+    const errors: string[] = []
+
+    for (const [index, note] of notes.entries()) {
+      const number = index + 1
+      try {
+        await this.anki.note.addNote({ note })
+        console.log('Added:', number)
+      }
+      catch (error) {
+        console.error(`Failed: ${number} - ${error.message}`)
+        errors.push(`${number}: ${error.message}`)
+      }
+    }
+
+    if (errors.length) {
+      console.error(`Failed to add ${errors.length} notes. Errors:`, errors)
+    }
   }
 }
 

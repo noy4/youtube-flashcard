@@ -24,6 +24,7 @@ export async function createFlashcards(options: Options) {
   }
 
   await loadVideo(context)
+  await loadAudio(context)
   await loadSubtitles(context)
 
   if (options.addToAnki)
@@ -41,23 +42,25 @@ async function loadVideo(context: Context) {
   if (!input)
     throw new Error('You must specify a video file path or YouTube URL.')
 
-  const isUrl = /^https?:\/\//.test(input)
   console.log(`Loading ${input}...`)
+  const isUrl = /^https?:\/\//.test(input)
 
+  // download youtube video
   if (isUrl) {
-    // get video title
+    // get title
     const info = await youtubeDl(input, {
       dumpJson: true,
     }) as Payload
     context.videoTitle = info.title || ''
     context.videoSize = info.filesize_approx
 
-    // download video
+    // download
     await youtubeDl(input, {
       output: paths.video,
       format: 'mp4',
     })
   }
+  // load video file
   else {
     fs.copyFileSync(input, paths.video)
     context.videoTitle = input.split('/').pop()?.split('.')[0] || ''
@@ -67,8 +70,12 @@ async function loadVideo(context: Context) {
 
   const size = formatFileSize(context.videoSize)
   console.log(`Video loaded: ${context.videoTitle} (${size})`)
+}
 
-  // Extract audio from video
+async function loadAudio(context: Context) {
+  const { pathManager } = context
+  const { paths } = pathManager
+
   if (fs.existsSync(paths.audio))
     return
 

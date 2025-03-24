@@ -25,6 +25,4 @@ export async function createFlashcards(options: Options) {
 
   if (options.addToAnki)
     await outputToAnki(context)
-
-  console.log('Done.')
 }

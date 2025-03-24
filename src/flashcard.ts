@@ -20,7 +20,7 @@ export async function createFlashcards(options: Options) {
     context.options.subs2 ||= paths.subs2
   }
   else {
-    context.pathManager.init()
+    pathManager.init()
   }
 
   await loadVideo(context)

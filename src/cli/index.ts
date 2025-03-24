@@ -23,7 +23,7 @@ const program = new Command()
   .option('--openai-api-key <key>', 'OpenAI API key', process.env.OPENAI_API_KEY)
   .option('--translator-api-key <key>', 'Translator API key', process.env.TRANSLATOR_API_KEY)
   .option('--translator-base-url <url>', 'Translator API base URL', process.env.TRANSLATOR_BASE_URL)
-  .option('--translator-model <model>', 'Translator API model', process.env.TRANSLATOR_MODEL || 'google/gemini-flash-1.5-8b-exp')
+  .option('--translator-model <model>', 'Translator API model', process.env.TRANSLATOR_MODEL || 'gpt-4o')
   // dev
   .option('--use-cache', 'Use cache')
   .action(async (video, subs1, subs2, options) => {

@@ -4,7 +4,6 @@ import * as fs from 'node:fs'
 import { youtubeDl } from 'youtube-dl-exec'
 import { execAsync, formatFileSize } from './utils.js'
 
-// ビデオの読み込み処理
 export async function loadVideo(context: Context) {
   const { options, pathManager } = context
   const { input } = options
@@ -52,10 +51,10 @@ export async function loadAudio(context: Context) {
 
   console.log('Extracting audio...')
   // ffmpeg options:
-  // -i: 入力ファイルの指定
-  // -vn: ビデオストリームを無効化（音声のみを抽出）
-  // -acodec libmp3lame: MP3エンコーダーを使用
-  // -q:a 4: 音声品質の設定（0-9, 低いほど高品質）
+  // -i: Specify input file
+  // -vn: Disable video stream (extract audio only)
+  // -acodec libmp3lame: Use LAME MP3 encoder library (high-quality open-source MP3 encoder)
+  // -q:a 4: Set audio quality (0-9, lower is higher quality)
   const command = `ffmpeg -i ${paths.video} -vn -acodec libmp3lame -q:a 4 "${paths.audio}"`
   await execAsync(command)
 

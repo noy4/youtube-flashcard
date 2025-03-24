@@ -12,9 +12,6 @@ const pathMap = {
 
 type Paths = typeof pathMap
 
-/**
- * ファイルパスの管理を担当するクラス
- */
 export class PathManager {
   workDir = '.youtube-flashcard'
   paths = this.createPaths(pathMap)

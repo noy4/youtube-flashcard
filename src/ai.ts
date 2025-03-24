@@ -6,7 +6,7 @@ export class AIClient {
   constructor(public options: Options) {}
 
   /**
-   * 音声ファイルから文字起こしを生成
+   * Transcribe audio to text using OpenAI Whisper
    */
   async transcribe(audioPath: string) {
     const { openaiApiKey, fromLang } = this.options
@@ -27,7 +27,7 @@ export class AIClient {
   }
 
   /**
-   * テキストを翻訳
+   * Translate
    */
   async translate(content: string) {
     const {

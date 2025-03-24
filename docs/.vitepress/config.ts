@@ -1,8 +1,8 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: 'Flashcard Converter',
-  description: 'YouTube字幕からフラッシュカードを生成',
+  title: 'YouTube Flashcard',
+  description: 'Generate flashcards from YouTube videos.',
   markdown: {
     breaks: true,
   },
@@ -12,9 +12,8 @@ export default defineConfig({
     },
     sidebar: [
       { text: 'Introduction', link: '/' },
-      { text: 'Output format', link: '/guide/output-format' },
       {
-        text: '開発',
+        text: 'Dev',
         items: [
           { text: 'TODO', link: '/dev/todo' },
           { text: 'ドキュメント', link: '/dev/docs' },

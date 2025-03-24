@@ -1,10 +1,17 @@
 # YouTube Flashcard
 
-A CLI tool to generate language learning flashcards from YouTube videos.
+Generate flashcards from YouTube videos.
+
+```bash
+youtube-flashcard <youtube-url> --openai-api-key <your_openai_api_key>
+```
+
+<img src='public/front.png' width='400' />
+<img src='public/back.png' width='400' />
 
 ## Features
 
-- Automatic transcription of YouTube video subtitles
+- Automatic transcription of YouTube video subtitles (with OpenAI Whisper)
 - Automatic generation of translation from transcriptions
 - Automatic extraction of audio segments
 - Direct addition of flashcards to Anki
@@ -17,51 +24,18 @@ npm install -g youtube-flashcard
 
 ## Usage
 
-### Basic Usage
-
 ```bash
 # Create flashcards by auto-generating subtitles from a YouTube video
 youtube-flashcard https://www.youtube.com/watch?v=dKz095P7LdU
 
-# Use existing subtitle files
-youtube-flashcard video.mp4 subs1.srt subs2.srt
-```
+# With custom subtitle files
+youtube-flashcard https://www.youtube.com/watch?v=dKz095P7LdU subs1.srt subs2.srt
 
-### Options
+# With your own video file
+youtube-flashcard path/to/video.mp4
 
-```bash
 # Specify languages (default: en -> ja)
 youtube-flashcard ... --from-lang en --to-lang ja
-
-# Add flashcards directly to Anki
-youtube-flashcard ... --add-to-anki --deck-name "English Study" --model-name "Basic"
-```
-
-### Environment Variables
-
-You can set default values using the following environment variables:
-
-- `VIDEO`: Default video path or URL
-- `OPENAI_API_KEY`: OpenAI API key (required for transcription and translation)
-
-## For Developers
-
-### Development Environment
-
-- TypeScript
-- Node.js
-
-### Required Tools
-
-- OpenAI API: Used for transcription and translation
-- FFmpeg: Used for audio segment extraction
-- Anki: Required for adding flashcards (when using --add-to-anki option)
-
-### Commands
-
-```bash
-npm install   # Setup
-npm test      # Run tests
 ```
 
 ## License

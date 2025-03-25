@@ -16,7 +16,7 @@ export default defineConfig({
         text: 'Dev',
         items: [
           { text: 'TODO', link: '/dev/todo' },
-          { text: 'ドキュメント', link: '/dev/docs' },
+          { text: 'System', link: '/dev/system' },
           { text: 'Dependencies', link: '/dev/dependencies' },
         ],
       },

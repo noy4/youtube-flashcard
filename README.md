@@ -55,6 +55,23 @@ TRANSLATOR_API_KEY=sk-or-v1-b50b...
 TRANSLATOR_MODEL=anthropic/claude-3.7-sonnet:beta # default: gpt-4o
 ```
 
+## Related Projects
+
+[youtube anki](https://github.com/search?q=youtube%20anki&type=repositories) (github search):
+
+- [dobladov/youtube2Anki](https://github.com/dobladov/youtube2Anki)
+- [hugepizza/youtube2anki](https://github.com/hugepizza/youtube2anki)
+- [kamui-fin/yt-to-anki](https://github.com/kamui-fin/yt-to-anki)
+- [katspaugh/youtube-flashcards](https://github.com/katspaugh/youtube-flashcards)
+
+[subs2srs](https://subs2srs.sourceforge.net/) - GUI software for Windows
+
+[subs2srs](https://github.com/topics/subs2srs) (GitHub Topics):
+- [langkit](https://github.com/tassa-yoniso-manasi-karoto/langkit)
+  - [bunkai](https://github.com/ustuehler/bunkai)
+  - [substudy](https://github.com/emk/subtitles-rs/tree/master/substudy)
+  - [movies2anki](https://github.com/kelciour/movies2anki)
+
 ## License
 
 MIT

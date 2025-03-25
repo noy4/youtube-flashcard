@@ -3,7 +3,7 @@
 Generate Anki flashcards from YouTube videos.
 
 ```bash
-npm run start <youtube-url>
+youtube-flashcard <youtube-url>
 ```
 
 <img src='public/front.png' width='400' /> <img src='public/back.png' width='400' />
@@ -30,7 +30,6 @@ It seems it's not possible to achieve that with the tools I found (see [Related 
 git clone https://github.com/noy4/youtube-flashcard.git
 cd youtube-flashcard
 npm install
-npm run build
 npm link
 ```
 

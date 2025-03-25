@@ -16,6 +16,7 @@
     "start": "vite-node src/cli/index.ts",
     "build": "tsc",
     "dev": "tsc -w",
+    "postinstall": "npm run build",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",

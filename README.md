@@ -26,6 +26,17 @@ It seems it's not possible to achieve that with the tools I found (see [Related 
 
 ## Installation & Setup
 
+You need to install some external tools:
+
+```bash
+brew install yt-dlp ffmpeg
+```
+
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) - for youtube video download
+- [ffmpeg](https://ffmpeg.org/) - for audio extraction
+
+Download youtube-flashcard:
+
 ```bash
 git clone https://github.com/noy4/youtube-flashcard.git
 cd youtube-flashcard
@@ -78,9 +89,9 @@ github search: [youtube anki](https://github.com/search?q=youtube%20anki&type=re
 
 GitHub Topics: [subs2srs](https://github.com/topics/subs2srs)
 - [langkit](https://github.com/tassa-yoniso-manasi-karoto/langkit)
-  - [bunkai](https://github.com/ustuehler/bunkai)
-  - [substudy](https://github.com/emk/subtitles-rs/tree/master/substudy)
-  - [movies2anki](https://github.com/kelciour/movies2anki)
+- [bunkai](https://github.com/ustuehler/bunkai)
+- [substudy](https://github.com/emk/subtitles-rs/tree/master/substudy)
+- [movies2anki](https://github.com/kelciour/movies2anki)
 
 ## License
 

@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 
+import * as dotenv from '@dotenvx/dotenvx'
 import { Command } from '@commander-js/extra-typings'
 import pkgJson from '../../package.json' with { type: 'json' }
 import { createFlashcards } from '../flashcard.js'
+
+dotenv.config()
 
 const program = new Command()
   .name('youtube-flashcard')

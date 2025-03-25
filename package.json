@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@commander-js/extra-typings": "^13.1.0",
+    "@dotenvx/dotenvx": "^1.39.0",
     "commander": "^13.1.0",
     "openai": "^4.87.3",
     "subtitle": "^4.2.2-alpha.0",

@@ -19,7 +19,7 @@ const program = new Command()
   .option('--from-lang <code>', 'Source language code', 'en')
   .option('--to-lang <code>', 'Target language code', 'ja')
   // anki
-  .option('--add-to-anki', 'Add flashcards directly to Anki')
+  .option('--add-to-anki', 'Add flashcards directly to Anki', true)
   .option('--deck-name <name>', 'Anki deck name')
   .option('--model-name <name>', 'Anki model name', 'Basic')
   // api

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import * as dotenv from '@dotenvx/dotenvx'
 import { Command } from '@commander-js/extra-typings'
+import * as dotenv from '@dotenvx/dotenvx'
 import pkgJson from '../../package.json' with { type: 'json' }
 import { createFlashcards } from '../flashcard.js'
 

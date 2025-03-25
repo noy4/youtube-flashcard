@@ -41,7 +41,7 @@ OPENAI_API_KEY=your_openai_api_key
 ## Usage
 
 ```bash
-# Create flashcards by auto-generating subtitles from a YouTube video
+# Create flashcards
 npm run start https://www.youtube.com/watch?v=dKz095P7LdU
 
 # With custom subtitle files

@@ -6,7 +6,7 @@ Generate flashcards from YouTube videos.
 youtube-flashcard <youtube-url> --openai-api-key <your_openai_api_key>
 ```
 
-<img src='public/front.png' width='400' />
+<img src='public/front.png' width='400' />  
 <img src='public/back.png' width='400' />
 
 ## Features

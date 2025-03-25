@@ -2,6 +2,8 @@
 import antfu from '@antfu/eslint-config'
 
 export default antfu({
+  ignores: ['**/*.md'],
+
   javascript: {
     overrides: {
       // add `caughtErrors: 'none'`

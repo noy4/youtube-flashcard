@@ -10,10 +10,10 @@ npm run start <youtube-url>
 
 ## Features
 
-- Automatic transcription of YouTube video subtitles (with OpenAI Whisper)
-- Automatic generation of translation from transcriptions
+- Automatic **transcription** of YouTube video subtitles (with OpenAI Whisper)
+- Automatic generation of **translation from transcriptions**
 - Automatic extraction of audio segments
-- Direct addition of flashcards to Anki
+- Direct addition of flashcards to **Anki**
 
 ## Installation & Setup
 
@@ -49,7 +49,7 @@ npm run start ... --from-lang en --to-lang ja
 
 Translate with different models:
 
-```bash
+```dotenv
 TRANSLATOR_BASE_URL=https://openrouter.ai/api/v1
 TRANSLATOR_API_KEY=sk-or-v1-b50b...
 TRANSLATOR_MODEL=anthropic/claude-3.7-sonnet:beta # default: gpt-4o

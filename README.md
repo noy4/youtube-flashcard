@@ -17,9 +17,8 @@ npm run start <youtube-url>
 
 ## Motivation
 
-I wanted to create Anki flashcards from YouTube videos, just by passing the URL to some program.
+I wanted to create Anki flashcards from YouTube videos, just by passing the URL to some program. The format I wanted:
 
-The format I wanted:
 - Front: Japanese (native lang) sentence
 - Back: English (learning lang) sentence & audio
 
@@ -35,7 +34,7 @@ npm install
 
 Add `.env`:
 
-```bash
+```.env
 OPENAI_API_KEY=your_openai_api_key
 ```
 
@@ -57,7 +56,7 @@ npm run start ... --from-lang en --to-lang ja
 
 ## Advanced
 
-Translate with different models:
+Translate with different ai models:
 
 ```.env
 TRANSLATOR_BASE_URL=https://openrouter.ai/api/v1
@@ -67,7 +66,7 @@ TRANSLATOR_MODEL=anthropic/claude-3.7-sonnet:beta # default: gpt-4o
 
 ## Related Projects
 
-[youtube anki](https://github.com/search?q=youtube%20anki&type=repositories) (github search):
+github search: [youtube anki](https://github.com/search?q=youtube%20anki&type=repositories)
 
 - [dobladov/youtube2Anki](https://github.com/dobladov/youtube2Anki)
 - [hugepizza/youtube2anki](https://github.com/hugepizza/youtube2anki)
@@ -76,7 +75,7 @@ TRANSLATOR_MODEL=anthropic/claude-3.7-sonnet:beta # default: gpt-4o
 
 [subs2srs](https://subs2srs.sourceforge.net/) - GUI software for Windows
 
-[subs2srs](https://github.com/topics/subs2srs) (GitHub Topics):
+GitHub Topics: [subs2srs](https://github.com/topics/subs2srs)
 - [langkit](https://github.com/tassa-yoniso-manasi-karoto/langkit)
   - [bunkai](https://github.com/ustuehler/bunkai)
   - [substudy](https://github.com/emk/subtitles-rs/tree/master/substudy)

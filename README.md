@@ -1,6 +1,6 @@
 # YouTube Flashcard
 
-Generate flashcards from YouTube videos.
+Generate Anki flashcards from YouTube videos.
 
 ```bash
 npm run start <youtube-url>
@@ -14,6 +14,16 @@ npm run start <youtube-url>
 - Automatic generation of **translation from transcriptions**
 - Automatic extraction of audio segments
 - Direct addition of flashcards to **Anki**
+
+## Motivation
+
+I wanted to create Anki flashcards from YouTube videos, just by passing the URL to some program.
+
+The format I wanted:
+- Front: Japanese (native lang) sentence
+- Back: English (learning lang) sentence & audio
+
+It seems it's not possible to achieve that with the tools I found (see [Related Projects](#related-projects) below). So I created this tool. Let me know if there's a better solution.
 
 ## Installation & Setup
 

@@ -2,7 +2,7 @@
   "name": "youtube-flashcard",
   "type": "module",
   "version": "1.0.0",
-  "description": "Generate flashcards from YouTube videos.",
+  "description": "Generate Anki flashcards from YouTube videos.",
   "author": "",
   "license": "ISC",
   "keywords": [

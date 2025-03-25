@@ -30,6 +30,8 @@ It seems it's not possible to achieve that with the tools I found (see [Related 
 git clone https://github.com/noy4/youtube-flashcard.git
 cd youtube-flashcard
 npm install
+npm run build
+npm link
 ```
 
 Add `.env`:
@@ -42,16 +44,16 @@ OPENAI_API_KEY=your_openai_api_key
 
 ```bash
 # Create flashcards
-npm run start https://www.youtube.com/watch?v=dKz095P7LdU
+youtube-flashcard https://www.youtube.com/watch?v=dKz095P7LdU
 
 # With custom subtitle files
-npm run start https://www.youtube.com/watch?v=dKz095P7LdU subs1.srt subs2.srt
+youtube-flashcard https://www.youtube.com/watch?v=dKz095P7LdU subs1.srt subs2.srt
 
 # With your own video file
-npm run start path/to/video.mp4
+youtube-flashcard path/to/video.mp4
 
 # Specify languages (default: en -> ja)
-npm run start ... --from-lang en --to-lang ja
+youtube-flashcard ... --from-lang en --to-lang ja
 ```
 
 ## Advanced

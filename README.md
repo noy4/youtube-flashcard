@@ -76,6 +76,10 @@ TRANSLATOR_API_KEY=sk-or-v1-b50b...
 TRANSLATOR_MODEL=anthropic/claude-3.7-sonnet:beta # default: gpt-4o
 ```
 
+## Note
+
+Not tested for long videos (> 10 min).
+
 ## Related Projects
 
 github search: [youtube anki](https://github.com/search?q=youtube%20anki&type=repositories)

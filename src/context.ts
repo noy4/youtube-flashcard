@@ -18,11 +18,11 @@ export class Context {
   audioSize = 0
 
   constructor(options: Options) {
-    this.loadState()
     this.options = options
     this.ai = new AIClient(options)
     this.pathManager = new PathManager()
     this.paths = this.pathManager.paths
+    this.loadState()
   }
 
   setState(props: Partial<State>) {

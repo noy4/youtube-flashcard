@@ -1,11 +1,11 @@
 import type { Options } from './types.js'
 import { outputToAnki } from './anki.js'
-import { createContext } from './context.js'
+import { Context } from './context.js'
 import { loadSubtitles } from './subtitle.js'
 import { loadAudio, loadVideo } from './video.js'
 
 export async function createFlashcards(options: Options) {
-  const context = createContext(options)
+  const context = new Context(options)
   const { pathManager } = context
   const { paths } = pathManager
 

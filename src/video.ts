@@ -21,7 +21,7 @@ export async function loadVideo(context: Context) {
     const info = await youtubeDl(input, {
       dumpJson: true,
     }) as Payload
-    context.state.set({ videoTitle: info.title || '' })
+    context.setState({ videoTitle: info.title || '' })
     context.videoSize = info.filesize_approx
 
     // download
@@ -34,13 +34,13 @@ export async function loadVideo(context: Context) {
   else {
     fs.copyFileSync(input, paths.video)
     const videoTitle = input.split('/').pop()?.split('.')[0] || ''
-    context.state.set({ videoTitle })
+    context.setState({ videoTitle })
     const stats = fs.statSync(paths.video)
     context.videoSize = stats.size
   }
 
   const size = formatFileSize(context.videoSize)
-  console.log(`Video loaded: ${context.state.videoTitle} (${size})`)
+  console.log(`Video loaded: ${context.videoTitle} (${size})`)
 }
 
 export async function loadAudio(context: Context) {

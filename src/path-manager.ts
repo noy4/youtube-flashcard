@@ -5,8 +5,8 @@ import { ensureDirectory } from './utils.js'
 const pathMap = {
   video: 'video.mp4',
   audio: 'audio.mp3',
-  targetSrt: 'target.srt',
-  nativeSrt: 'native.srt',
+  targetSrt: 'subs.target.srt',
+  nativeSrt: 'subs.native.srt',
   segments: (index: number) => `segments/segment_${index}.mp3`,
   state: 'state.json',
 }

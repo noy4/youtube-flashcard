@@ -15,7 +15,7 @@ export class AIClient {
       apiKey: openaiApiKey,
     })
     const file = fs.createReadStream(audioPath)
-    console.log('Transcribing audio with Whisper...')
+    console.log('Transcribing audio with whisper...')
 
     const transcription = await openai.audio.transcriptions.create({
       model: 'whisper-1',

@@ -6,8 +6,7 @@ import { loadAudio, loadVideo } from './video.js'
 
 export async function createFlashcards(options: Options) {
   const context = new Context(options)
-  const { pathManager } = context
-  const { paths } = pathManager
+  const { pathManager, paths } = context
 
   if (options.useCache) {
     console.log('Using cached files...')

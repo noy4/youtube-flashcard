@@ -6,8 +6,7 @@ import { parseSync } from 'subtitle'
  * Load subtitles from files or generate them using AI.
  */
 export async function loadSubtitles(context: Context) {
-  const { options, pathManager } = context
-  const { paths } = pathManager
+  const { options, paths } = context
 
   const targetSrtContent = await loadSubtitle({
     input: options.targetSrt,

@@ -5,9 +5,8 @@ import { youtubeDl } from 'youtube-dl-exec'
 import { execAsync, formatFileSize } from './utils.js'
 
 export async function loadVideo(context: Context) {
-  const { options, pathManager } = context
+  const { options, paths } = context
   const { input } = options
-  const { paths } = pathManager
 
   if (!input)
     throw new Error('You must specify a video file path or YouTube URL.')
@@ -44,8 +43,7 @@ export async function loadVideo(context: Context) {
 }
 
 export async function loadAudio(context: Context) {
-  const { pathManager } = context
-  const { paths } = pathManager
+  const { paths } = context
 
   if (fs.existsSync(paths.audio))
     return

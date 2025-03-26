@@ -100,8 +100,7 @@ class AnkiService {
  * Extract audio segments
  */
 async function extractAudioSegments(context: Context) {
-  const { pathManager, subtitles } = context
-  const { paths } = pathManager
+  const { pathManager, paths, subtitles } = context
 
   if (fs.existsSync(paths.segments(0)))
     return

@@ -13,11 +13,11 @@ const program = new Command()
   .version(pkgJson.version)
   // input
   .argument('[video]', 'YouTube URL or path to video file', process.env.VIDEO)
-  .argument('[subs1]', 'Path to subtitles file 1')
-  .argument('[subs2]', 'Path to subtitles file 2')
+  .argument('[target.srt]', 'Path to subtitles file with target language')
+  .argument('[native.srt]', 'Path to subtitles file with native language')
   // languages
-  .option('--from-lang <code>', 'Source language code', 'en')
-  .option('--to-lang <code>', 'Target language code', 'ja')
+  .option('--target-lang <code>', 'Target language code', 'en')
+  .option('--native-lang <code>', 'Native language code', 'ja')
   // anki
   .option('--add-to-anki', 'Add flashcards directly to Anki', true)
   .option('--deck-name <name>', 'Anki deck name')
@@ -29,12 +29,12 @@ const program = new Command()
   .option('--translator-model <model>', 'Translator API model', process.env.TRANSLATOR_MODEL || 'gpt-4o')
   // dev
   .option('--use-cache', 'Use cache')
-  .action(async (video, subs1, subs2, options) => {
+  .action(async (video, targetSrt, nativeSrt, options) => {
     try {
       await createFlashcards({
         input: video,
-        subs1,
-        subs2,
+        targetSrt,
+        nativeSrt,
         ...options,
       })
     }

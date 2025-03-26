@@ -9,7 +9,7 @@ export class AIClient {
    * Transcribe audio to text using OpenAI Whisper
    */
   async transcribe(audioPath: string) {
-    const { openaiApiKey, fromLang } = this.options
+    const { openaiApiKey, targetLang } = this.options
 
     const openai = new OpenAI({
       apiKey: openaiApiKey,
@@ -20,7 +20,7 @@ export class AIClient {
     const transcription = await openai.audio.transcriptions.create({
       model: 'whisper-1',
       file,
-      language: fromLang,
+      language: targetLang,
       response_format: 'srt',
     })
     return transcription
@@ -31,8 +31,8 @@ export class AIClient {
    */
   async translate(content: string) {
     const {
-      fromLang,
-      toLang,
+      targetLang,
+      nativeLang,
       openaiApiKey,
       translatorApiKey,
       translatorBaseUrl,
@@ -44,7 +44,7 @@ export class AIClient {
     })
     console.log('Translating text...')
 
-    const systemPrompt = `You are a skilled translator from ${fromLang} to ${toLang}. Your task is to accurately translate each subtitle segment while preserving the timing information. Keep the SRT format intact. Do not add any extra information or comments, including code block.`
+    const systemPrompt = `You are a skilled translator from ${targetLang} to ${nativeLang}. Your task is to accurately translate each subtitle segment while preserving the timing information. Keep the SRT format intact. Do not add any extra information or comments, including code block.`
 
     console.time('Translation')
     const response = await openai.chat.completions.create({

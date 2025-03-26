@@ -20,7 +20,7 @@ youtube-flashcard <youtube-url>
 I wanted to create Anki flashcards from YouTube videos, just by passing the URL to some program. The format I wanted:
 
 - Front: Japanese (native lang) sentence
-- Back: English (learning lang) sentence & audio
+- Back: English (target lang) sentence & audio
 
 It seems it's not possible to achieve that with the tools I found (see [Related Projects](#related-projects) below). So I created this tool. Let me know if there's a better solution.
 
@@ -57,13 +57,13 @@ OPENAI_API_KEY=your_openai_api_key
 youtube-flashcard https://www.youtube.com/watch?v=dKz095P7LdU
 
 # With custom subtitle files
-youtube-flashcard https://www.youtube.com/watch?v=dKz095P7LdU subs1.srt subs2.srt
+youtube-flashcard https://www.youtube.com/watch?v=dKz095P7LdU target.srt native.srt
 
 # With your own video file
 youtube-flashcard path/to/video.mp4
 
-# Specify languages (default: en -> ja)
-youtube-flashcard ... --from-lang en --to-lang ja
+# Specify languages
+youtube-flashcard ... --native-lang ja --target-lang en # default
 ```
 
 ## Advanced

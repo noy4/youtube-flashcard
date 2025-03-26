@@ -12,8 +12,8 @@ export async function createFlashcards(options: Options) {
   if (options.useCache) {
     console.log('Using cached files...')
     context.options.input ||= paths.video
-    context.options.subs1 ||= paths.subs1
-    context.options.subs2 ||= paths.subs2
+    context.options.targetSrt ||= paths.targetSrt
+    context.options.nativeSrt ||= paths.nativeSrt
   }
   else {
     pathManager.init()

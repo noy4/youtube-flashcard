@@ -9,29 +9,29 @@ export async function loadSubtitles(context: Context) {
   const { options, pathManager } = context
   const { paths } = pathManager
 
-  const subs1Content = await loadSubtitle({
-    input: options.subs1,
-    output: paths.subs1,
+  const targetSrtContent = await loadSubtitle({
+    input: options.targetSrt,
+    output: paths.targetSrt,
     // transcribe
     generate: () => context.ai.transcribe(paths.audio),
   })
 
-  const subs2Content = await loadSubtitle({
-    input: options.subs2,
-    output: paths.subs2,
+  const nativeSrtContent = await loadSubtitle({
+    input: options.nativeSrt,
+    output: paths.nativeSrt,
     // translate
-    generate: () => context.ai.translate(subs1Content),
+    generate: () => context.ai.translate(targetSrtContent),
   })
 
-  const subs1 = parseSubs(subs1Content)
-  const subs2 = parseSubs(subs2Content)
+  const targetSrt = parseSubs(targetSrtContent)
+  const nativeSrt = parseSubs(nativeSrtContent)
 
-  if (subs1.length !== subs2.length)
-    throw new Error(`The number of subtitles does not match. (${subs1.length}-${subs2.length})`)
+  if (targetSrt.length !== nativeSrt.length)
+    throw new Error(`The number of subtitles does not match. (${targetSrt.length}-${nativeSrt.length})`)
 
-  const subtitles = subs1.map((sub, index) => ({
+  const subtitles = targetSrt.map((sub, index) => ({
     ...sub,
-    translation: subs2[index].text,
+    translation: nativeSrt[index].text,
     audioPath: paths.segments(index),
   }))
 

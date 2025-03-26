@@ -15,7 +15,7 @@ export class AIClient {
       apiKey: openaiApiKey,
     })
     const file = fs.createReadStream(audioPath)
-    console.log('Transcribing audio...')
+    console.log('Transcribing audio with Whisper...')
 
     const transcription = await openai.audio.transcriptions.create({
       model: 'whisper-1',
@@ -42,7 +42,7 @@ export class AIClient {
       apiKey: translatorApiKey || openaiApiKey,
       baseURL: translatorBaseUrl,
     })
-    console.log('Translating text...')
+    console.log(`Translating text with '${translatorModel}'...`)
 
     const systemPrompt = `You are a skilled translator from ${targetLang} to ${nativeLang}. Your task is to accurately translate each subtitle segment while preserving the timing information. Keep the SRT format intact. Do not add any extra information or comments, including code block.`
 

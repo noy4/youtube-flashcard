@@ -8,6 +8,7 @@ const pathMap = {
   targetSrt: 'target.srt',
   nativeSrt: 'native.srt',
   segments: (index: number) => `segments/segment_${index}.mp3`,
+  state: 'state.json',
 }
 
 type Paths = typeof pathMap

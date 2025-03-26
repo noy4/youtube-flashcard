@@ -9,9 +9,9 @@ import { execAsync } from './utils.js'
  * Output to Anki
  */
 export async function outputToAnki(context: Context) {
-  const { options, subtitles, videoTitle } = context
+  const { options, subtitles, state } = context
   const { modelName } = options
-  const deckName = options.deckName || videoTitle
+  const deckName = options.deckName || state.videoTitle
 
   const ankiService = new AnkiService()
   await ankiService.ensureDeckExists(deckName)

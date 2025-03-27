@@ -1,7 +1,7 @@
 import type { Options, Subtitle } from './types.js'
 import * as fs from 'node:fs'
 import { AIClient } from './ai.js'
-import { PathManager } from './path-manager.js'
+import { PathManager } from './path.js'
 
 interface State {
   videoTitle: string

@@ -13,7 +13,6 @@ export class Context {
   pathManager: PathManager
   subtitles: Subtitle[] = []
   videoTitle = ''
-  videoSize = 0
   audioSize = 0
 
   constructor(options: Options) {

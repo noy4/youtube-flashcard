@@ -8,34 +8,35 @@ const pathMap = {
   targetSrt: 'subs1.target.srt',
   nativeSrt: 'subs2.native.srt',
   segments: (index: number) => `segments/segment_${index}.mp3`,
-  state: 'state.json',
 }
+
+const STATE_PATH = 'state.json'
 
 type Paths = typeof pathMap
 
 export class PathManager {
-  workDir = '.youtube-flashcard'
-  paths = this.createPaths(pathMap)
+  base = 'output'
+  paths!: Paths
+  statePath = path.join(this.base, STATE_PATH)
 
-  createPaths(paths: Paths): Paths {
-    return Object.fromEntries(
-      Object.entries(paths).map(([key, value]) => {
+  initPaths(dir: string) {
+    const paths = Object.fromEntries(
+      Object.entries(pathMap).map(([key, value]) => {
         if (typeof value === 'function') {
           return [
             key,
-            (index: number) => this.withBase(value(index)),
+            (index: number) => this.withBase(dir, value(index)),
           ]
         }
-        return [key, this.withBase(value)]
+        return [key, this.withBase(dir, value)]
       }),
     )
+    this.paths = paths
   }
 
-  init() {
-    if (fs.existsSync(this.workDir))
-      fs.rmSync(this.workDir, { recursive: true, force: true })
-
-    fs.mkdirSync(this.workDir)
+  initBase() {
+    if (!fs.existsSync(this.base))
+      fs.mkdirSync(this.base)
   }
 
   ensure(key: keyof Paths) {
@@ -46,7 +47,7 @@ export class PathManager {
       ensureDirectory(filePath)
   }
 
-  withBase(filePath: string) {
-    return path.join(this.workDir, filePath)
+  withBase(...paths: string[]) {
+    return path.join(this.base, ...paths)
   }
 }

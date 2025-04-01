@@ -5,7 +5,7 @@ import { youtubeDl } from 'youtube-dl-exec'
 import { execAsync, formatFileSize } from './utils.js'
 
 export async function loadVideo(context: Context) {
-  const { options, paths } = context
+  const { options, pathManager } = context
   const { input } = options
 
   if (!input)
@@ -20,21 +20,23 @@ export async function loadVideo(context: Context) {
     const info = await youtubeDl(input, {
       dumpJson: true,
     }) as Payload
-    context.setState({ videoTitle: info.title || '' })
+    const videoTitle = info.title || ''
+    context.setState({ videoTitle })
     context.videoSize = info.filesize_approx
+    pathManager.initPaths(videoTitle)
 
     // download
     await youtubeDl(input, {
-      output: paths.video,
+      output: pathManager.paths.video,
       format: 'mp4',
     })
   }
   // load video file
   else {
-    fs.copyFileSync(input, paths.video)
+    fs.copyFileSync(input, pathManager.paths.video)
     const videoTitle = input.split('/').pop()?.split('.')[0] || ''
     context.setState({ videoTitle })
-    const stats = fs.statSync(paths.video)
+    const stats = fs.statSync(pathManager.paths.video)
     context.videoSize = stats.size
   }
 
@@ -54,7 +56,7 @@ export async function loadAudio(context: Context) {
   // -vn: Disable video stream (extract audio only)
   // -acodec libmp3lame: Use LAME MP3 encoder library (high-quality open-source MP3 encoder)
   // -q:a 4: Set audio quality (0-9, lower is higher quality)
-  const command = `ffmpeg -i ${paths.video} -vn -acodec libmp3lame -q:a 4 "${paths.audio}"`
+  const command = `ffmpeg -i "${paths.video}" -vn -acodec libmp3lame -q:a 4 "${paths.audio}"`
   await execAsync(command)
 
   // Get audio file size

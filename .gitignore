@@ -18,6 +18,7 @@ coverage
 .env
 
 # output files
+output
 .youtube-flashcard
 
 # test data

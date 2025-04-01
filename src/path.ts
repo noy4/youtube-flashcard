@@ -19,6 +19,11 @@ export class PathManager {
   paths!: Paths
   statePath = path.join(this.base, STATE_PATH)
 
+  initBase() {
+    if (!fs.existsSync(this.base))
+      fs.mkdirSync(this.base)
+  }
+
   initPaths(dir: string) {
     const paths = Object.fromEntries(
       Object.entries(pathMap).map(([key, value]) => {
@@ -32,11 +37,6 @@ export class PathManager {
       }),
     )
     this.paths = paths
-  }
-
-  initBase() {
-    if (!fs.existsSync(this.base))
-      fs.mkdirSync(this.base)
   }
 
   ensure(key: keyof Paths) {

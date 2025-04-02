@@ -11,7 +11,7 @@ export async function createFlashcards(options: Options) {
   await loadAudio(context)
   await loadSubtitles(context)
 
-  if (options.addToAnki)
+  if (options.format === 'anki')
     await outputToAnki(context)
 
   console.log('Done.')

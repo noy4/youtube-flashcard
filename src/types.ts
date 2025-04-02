@@ -4,7 +4,7 @@ export interface Options {
   nativeSrt?: string | undefined
   targetLang: string
   nativeLang: string
-  addToAnki?: true | undefined
+  format?: string
   deckName?: string
   modelName: string
   openaiApiKey: string

@@ -58,7 +58,6 @@ export async function loadAudio(context: Context) {
 
   // Get audio file size
   const stats = fs.statSync(paths.audio)
-  context.audioSize = stats.size
-  const audioSize = formatFileSize(context.audioSize)
+  const audioSize = formatFileSize(stats.size)
   console.log(`Audio extracted: ${audioSize}`)
 }

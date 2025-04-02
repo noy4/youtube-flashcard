@@ -109,7 +109,7 @@ async function extractAudioSegments(context: Context) {
 
   for (const [index, sub] of subtitles.entries()) {
     const duration = sub.end - sub.start
-    const command = `ffmpeg -i ${paths.audio} -ss ${sub.start / 1000} -t ${duration / 1000} -vn -acodec mp3 "${sub.audioPath}"`
+    const command = `ffmpeg -i "${paths.audio}" -ss ${sub.start / 1000} -t ${duration / 1000} -vn -acodec mp3 "${sub.audioPath}"`
 
     await execAsync(command)
     console.log(`Extracted segment ${index + 1}/${subtitles.length}`)

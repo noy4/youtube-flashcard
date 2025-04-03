@@ -11,6 +11,7 @@ export class Context {
   options: Options
   ai: AIClient
   pathManager: PathManager
+  targetSrtContent = ''
   subtitles: Subtitle[] = []
   videoTitle = ''
 

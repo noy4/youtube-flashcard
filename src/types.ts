@@ -4,6 +4,7 @@ export interface Options {
   nativeSrt?: string | undefined
   targetLang: string
   nativeLang: string
+  transcribeOnly?: true | undefined
   format?: string
   deckName?: string
   modelName: string

@@ -18,7 +18,8 @@ const program = new Command()
   // languages
   .option('--target-lang <code>', 'Target language code', 'en')
   .option('--native-lang <code>', 'Native language code', 'ja')
-  // anki
+  // output
+  .option('--transcribe-only', 'Only transcribe the video')
   .option('--format <format>', 'Output format', 'anki')
   .option('--deck-name <name>', 'Anki deck name')
   .option('--model-name <name>', 'Anki model name', 'Basic')

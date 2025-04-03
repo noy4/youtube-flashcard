@@ -2,10 +2,7 @@ import type { Context } from './context.js'
 import * as fs from 'node:fs'
 import { parseSync } from 'subtitle'
 
-/**
- * Load subtitles from files or generate them using AI.
- */
-export async function loadSubtitles(context: Context) {
+export async function loadTargetSrt(context: Context) {
   const { options, paths } = context
 
   const targetSrtContent = await loadSubtitle({
@@ -14,6 +11,12 @@ export async function loadSubtitles(context: Context) {
     // transcribe
     generate: () => context.ai.transcribe(paths.audio),
   })
+
+  context.targetSrtContent = targetSrtContent
+}
+
+export async function loadNativeSrt(context: Context) {
+  const { options, paths, targetSrtContent } = context
 
   const nativeSrtContent = await loadSubtitle({
     input: options.nativeSrt,
